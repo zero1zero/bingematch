@@ -1,0 +1,3 @@
+rootProject.name = 'bingeflip'
+include 'api'
+include 'ui'
