@@ -1,37 +1,41 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {Component, useEffect, useRef, useState} from 'react';
 
-import { Cards } from 'react-native-cards-swipr';
 import {data} from "./data";
-import {View, StyleSheet, Text, Animated, ImageBackground} from "react-native";
+import {View, StyleSheet, Text, Animated, ImageBackground, useWindowDimensions} from "react-native";
+import Cards from "./swiper/Cards";
+
+let cards = [...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data]
 
 export interface Props {
 }
 
 const Deck : React.FC<Props> = (props) => {
 
-    const [status, setstatus] = useState(null);
+    const window = useWindowDimensions();
+    const cardHeight = window.height * .9
+    const cardWidth = window.width * .9
+
+    const [status, setStatus] = useState("");
     const scale = useRef(new Animated.Value(1)).current;
 
-    const cards = data
+    const update = (status, item, index) => {
+        setStatus(status)
+    }
 
     // removing any status
     useEffect(() => {
-        setstatus(null);
+        setStatus("");
     }, []);
     return (
         <View style={styles.container}>
             <Cards
-                items={data}
-                showableCards={2}
-                onSwipeUp={() => {
-                    setstatus("LATER");
-                }}
-                onSwipeRight={() => {
-                    setstatus("YES");
-                }}
-                onSwipeLeft={() => {
-                    setstatus("NO");
-                }}
+                items={cards}
+                showableCards={5}
+                onMoveStart={() => {}}
+                onSwipeUp={(item, index) => update("up", item, index)}
+                onSwipeDown={(item, index) => update("down", item, index)}
+                onSwipeRight={(item, index) => update("right", item, index)}
+                onSwipeLeft={(item, index) => update("left", item, index)}
                 onSwipe={() => {
                     // whenever a swipe happens a bounce animation will happen to the status text
                     Animated.sequence([
@@ -47,36 +51,32 @@ const Deck : React.FC<Props> = (props) => {
                     ]).start();
                 }}
                 onDataEnd={() => {
-                    cards.push(...data)
+                    console.log("done with items")
                     // hiding the status after one second of the final swipe
-                    // setTimeout(() => {
-                    //     Animated.spring(scale, {
-                    //         toValue: 0,
-                    //         useNativeDriver: true,
-                    //     }).start();
-                    // }, 1000);
+                    setTimeout(() => {
+                        Animated.spring(scale, {
+                            toValue: 0,
+                            useNativeDriver: true,
+                        }).start();
+                    }, 1000);
 
                 }}
                 renderItem={(item) => (
-                    <View style={[styles.box, styles.shadow]}>
-                        <ImageBackground style={{ height: 300, width: 300 }} source={{uri: item.pics[0]}}>
-                            <Text>{item.name}</Text>
-                        </ImageBackground>
+                    <View style={{height: cardHeight, width: cardWidth, ...styles.box, ...styles.shadow}}>
+                        <ImageBackground style={styles.image} source={{uri: item.pics[0]}}/>
+                        <Text>{item.name}</Text>
                     </View>
                 )}
             />
-            {status && (
-                <Animated.Text
-                    style={{
-                        position: "absolute",
-                        bottom: 50,
-                        transform: [{ scale }],
-                        fontSize: 40,
-                    }}
-                >
-                    {status}
-                </Animated.Text>
-            )}
+            <Animated.Text
+                style={{
+                    position: "absolute",
+                    bottom: 50,
+                    transform: [{ scale }],
+                    fontSize: 40,
+                }}>
+                {status}
+            </Animated.Text>
         </View>
     );
 }
@@ -87,10 +87,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+
+    image: {
+        width: '100%',
+        height: '100%',
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "flex-end"
+    },
     box: {
-        height: 300,
-        width: 300,
-        backgroundColor: "tomato",
+        backgroundColor: "#d58888",
         borderRadius: 5,
         justifyContent: "center",
         alignItems: "center",
