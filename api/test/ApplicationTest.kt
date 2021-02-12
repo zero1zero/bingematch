@@ -15,14 +15,12 @@ import module
 import objectMapper
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.*
 
 
 class ApplicationTest {
 
-    private lateinit var user: User
+    private lateinit var user : User
 
     private val testRegister = Register("api-testing@bingematch.com", "horse battery staple login")
 
@@ -65,6 +63,9 @@ class ApplicationTest {
 
                 setBody(objectMapper.writeValueAsString(testRegister))
             }.apply {
+                if (response.content == "user-exists") {
+                    fail("user-exists during attempt to create, something is wrong with the test flow")
+                }
                 val userwtoken = objectMapper.readValue(response.content, UserWToken::class.java)
                 user = userwtoken.user
             }
@@ -189,21 +190,21 @@ class ApplicationTest {
         }
     }
 
-    @Test
-    fun getQueue() {
-
-        withTestApplication({ module() }) {
-
-            val updateUser = UpdateUser(user.email, "5039843253", "hello there")
-
-            handleRequest(HttpMethod.Put, "/user/${user.id}") {
-                addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(user)}")
-                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-
-                setBody(objectMapper.writeValueAsString(updateUser))
-            }.apply {
-                assertEquals(HttpStatusCode.OK, response.status())
-            }
-        }
-    }
+//    @Test
+//    fun getQueue() {
+//
+//        withTestApplication({ module() }) {
+//
+//            val updateUser = UpdateUser(user.email, "5039843253", "hello there")
+//
+//            handleRequest(HttpMethod.Put, "/user/${user.id}") {
+//                addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(user)}")
+//                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+//
+//                setBody(objectMapper.writeValueAsString(updateUser))
+//            }.apply {
+//                assertEquals(HttpStatusCode.OK, response.status())
+//            }
+//        }
+//    }
 }

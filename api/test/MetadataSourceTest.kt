@@ -7,14 +7,14 @@ import java.net.http.HttpResponse
 internal class MetadataSourceTest {
 //    @Test
     fun utelly() {
-        val utelly = Utelly()
+        val utelly = MetadataSource.Utelly()
 
         println(utelly.lookup("dark knight"))
     }
 
     @Test
     fun tmdb() {
-        val tmdb = TMDB()
+        val tmdb = MetadataSource.TMDB()
 
         println(tmdb.getMostPopular())
     }

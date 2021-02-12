@@ -11,3 +11,5 @@ deploy:
 login:
 	ssh -i "vestly.pem" ec2-user@ec2-18-236-70-145.us-west-2.compute.amazonaws.com
 
+tester:
+	docker stack deploy --compose-file docker-compose.yml --orchestrator kubernetes bingematch

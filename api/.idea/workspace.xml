@@ -2,43 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bd716662-c327-479f-87bb-cde1c09d86d6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/MetadataSource.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routing/Queue.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routing/Users.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/AWSUtil.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/ListStore.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/UserStore.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/MetadataSourceTest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/store/ListStoreTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/$CACHE_FILE$" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/$PRODUCT_WORKSPACE_FILE$" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/model/model.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/catalog/CatalogStore.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/k8s/K8sClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DepositCalculator.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/JsonMarshalling.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/JsonMarshalling.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoneyUtil.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Notifier.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/QuoteFetcher.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/StockDataSource.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Storage.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TradePlanner.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MetadataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/MetadataSource.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/ApplicationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/ApplicationTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/DepositCalculatorTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/NotifierTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/PasswordUtilTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/PasswordUtilTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/QuoteFetcherTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/StockDataSourceTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/StorageTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/TradePlannerTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/MetadataSourceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/MetadataSourceTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../makefile" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,11 +25,24 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
         <option value="Kotlin File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -76,6 +63,10 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -100,7 +91,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ListStoreTest.putAndGetItems">
+  <component name="RunManager" selected="JUnit.ApplicationTest">
     <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
     </configuration>
@@ -116,25 +107,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ApplicationTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;ApplicationTest&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
+    <configuration name="ApplicationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="api.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ApplicationTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ApplicationTest.updatePassword" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="api.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ApplicationTest" />
+      <option name="METHOD_NAME" value="updatePassword" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="ListStoreTest.putAndGetItems" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="api.test" />
@@ -164,6 +156,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="PasswordUtilTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="api.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="PasswordUtilTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -182,9 +184,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ApplicationTest" />
+        <item itemvalue="JUnit.PasswordUtilTest" />
+        <item itemvalue="JUnit.ApplicationTest.updatePassword" />
         <item itemvalue="JUnit.ListStoreTest.putAndGetItems" />
         <item itemvalue="JUnit.MetadataSourceTest.tmdb" />
-        <item itemvalue="Gradle.ApplicationTest" />
       </list>
     </recent_temporary>
   </component>

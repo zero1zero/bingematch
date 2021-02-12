@@ -1,4 +1,5 @@
 import auth.JwtConfig
+import catalog.CatalogStore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -6,10 +7,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import io.ktor.application.Application
-import io.ktor.application.ApplicationCall
-import io.ktor.application.call
-import io.ktor.application.install
+import io.ktor.application.*
 import io.ktor.auth.Authentication
 import io.ktor.auth.UserIdPrincipal
 import io.ktor.auth.jwt.jwt
@@ -40,6 +38,16 @@ fun Application.module() {
     val passwordUtil = PasswordUtil()
     val awsUtil = AWSUtil()
     val storage = UserStore(passwordUtil, awsUtil.ddb)
+    val metadata = MetadataSource()
+    val catalog = CatalogStore(metadata)
+
+    environment.monitor.subscribe(ApplicationStarted){
+        println("LET'S ROCKKKKK")
+    }
+    environment.monitor.subscribe(ApplicationStopped){
+        println("Game over, man")
+        catalog.close()
+    }
 
     install(Authentication) {
         /**
