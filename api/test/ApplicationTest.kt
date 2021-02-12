@@ -1,13 +1,5 @@
-package com.avervest
-
-import ChartManySeries
-import Frequency
 import Login
-import PlanAndTrades
 import Register
-import TestPlan
-import Timeline
-import Trade
 import UpdateUser
 import User
 import UserWToken
@@ -21,10 +13,6 @@ import io.ktor.server.testing.setBody
 import io.ktor.server.testing.withTestApplication
 import module
 import objectMapper
-import org.joda.money.CurrencyUnit
-import org.joda.money.Money
-import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.test.BeforeTest
@@ -36,7 +24,7 @@ class ApplicationTest {
 
     private lateinit var user: User
 
-    private val testRegister = Register("api-testing@vestly.io", "horse battery staple login")
+    private val testRegister = Register("api-testing@bingematch.com", "horse battery staple login")
 
     @BeforeTest
     fun setup() {
@@ -84,77 +72,10 @@ class ApplicationTest {
     }
 
     @Test
-    fun testRoot() {
-        withTestApplication({ module() }) {
-
-            val plan = TestPlan(
-                Money.of(CurrencyUnit.USD, 20_000.0),
-                Timeline(LocalDate.parse("2020-05-01"), LocalDate.parse("2020-09-01")),
-                "NKE",
-                Frequency(1, ChronoUnit.MONTHS)
-            )
-
-            handleRequest(HttpMethod.Post, "/plan/test") {
-                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-
-                setBody(objectMapper.writeValueAsString(plan))
-            }.apply {
-                assertEquals(HttpStatusCode.OK, response.status())
-                val planAndTrades = objectMapper.readValue(response.content, PlanAndTrades::class.java)
-
-                //upate id so original should match
-                val expectedPlan = TestPlan(plan.amount, plan.timeline, plan.symbol, plan.frequency)
-                expectedPlan.id = planAndTrades.plan.id
-
-                val trades = listOf(
-                    Trade(
-                        LocalDate.parse("2020-05-01"),
-                        Money.of(CurrencyUnit.USD, 4000.0),
-                        "NKE",
-                        planAndTrades.plan.id,
-                        planAndTrades.trades[0].id
-                    ),
-                    Trade(
-                        LocalDate.parse("2020-06-01"),
-                        Money.of(CurrencyUnit.USD, 4000.0),
-                        "NKE",
-                        planAndTrades.plan.id,
-                        planAndTrades.trades[1].id
-                    ),
-                    Trade(
-                        LocalDate.parse("2020-07-01"),
-                        Money.of(CurrencyUnit.USD, 4000.0),
-                        "NKE",
-                        planAndTrades.plan.id,
-                        planAndTrades.trades[2].id
-                    ),
-                    Trade(
-                        LocalDate.parse("2020-08-01"),
-                        Money.of(CurrencyUnit.USD, 4000.0),
-                        "NKE",
-                        planAndTrades.plan.id,
-                        planAndTrades.trades[3].id
-                    ),
-                    Trade(
-                        LocalDate.parse("2020-09-01"),
-                        Money.of(CurrencyUnit.USD, 4000.0),
-                        "NKE",
-                        planAndTrades.plan.id,
-                        planAndTrades.trades[4].id
-                    )
-                )
-
-                assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals(PlanAndTrades(expectedPlan.toPlan(), trades), planAndTrades)
-            }
-        }
-    }
-
-    @Test
     fun testLogin() {
         withTestApplication({ module() }) {
 
-//            failed login!
+            //failed login!
             handleRequest(HttpMethod.Post, "/user/login") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
@@ -192,23 +113,6 @@ class ApplicationTest {
                     val user1 = objectMapper.readValue(response.content, User::class.java)
 
                     assertEquals(user.id, user1.id)
-                }
-        }
-    }
-
-    @Test
-    fun testStock() {
-
-        withTestApplication({ module() }) {
-            handleRequest(HttpMethod.Get, "/stock/chart") {
-                addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(user)}")
-            }
-                .apply {
-                    assertEquals(HttpStatusCode.OK, response.status())
-
-                    val chart = objectMapper.readValue(response.content, ChartManySeries::class.java)
-
-                    println(chart)
                 }
         }
     }
@@ -279,6 +183,24 @@ class ApplicationTest {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
                 setBody(objectMapper.writeValueAsString(UpdateUser(user.email, password = testRegister.password)))
+            }.apply {
+                assertEquals(HttpStatusCode.OK, response.status())
+            }
+        }
+    }
+
+    @Test
+    fun getQueue() {
+
+        withTestApplication({ module() }) {
+
+            val updateUser = UpdateUser(user.email, "5039843253", "hello there")
+
+            handleRequest(HttpMethod.Put, "/user/${user.id}") {
+                addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(user)}")
+                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+
+                setBody(objectMapper.writeValueAsString(updateUser))
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }

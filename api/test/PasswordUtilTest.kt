@@ -3,7 +3,7 @@ import kotlin.test.Test
 
 internal class PasswordUtilTest {
 
-    val passwordUtil = PasswordUtil()
+    private val passwordUtil = PasswordUtil()
 
     @Test
     fun sameHash() {

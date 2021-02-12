@@ -7,10 +7,10 @@ services:
     ports: 
       - "80:80"
   web:
-    image: zero1zero/vestly-web:${TAG}
+    image: zero1zero/bingematch-ui:${TAG}
     ports:
       - "5000:5000"
   api:
-    image: zero1zero/vestly-api:${TAG}
+    image: zero1zero/bingematch-api:${TAG}
     ports:
       - "8080:8080"

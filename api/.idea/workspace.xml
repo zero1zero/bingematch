@@ -1,7 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c8dd3a54-3c83-4b38-828f-07a9cfc053a2" name="Default Changelist" comment="" />
+    <list default="true" id="bd716662-c327-479f-87bb-cde1c09d86d6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/MetadataSource.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routing/Queue.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routing/Users.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/AWSUtil.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/ListStore.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/UserStore.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/MetadataSourceTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/store/ListStoreTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/$CACHE_FILE$" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/$PRODUCT_WORKSPACE_FILE$" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DepositCalculator.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/JsonMarshalling.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/JsonMarshalling.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MoneyUtil.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Notifier.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/QuoteFetcher.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StockDataSource.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Storage.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TradePlanner.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/ApplicationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/ApplicationTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/DepositCalculatorTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/NotifierTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/PasswordUtilTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/PasswordUtilTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/QuoteFetcherTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/StockDataSourceTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/StorageTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/TradePlannerTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../settings.gradle" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,34 +51,18 @@
       <ProjectState />
     </projectState>
   </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
-        <projects_view>
-          <tree_state>
-            <expand />
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin File" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectId" id="1cxCApN0uoDoxd2V0ikmUXUjM4T" />
+  <component name="ProjectId" id="1oEjU2aD2YSlOCO8xQu2QZrh5PY" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -57,10 +79,13 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
-      <recent name="" />
+      <recent name="store" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/store" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -75,7 +100,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.NotifierTest.send">
+  <component name="RunManager" selected="JUnit.ListStoreTest.putAndGetItems">
     <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
     </configuration>
@@ -96,7 +121,7 @@
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;com.avervest.ApplicationTest&quot;" />
+        <option name="scriptParameters" value="--tests &quot;ApplicationTest&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -111,82 +136,37 @@
       <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="ApplicationTest.updatePassword" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;com.avervest.ApplicationTest.updatePassword&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="ApplicationTest.updateUser" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;com.avervest.ApplicationTest.updateUser&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="NotifierTest.send" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;NotifierTest.send&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":cleanTest" />
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit">
-      <option name="TEST_OBJECT" value="class" />
+    <configuration name="ListStoreTest.putAndGetItems" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="api.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="store.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="store" />
+      <option name="MAIN_CLASS_NAME" value="store.ListStoreTest" />
+      <option name="METHOD_NAME" value="putAndGetItems" />
+      <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ApplicationKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="api.main" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="ApplicationKt" />
-      <option name="WORKING_DIRECTORY" />
+    <configuration name="MetadataSourceTest.tmdb" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="api.test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MetadataSourceTest" />
+      <option name="METHOD_NAME" value="tmdb" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -202,23 +182,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.NotifierTest.send" />
-        <item itemvalue="Kotlin.ApplicationKt" />
-        <item itemvalue="Gradle.ApplicationTest.updatePassword" />
-        <item itemvalue="Gradle.ApplicationTest.updateUser" />
+        <item itemvalue="JUnit.ListStoreTest.putAndGetItems" />
+        <item itemvalue="JUnit.MetadataSourceTest.tmdb" />
         <item itemvalue="Gradle.ApplicationTest" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="allServicesViewState">
-      <serviceView>
-        <treeState>
-          <expand />
-          <select />
-        </treeState>
-      </serviceView>
-    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
