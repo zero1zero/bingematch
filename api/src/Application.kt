@@ -35,11 +35,12 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module() {
 
     //dependencies
+    val client = K8sClient()
     val passwordUtil = PasswordUtil()
     val awsUtil = AWSUtil()
     val storage = UserStore(passwordUtil, awsUtil.ddb)
     val metadata = MetadataSource()
-    val catalog = CatalogStore(metadata)
+    val catalog = CatalogStore(metadata, client)
 
     environment.monitor.subscribe(ApplicationStarted){
         println("LET'S ROCKKKKK")
@@ -107,8 +108,15 @@ fun Application.module() {
     }
 
     routing {
-        route("/test") {
+        route("/up") {
             get("/") {
+                call.respond(HttpStatusCode.Accepted)
+            }
+        }
+
+        route("/ready") {
+            get("/") {
+                //check dependencies
                 call.respond(HttpStatusCode.Accepted)
             }
         }

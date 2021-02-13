@@ -1,19 +1,12 @@
 FROM openjdk:11-jdk-slim AS build
 WORKDIR /build
 
-COPY . /build
+RUN apt-get update && apt-get install -y protobuf-compiler
 
+COPY . .
 RUN ./gradlew shadowJar
 
 FROM openjdk:11-jre-slim AS run
-WORKDIR /app
-
-#ENV APPLICATION_USER ktor
-#RUN adduser -D -g '' $APPLICATION_USER
-
-#RUN chown -R $APPLICATION_USER /app
-
-#USER $APPLICATION_USER
 
 COPY --from=0 /build/build/libs/api-0.0.1.jar  /app/api.jar
 

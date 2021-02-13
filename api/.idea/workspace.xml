@@ -2,17 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bd716662-c327-479f-87bb-cde1c09d86d6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/model/model.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/catalog/CatalogStore.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/k8s/K8sClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/K8sClient.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MetadataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/MetadataSource.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/ApplicationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/ApplicationTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/MetadataSourceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/MetadataSourceTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/catalog/CatalogStore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/catalog/CatalogStore.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/k8s/K8sClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routing/Queue.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/routing/Queue.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nginx.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/yarn.lock" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,8 +45,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
-        <option value="Kotlin File" />
         <option value="Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -56,6 +60,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />

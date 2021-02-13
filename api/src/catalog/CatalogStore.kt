@@ -1,5 +1,6 @@
 package catalog
 
+import K8sClient
 import MetadataSource
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.lettuce.core.RedisClient
@@ -27,8 +28,9 @@ class JSONCodec : RedisCodec<String, Any> {
     }
 }
 
-class CatalogStore(val metadataSource: MetadataSource) {
+class CatalogStore(val metadataSource: MetadataSource, val k8s : K8sClient) {
 
+//    val redisUrl = k8s.api.listNamespacedService("default", "redis")
 //    val client = RedisClient.create("redis://password@localhost:6379/0")
 //    val connection : StatefulRedisConnection<String, String> = client.connect()
 //    val syncCommands : RedisCommands<String, String> = connection.sync()
@@ -39,12 +41,10 @@ class CatalogStore(val metadataSource: MetadataSource) {
 //
 //        syncCommands.get(tmdb + tmdbId)
 //
-//        metadataSource
-//
 //        syncCommands.set("key", "Hello, Redis!");
 //
 //    }
-//
+
     fun close() {
 //        connection.close()
 //        client.shutdown()

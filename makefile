@@ -1,6 +1,5 @@
 run: 
 	gradle build
-	docker-compose up --build
 
 deploy:
 	chmod 400 vestly.pem
@@ -11,5 +10,17 @@ deploy:
 login:
 	ssh -i "vestly.pem" ec2-user@ec2-18-236-70-145.us-west-2.compute.amazonaws.com
 
-tester:
-	docker stack deploy --compose-file docker-compose.yml --orchestrator kubernetes bingematch
+build: build_ui build_api
+	kubectl apply -f deploy/
+
+build_ui:
+	cd ui &&\
+	docker build -t bingematch-ui . &&\
+	docker tag  bingematch-ui:latest 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-ui:latest &&\
+	docker push ui/Dockerfile 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-ui:latest
+
+build_api:
+	cd api
+	docker build -t bingematch-api .
+	docker tag bingematch-api:latest 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:latest
+	docker push 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:latest
