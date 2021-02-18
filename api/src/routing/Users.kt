@@ -1,11 +1,6 @@
 package routing
 
-import UserWToken
 import auth.JwtConfig
-import etc.Login
-import etc.Register
-import etc.UpdateUser
-import etc.User
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.http.*
@@ -15,6 +10,7 @@ import io.ktor.routing.*
 import principalNoMatch
 import store.UserAlreadyExists
 import store.UserStore
+import user.User
 
 fun Routing.user(userStore : UserStore) {
 
@@ -24,7 +20,7 @@ fun Routing.user(userStore : UserStore) {
          * etc.Login user
          */
         post("/login") {
-            val credentials = call.receive<Login>()
+            val credentials = call.receive<User.Login>()
             val user = userStore.getUserByLogin(credentials.email, credentials.password)
 
             user
@@ -41,7 +37,7 @@ fun Routing.user(userStore : UserStore) {
          * Create new user
          */
         post("/") {
-            val newUser = call.receive<Register>()
+            val newUser = call.receive<User.Register>()
 
             userStore.getUserByEmail(newUser.email)
                 .onFailure {
@@ -49,7 +45,10 @@ fun Routing.user(userStore : UserStore) {
                     val user = userStore.createUser(newUser)
                     val token: String = JwtConfig.makeToken(user)
 
-                    call.respond(UserWToken(user, token))
+                    call.respond(User.DetailAndToken.newBuilder()
+                        .setDetail(user)
+                        .setToken(token)
+                        .build())
                 }
                 .onSuccess {
                     //user is found, no duplicates
@@ -79,10 +78,13 @@ fun Routing.user(userStore : UserStore) {
              * Update user
              */
             put("/{id}") {
-                val updateUser = call.receive<UpdateUser>()
+                val updateUser = call.receive<User.Update>()
                 val id: String = call.parameters["id"]!!
 
-                val user = User(updateUser.email, phone = updateUser.phone, id = id)
+                val user = User.Detail.newBuilder()
+                    .setEmail(updateUser.email)
+                    .setId(id)
+                    .build()
 
                 userStore.updateUser(user)
 

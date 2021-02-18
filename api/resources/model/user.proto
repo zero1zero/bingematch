@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package user;
+option java_outer_classname = "User";
+
+message Detail {
+    string id = 1;
+    string email = 2;
+}
+
+message Register {
+    string email = 1;
+    string password = 2;
+}
+
+message Update {
+    string email = 1;
+    string password = 2;
+}
+
+message Login {
+    string email = 1;
+    string password = 2;
+}
+
+message DetailAndToken {
+    string token = 1;
+    Detail detail = 2;
+}

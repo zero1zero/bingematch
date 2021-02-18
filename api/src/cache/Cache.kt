@@ -1,12 +1,12 @@
 package cache
 
-import Model
+import movie.Movie
 import java.util.*
 
 
 interface Cache {
-    fun getMovie(id : Int) : Optional<Model.Movie>
-    fun setMovie(movie: Model.Movie)
+    fun getMovie(id : Int) : Optional<Movie.Detail>
+    fun setMovie(movie: Movie.Detail)
 
     fun close()
 }

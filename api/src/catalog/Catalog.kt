@@ -1,16 +1,16 @@
 package catalog
 
-import Model
 import cache.Cache
 import com.fasterxml.jackson.databind.JsonNode
+import movie.Movie
 import java.util.*
 
-class CatalogStore(
+class Catalog(
     private val metadataSource: MetadataSource,
     private val cache : Cache) {
 
-    private fun jsonToMovie(json : JsonNode): Model.Movie {
-        val movie = Model.Movie.newBuilder()
+    private fun jsonToMovie(json : JsonNode): Movie.Detail {
+        val movie = Movie.Detail.newBuilder()
             .setId(json["id"].asInt())
             .setTitle(json["title"].asText())
             .setOverview(json["overview"].asText())
@@ -23,13 +23,13 @@ class CatalogStore(
             .setTagline(json["tagline"].asText())
             .setImdbId(json["imdb_id"].asText())
             .setStatus(parseStatus(json["status"]))
-            .setVotes(Model.Votes.newBuilder()
+            .setVotes(Movie.Votes.newBuilder()
                 .setCount(json["vote_count"].asInt())
                 .setAverage(json["vote_average"].asDouble()))
 
         json["genres"].map { genre ->
             movie.addGenres(
-                Model.Genre.newBuilder()
+                Movie.Genre.newBuilder()
                 .setName(genre["name"].asText())
                 .setId(genre["id"].asInt())
             )
@@ -43,7 +43,7 @@ class CatalogStore(
 
         json["videos"]["results"].map { video ->
             movie.addVideos(
-                Model.MovieVideo.newBuilder()
+                Movie.Video.newBuilder()
                 .setId(video["id"].asText())
                 .setLanguage(video["iso_639_1"].asText())
                 .setCountry(video["iso_3166_1"].asText())
@@ -58,13 +58,13 @@ class CatalogStore(
 
         json["images"]["posters"].map { image ->
             movie.addPosters(
-                Model.MovieImage.newBuilder()
+                Movie.Image.newBuilder()
                     .setAspectRatio(image["aspect_ratio"].asDouble())
                     .setFilePath(image["file_path"].asText())
                     .setHeight(image["height"].asInt())
                     .setWidth(image["width"].asInt())
                     .setLanguage(image["iso_639_1"].asText())
-                    .setVotes(Model.Votes.newBuilder()
+                    .setVotes(Movie.Votes.newBuilder()
                         .setAverage(image["vote_average"].asDouble())
                         .setCount(image["vote_count"].asInt()))
             )
@@ -81,19 +81,19 @@ class CatalogStore(
         return movie.build()
     }
 
-    fun parseType(type : JsonNode) : Model.MovieVideo.Type {
-        return Model.MovieVideo.Type.valueOf(
+    fun parseType(type : JsonNode) : Movie.Video.Type {
+        return Movie.Video.Type.valueOf(
             type.asText().replace(" ", "")
         )
     }
 
-    fun parseStatus(status : JsonNode) : Model.Movie.Status {
-        return Model.Movie.Status.valueOf(
+    fun parseStatus(status : JsonNode) : Movie.Detail.Status {
+        return Movie.Detail.Status.valueOf(
             status.asText().replace(" ", "")
         )
     }
 
-    fun getMovie(id : Int) : Model.Movie {
+    fun getMovie(id : Int) : Movie.Detail {
 
         var maybeMovie = cache.getMovie(id)
 
@@ -110,7 +110,7 @@ class CatalogStore(
         return maybeMovie.get()
     }
 
-    fun getPopular() : List<Model.Movie> {
+    fun getPopular() : List<Movie.Detail> {
         val json = metadataSource.tmdb.getPopular()
 
         //one page of results

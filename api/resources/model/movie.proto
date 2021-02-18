@@ -1,6 +1,9 @@
 syntax = "proto3";
 
-message Movie {
+package movie;
+option java_outer_classname = "Movie";
+
+message Detail {
     int32 id = 1;
     string title = 2;
     string overview = 3;
@@ -23,8 +26,8 @@ message Movie {
     Status status = 14;
     repeated string spokenLanguage = 15;
 
-    repeated MovieVideo videos = 16;
-    repeated MovieImage posters = 17;
+    repeated Video videos = 16;
+    repeated Image posters = 17;
 
     repeated int32 recommendations = 18;
     repeated int32 similar = 19;
@@ -51,7 +54,7 @@ message Votes {
     int32 count = 2;
 }
 
-message MovieVideo {
+message Video {
     string id = 1;
     string language = 2;
     string country = 3;
@@ -72,7 +75,7 @@ message MovieVideo {
     }
 }
 
-message MovieImage {
+message Image {
     string filePath = 1;
     double aspectRatio = 2;
     int32 height = 3;

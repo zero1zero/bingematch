@@ -3,7 +3,7 @@ package auth
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import etc.User
+import user.User
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -22,7 +22,7 @@ object JwtConfig {
     /**
      * Produce a token for this combination of etc.User and Account
      */
-    fun makeToken(user: User): String = JWT.create()
+    fun makeToken(user: User.Detail): String = JWT.create()
         .withSubject("Authentication")
         .withIssuer(issuer)
         .withClaim("id", user.id)

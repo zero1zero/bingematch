@@ -1,35 +1,27 @@
 package store
 
 import com.google.common.base.Joiner
-import etc.ListItem
+import movie.Queue
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.*
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
-class ListStore(private val ddb : DynamoDbClient) {
+class QueueStore(private val ddb : DynamoDbClient) {
 
     private val table = "list"
 
-    fun addToList(userId : String, items: List<ListItem>) {
+    fun addToList(userId : String, items: List<Queue.Item>) {
         val allOperations = items.map { item ->
             val attrs = mapOf(
                 "id" to AttributeValue.builder()
                     .s(item.id)
                     .build(),
                 "userState" to AttributeValue.builder()
-                    .s(Joiner.on("-").join(userId, item.state.ord))
+                    .s(Joiner.on("-").join(userId, item.state.number))
                     .build(),
                 "tmdbId" to AttributeValue.builder()
-                    .n(item.tmdbId.toString())
+                    .n(item.tmdbid.toString())
                     .build(),
-                "created" to AttributeValue.builder()
-                    .s(item.created.format(DateTimeFormatter.ISO_DATE))
-                    .build(),
-                "updated" to AttributeValue.builder()
-                    .s(item.updated.format(DateTimeFormatter.ISO_DATE))
-                    .build()
             )
 
             WriteRequest.builder()
@@ -44,10 +36,10 @@ class ListStore(private val ddb : DynamoDbClient) {
         ddb.batchWriteItem(batch)
     }
 
-    fun getUserList(userId : String, state : ListItem.State) : List<ListItem> {
+    fun getUserList(userId : String, state : Queue.Item.State) : List<Queue.Item> {
         val attrs = mapOf(
             ":userState" to AttributeValue.builder()
-                .s(Joiner.on("-").join(userId, state.ord))
+                .s(Joiner.on("-").join(userId, state.number))
                 .build()
         )
 
@@ -63,17 +55,15 @@ class ListStore(private val ddb : DynamoDbClient) {
         return response.items()
             .map { json ->
                 val stateSplit = json["userState"]!!.s().split('-')[1]
-                ListItem(
-                    json["tmdbId"]!!.n().toInt(),
-                    ListItem.State.fromInt(stateSplit.toInt()),
-                    LocalDate.parse(json["created"]!!.s()),
-                    LocalDate.parse(json["updated"]!!.s()),
-                    json["id"]!!.s()
-                )
+                Queue.Item.newBuilder()
+                    .setTmdbid(json["tmdbId"]!!.n().toInt())
+                    .setState(Queue.Item.State.forNumber(stateSplit.toInt()))
+                    .setId(json["id"]!!.s())
+                    .build()
             }.toList()
     }
 
-    fun deleteListItems(ids : List<String>) {
+    fun deleteQueueItems(ids : List<String>) {
         val allOperations = ids.map { item ->
             val attrs = mapOf(
                 "id" to AttributeValue.builder()

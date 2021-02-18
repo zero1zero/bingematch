@@ -21,11 +21,17 @@ spec:
             - containerPort: 8080
               protocol: TCP
           resources: {}
+          startupProbe:
+            httpGet:
+              path: /test
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /ready
               port: 8080
-            initialDelaySeconds: 5
+            failureThreshold: 5
             periodSeconds: 10
           livenessProbe:
             tcpSocket:

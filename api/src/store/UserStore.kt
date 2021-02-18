@@ -1,10 +1,9 @@
 package store
 
 import etc.PasswordUtil
-import etc.Register
-import etc.User
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.*
+import user.User
 import java.util.*
 
 class UserStore(private val passwordUtil: PasswordUtil,
@@ -12,7 +11,7 @@ class UserStore(private val passwordUtil: PasswordUtil,
 
     private val table = "users"
 
-    fun getUserByLogin(email: String, password: String): Result<User> {
+    fun getUserByLogin(email: String, password: String): Result<User.Detail> {
 
         val attrs = mapOf(
             ":email" to AttributeValue.builder()
@@ -41,10 +40,15 @@ class UserStore(private val passwordUtil: PasswordUtil,
             return Result.failure(RuntimeException("password hash mismatch"))
         }
 
-        return Result.success(User(item["email"]!!.s(), id = item["id"]!!.s()))
+        return Result.success(
+            User.Detail.newBuilder()
+                .setEmail(item["email"]!!.s())
+                .setId(item["id"]!!.s())
+                .build()
+        )
     }
 
-    fun getUserByEmail(email: String): Result<User> {
+    fun getUserByEmail(email: String): Result<User.Detail> {
 
         val attrs = mapOf(
             ":email" to AttributeValue.builder()
@@ -68,10 +72,15 @@ class UserStore(private val passwordUtil: PasswordUtil,
 
         val item = response.items()[0]
 
-        return Result.success(User(item["email"]!!.s(), id = item["id"]!!.s()))
+        return Result.success(
+            User.Detail.newBuilder()
+                .setEmail(item["email"]!!.s())
+                .setId(item["id"]!!.s())
+                .build()
+        )
     }
 
-    fun getUser(id: String): Result<User> {
+    fun getUser(id: String): Result<User.Detail> {
         val attrs = mapOf(
             "id" to AttributeValue.builder()
                 .s(id)
@@ -93,16 +102,17 @@ class UserStore(private val passwordUtil: PasswordUtil,
         val item = response.item()
 
         return Result.success(
-            User(
-                email = item["email"]!!.s(),
-                phone = item["phone"]?.s(),
-                id = item["id"]!!.s()
-            )
+            User.Detail.newBuilder()
+                .setEmail(item["email"]!!.s())
+                .setId(item["id"]!!.s())
+                .build()
         )
     }
 
-    fun createUser(signUp: Register): User {
-        val user = User(signUp.email)
+    fun createUser(signUp: User.Register): User.Detail {
+        val user = User.Detail.newBuilder()
+            .setEmail(signUp.email)
+            .build()
 
         val attrs = mapOf(
             "id" to AttributeValue.builder()
@@ -152,7 +162,7 @@ class UserStore(private val passwordUtil: PasswordUtil,
         ddb.updateItem(request)
     }
 
-    fun updateUser(user: User): User {
+    fun updateUser(user: User.Detail): User.Detail {
         val key = mapOf(
             "id" to AttributeValue.builder()
                 .s(user.id)
@@ -166,13 +176,6 @@ class UserStore(private val passwordUtil: PasswordUtil,
                         .build()
                 )
                 .build(),
-            "phone" to AttributeValueUpdate.builder()
-                .value(
-                    AttributeValue.builder()
-                        .s(user.phone)
-                        .build()
-                )
-                .build()
         )
 
         val request = UpdateItemRequest.builder()

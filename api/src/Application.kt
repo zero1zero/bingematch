@@ -1,9 +1,8 @@
 import auth.JwtConfig
 import cache.Cache
 import cache.RedisCache
-import catalog.CatalogStore
+import catalog.Catalog
 import catalog.MetadataSource
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
@@ -11,7 +10,6 @@ import com.fasterxml.jackson.databind.exc.ValueInstantiationException
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import etc.PasswordUtil
-import etc.User
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
@@ -41,7 +39,7 @@ fun Application.module() {
     val metadata = MetadataSource()
 
     val cache : Cache = RedisCache()
-    val catalog = CatalogStore(metadata, cache)
+    val catalog = Catalog(metadata, cache)
 
     environment.monitor.subscribe(ApplicationStarted){
         println("LET'S ROCKKKKK")
@@ -111,11 +109,16 @@ fun Application.module() {
     routing {
         route("/ready") {
             get("/") {
+                call.respond(HttpStatusCode.Accepted)
+            }
+        }
+        route("/test") {
+            get("/") {
 
                 val listener = SummaryGeneratingListener()
                 val request = LauncherDiscoveryRequestBuilder.request()
                     .selectors(selectPackage("test"))
-                    .build();
+                    .build()
                 val launcher = LauncherFactory.create()
                 launcher.discover(request)
                 launcher.registerTestExecutionListeners(listener);
@@ -147,11 +150,6 @@ suspend fun principalNoMatch(userId: String, call: ApplicationCall): Boolean {
 
     return false
 }
-
-data class UserWToken(
-    @JsonProperty("user") val user: User,
-    @JsonProperty("token") val token: String
-)
 
 val objectMapper = ObjectMapper()
 

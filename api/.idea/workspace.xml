@@ -5,55 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd716662-c327-479f-87bb-cde1c09d86d6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cache/Cache.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cache/RedisCache.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/catalog/Catalog.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/RedisCacheTest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/cache/InMemoryCache.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/catalog/CatalogStoreTest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testResources/tmdb_movie_full_1.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testResources/tmdb_movie_popular_full_1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/model/queue.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/model/user.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/etc/ID.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/model/model.proto" beforeDir="false" afterPath="$PROJECT_DIR$/resources/model/model.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/model/model.proto" beforeDir="false" afterPath="$PROJECT_DIR$/resources/model/movie.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/JsonMarshalling.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/K8sClient.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MetadataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/catalog/MetadataSource.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/etc/Model.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PasswordUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/etc/PasswordUtil.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/auth/JwtConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/JwtConfig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/catalog/CatalogStore.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cache/Cache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/cache/Cache.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cache/RedisCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/cache/RedisCache.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/catalog/Catalog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/catalog/Catalog.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/etc/Model.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routing/Queue.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/routing/Queue.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routing/Users.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/routing/Users.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/ListStore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/ListStore.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/ListStore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/QueueStore.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/store/UserStore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/UserStore.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/ApplicationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/ApplicationTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/MetadataSourceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/MetadataSourceTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/PasswordUtilTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/PasswordUtilTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/store/ListStoreTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/store/ListStoreTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testResources/global_quote_response.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../build.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/ApplicationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/ApplicationTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/cache/InMemoryCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/cache/InMemoryCache.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/catalog/CatalogStoreTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/catalog/CatalogTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/store/ListStoreTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/store/QueueStoreTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../deploy/api-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../deploy/api-deployment.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../deploy/nginx-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../deploy/nginx-deployment.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../deploy/redis-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../deploy/redis-deployment.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,7 +132,7 @@
       <recent name="store" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CatalogStoreTest.getMovie">
+  <component name="RunManager" selected="JUnit.QueueStoreTest">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
@@ -197,7 +169,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CatalogStoreTest.getMovie" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CatalogTest.getMovie" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="api.test" />
       <extension name="coverage">
         <pattern>
@@ -206,7 +178,7 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="catalog" />
-      <option name="MAIN_CLASS_NAME" value="catalog.CatalogStoreTest" />
+      <option name="MAIN_CLASS_NAME" value="catalog.CatalogTest" />
       <option name="METHOD_NAME" value="getMovie" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -231,7 +203,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ListStoreTest.putAndGetItems" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="QueueStoreTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="api.test" />
       <extension name="coverage">
         <pattern>
@@ -240,19 +212,25 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="store" />
-      <option name="MAIN_CLASS_NAME" value="store.ListStoreTest" />
-      <option name="METHOD_NAME" value="putAndGetItems" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="store.QueueStoreTest" />
+      <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PasswordUtilTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="QueueStoreTest.putAndGetItems" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="api.test" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="PasswordUtilTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="store.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="store" />
+      <option name="MAIN_CLASS_NAME" value="store.QueueStoreTest" />
+      <option name="METHOD_NAME" value="putAndGetItems" />
+      <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -276,11 +254,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.CatalogStoreTest.getMovie" />
+        <item itemvalue="JUnit.QueueStoreTest" />
+        <item itemvalue="JUnit.CatalogTest.getMovie" />
         <item itemvalue="JUnit.InMemoryCacheTest.mem" />
-        <item itemvalue="JUnit.ListStoreTest.putAndGetItems" />
+        <item itemvalue="JUnit.QueueStoreTest.putAndGetItems" />
         <item itemvalue="JUnit.ApplicationTest" />
-        <item itemvalue="JUnit.PasswordUtilTest" />
       </list>
     </recent_temporary>
   </component>

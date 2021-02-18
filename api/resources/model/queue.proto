@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package movie;
+option java_outer_classname = "Queue";
+
+message List {
+    repeated Item items = 1;
+}
+
+message Item {
+
+    string id = 1;
+    int32 tmdbid = 2;
+    State state = 3;
+
+    enum State {
+        Queued = 0;
+        Like = 1;
+        Dislike = 2;
+        Love = 3;
+        Hate = 4;
+        Skipped = 5;
+    }
+}
