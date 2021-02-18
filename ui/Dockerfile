@@ -4,14 +4,11 @@ WORKDIR /build
 
 COPY . .
 
+RUN npm install --silent -g expo-cli
 RUN yarn install
+RUN expo build:web
 
-FROM node:current-alpine3.13 AS run
-WORKDIR /app
-RUN yarn install
-RUN npm install --silent
+WORKDIR /build/web-build
 
-COPY --from=0 /build .
-
-
-
+RUN yarn global add serve
+CMD ["serve", "-s", "."]

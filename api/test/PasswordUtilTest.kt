@@ -1,5 +1,6 @@
-import org.junit.jupiter.api.Assertions.assertTrue
-import kotlin.test.Test
+import etc.PasswordUtil
+import org.junit.Assert.assertTrue
+import org.junit.Test
 
 internal class PasswordUtilTest {
 

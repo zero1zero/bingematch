@@ -1,7 +1,98 @@
 syntax = "proto3";
 
-message Content {
-  string query = 1;
-  int32 page_number = 2;
-  int32 result_per_page = 3;
+message Movie {
+    int32 id = 1;
+    string title = 2;
+    string overview = 3;
+    repeated Genre genres = 4;
+
+    string originalLanguage = 5;
+    string originalTitle = 6;
+
+    string posterPath = 7;
+    string backdropPath = 8;
+
+    Votes votes = 9;
+
+    string releaseDate = 10;
+
+    int32 popularity = 11;
+
+    string tagline = 12;
+    string imdbId = 13;
+    Status status = 14;
+    repeated string spokenLanguage = 15;
+
+    repeated MovieVideo videos = 16;
+    repeated MovieImage posters = 17;
+
+    repeated int32 recommendations = 18;
+    repeated int32 similar = 19;
+
+    repeated Watch watch = 20;
+
+    enum Status {
+        Rumored = 0;
+        Planned = 1;
+        InProduction = 2;
+        PostProduction = 3;
+        Released = 4;
+        Canceled = 5;
+    }
+}
+
+message Genre {
+    int32 id = 1;
+    string name = 2;
+}
+
+message Votes {
+    double average = 1;
+    int32 count = 2;
+}
+
+message MovieVideo {
+    string id = 1;
+    string language = 2;
+    string country = 3;
+
+    string key = 4;
+    string name = 5;
+    string site = 6;
+    int32 size = 7;
+    Type type = 8;
+
+    enum Type {
+        Trailer = 0;
+        Teaser = 1;
+        Clip = 2;
+        Featurette = 3;
+        BehindtheScenes = 4;
+        Bloopers = 5;
+    }
+}
+
+message MovieImage {
+    string filePath = 1;
+    double aspectRatio = 2;
+    int32 height = 3;
+    int32 width = 4;
+    Votes votes = 5;
+
+    string language = 7;
+}
+
+message Watch {
+    string language = 1;
+    string link = 2;
+
+    repeated Provider rent = 3;
+    repeated Provider buy = 4;
+
+    message Provider {
+        int32 id = 1;
+        int32 priority = 2;
+        string logoPath = 3;
+        string name = 4;
+    }
 }

@@ -1,9 +1,9 @@
 package auth
 
-import User
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
+import etc.User
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -20,7 +20,7 @@ object JwtConfig {
         .build()
 
     /**
-     * Produce a token for this combination of User and Account
+     * Produce a token for this combination of etc.User and Account
      */
     fun makeToken(user: User): String = JWT.create()
         .withSubject("Authentication")

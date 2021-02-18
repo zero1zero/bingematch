@@ -14,12 +14,24 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - image: '990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:latest'
+        - image: 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:VERSION
           name: api
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
               protocol: TCP
           resources: {}
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
 
 ---
 

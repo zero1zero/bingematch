@@ -1,18 +1,10 @@
 package store
 
-import PasswordUtil
-import Register
-import User
+import etc.PasswordUtil
+import etc.Register
+import etc.User
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue
-import software.amazon.awssdk.services.dynamodb.model.AttributeValueUpdate
-import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest
-import software.amazon.awssdk.services.dynamodb.model.GetItemRequest
-import software.amazon.awssdk.services.dynamodb.model.GetItemResponse
-import software.amazon.awssdk.services.dynamodb.model.PutItemRequest
-import software.amazon.awssdk.services.dynamodb.model.QueryRequest
-import software.amazon.awssdk.services.dynamodb.model.QueryResponse
-import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest
+import software.amazon.awssdk.services.dynamodb.model.*
 import java.util.*
 
 class UserStore(private val passwordUtil: PasswordUtil,

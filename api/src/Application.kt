@@ -1,5 +1,8 @@
 import auth.JwtConfig
+import cache.Cache
+import cache.RedisCache
 import catalog.CatalogStore
+import catalog.MetadataSource
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -7,27 +10,24 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import etc.PasswordUtil
+import etc.User
 import io.ktor.application.*
-import io.ktor.auth.Authentication
-import io.ktor.auth.UserIdPrincipal
-import io.ktor.auth.jwt.jwt
-import io.ktor.auth.principal
-import io.ktor.features.CORS
-import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.StatusPages
-import io.ktor.http.ContentType
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import io.ktor.jackson.JacksonConverter
-import io.ktor.response.respond
-import io.ktor.routing.Routing
-import io.ktor.routing.get
-import io.ktor.routing.route
-import io.ktor.routing.routing
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.jackson.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage
+import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
+import org.junit.platform.launcher.core.LauncherFactory
+import org.junit.platform.launcher.listeners.SummaryGeneratingListener
 import routing.user
 import store.AWSUtil
 import store.UserStore
+import java.io.PrintWriter
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -35,19 +35,20 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module() {
 
     //dependencies
-    val client = K8sClient()
     val passwordUtil = PasswordUtil()
     val awsUtil = AWSUtil()
     val storage = UserStore(passwordUtil, awsUtil.ddb)
     val metadata = MetadataSource()
-    val catalog = CatalogStore(metadata, client)
+
+    val cache : Cache = RedisCache()
+    val catalog = CatalogStore(metadata, cache)
 
     environment.monitor.subscribe(ApplicationStarted){
         println("LET'S ROCKKKKK")
     }
     environment.monitor.subscribe(ApplicationStopped){
         println("Game over, man")
-        catalog.close()
+        cache.close()
     }
 
     install(Authentication) {
@@ -108,15 +109,23 @@ fun Application.module() {
     }
 
     routing {
-        route("/up") {
-            get("/") {
-                call.respond(HttpStatusCode.Accepted)
-            }
-        }
-
         route("/ready") {
             get("/") {
-                //check dependencies
+
+                val listener = SummaryGeneratingListener()
+                val request = LauncherDiscoveryRequestBuilder.request()
+                    .selectors(selectPackage("test"))
+                    .build();
+                val launcher = LauncherFactory.create()
+                launcher.discover(request)
+                launcher.registerTestExecutionListeners(listener);
+                launcher.execute(request);
+
+                val summary = listener.summary
+
+                summary.printTo(PrintWriter(System.out))
+
+                //all good!
                 call.respond(HttpStatusCode.Accepted)
             }
         }

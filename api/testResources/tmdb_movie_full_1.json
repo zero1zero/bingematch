@@ -1,0 +1,1763 @@
+{
+  "adult" : false,
+  "backdrop_path" : "/srYya1ZlI97Au4jUYAktDe3avyA.jpg",
+  "belongs_to_collection" : {
+    "id" : 468552,
+    "name" : "Wonder Woman Collection",
+    "poster_path" : "/8AQRfTuTHeFTddZN4IUAqprN8Od.jpg",
+    "backdrop_path" : "/n9KlvCOBFDmSyw3BgNrkUkxMFva.jpg"
+  },
+  "budget" : 200000000,
+  "genres" : [ {
+    "id" : 14,
+    "name" : "Fantasy"
+  }, {
+    "id" : 28,
+    "name" : "Action"
+  }, {
+    "id" : 12,
+    "name" : "Adventure"
+  } ],
+  "homepage" : "https://www.warnerbros.com/movies/wonder-woman-1984",
+  "id" : 464052,
+  "imdb_id" : "tt7126948",
+  "original_language" : "en",
+  "original_title" : "Wonder Woman 1984",
+  "overview" : "Wonder Woman comes into conflict with the Soviet Union during the Cold War in the 1980s and finds a formidable foe by the name of the Cheetah.",
+  "popularity" : 2039.461,
+  "poster_path" : "/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg",
+  "production_companies" : [ {
+    "id" : 9993,
+    "logo_path" : "/2Tc1P3Ac8M479naPp1kYT3izLS5.png",
+    "name" : "DC Entertainment",
+    "origin_country" : "US"
+  }, {
+    "id" : 174,
+    "logo_path" : "/ky0xOc5OrhzkZ1N6KyUxacfQsCk.png",
+    "name" : "Warner Bros. Pictures",
+    "origin_country" : "US"
+  }, {
+    "id" : 114152,
+    "logo_path" : null,
+    "name" : "The Stone Quarry",
+    "origin_country" : "US"
+  }, {
+    "id" : 128064,
+    "logo_path" : "/13F3Jf7EFAcREU0xzZqJnVnyGXu.png",
+    "name" : "DC Films",
+    "origin_country" : "US"
+  }, {
+    "id" : 507,
+    "logo_path" : "/z7H707qUWigbjHnJDMfj6QITEpb.png",
+    "name" : "Atlas Entertainment",
+    "origin_country" : "US"
+  }, {
+    "id" : 429,
+    "logo_path" : "/2Tc1P3Ac8M479naPp1kYT3izLS5.png",
+    "name" : "DC Comics",
+    "origin_country" : "US"
+  } ],
+  "production_countries" : [ {
+    "iso_3166_1" : "US",
+    "name" : "United States of America"
+  } ],
+  "release_date" : "2020-12-16",
+  "revenue" : 154600000,
+  "runtime" : 152,
+  "spoken_languages" : [ {
+    "english_name" : "English",
+    "iso_639_1" : "en",
+    "name" : "English"
+  } ],
+  "status" : "Released",
+  "tagline" : "A new era of wonder begins.",
+  "title" : "Wonder Woman 1984",
+  "video" : false,
+  "vote_average" : 6.9,
+  "vote_count" : 3642,
+  "videos" : {
+    "results" : [ {
+      "id" : "5ded686932489b0016c2760a",
+      "iso_639_1" : "en",
+      "iso_3166_1" : "US",
+      "key" : "sfM7_JLk-84",
+      "name" : "Official Trailer",
+      "site" : "YouTube",
+      "size" : 1080,
+      "type" : "Trailer"
+    }, {
+      "id" : "5f41589c028f1400315a70b8",
+      "iso_639_1" : "en",
+      "iso_3166_1" : "US",
+      "key" : "XW2E2Fnh52w",
+      "name" : "Wonder Woman 1984 - Official Main Trailer",
+      "site" : "YouTube",
+      "size" : 1080,
+      "type" : "Trailer"
+    }, {
+      "id" : "5f45fe1dcee4810036a9893d",
+      "iso_639_1" : "en",
+      "iso_3166_1" : "US",
+      "key" : "E5Pj21yLknQ",
+      "name" : "Wonder Woman 1984 - Official Main Trailer (Subtitled)",
+      "site" : "YouTube",
+      "size" : 1080,
+      "type" : "Trailer"
+    }, {
+      "id" : "5fd92a74226c56003e3dd6eb",
+      "iso_639_1" : "en",
+      "iso_3166_1" : "US",
+      "key" : "I_MG6fklovc",
+      "name" : "WW84 | Opening Scene",
+      "site" : "YouTube",
+      "size" : 1080,
+      "type" : "Clip"
+    } ]
+  },
+  "images" : {
+    "backdrops" : [ {
+      "aspect_ratio" : 1.777777777777778,
+      "file_path" : "/18wXXGjhhM7QiGiey6q7B9Xx473.jpg",
+      "height" : 720,
+      "iso_639_1" : "en",
+      "vote_average" : 5.312,
+      "vote_count" : 1,
+      "width" : 1280
+    }, {
+      "aspect_ratio" : 1.777777777777778,
+      "file_path" : "/2h1hgHSu0Nz9B0w0ekOmHHh8ajU.jpg",
+      "height" : 1080,
+      "iso_639_1" : "en",
+      "vote_average" : 0.0,
+      "vote_count" : 0,
+      "width" : 1920
+    }, {
+      "aspect_ratio" : 1.777777777777778,
+      "file_path" : "/lqzv1tdOhpUsB2lWlHuLqCYjtRp.jpg",
+      "height" : 2160,
+      "iso_639_1" : "en",
+      "vote_average" : 0.0,
+      "vote_count" : 0,
+      "width" : 3840
+    } ],
+    "posters" : [ {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 6.182,
+      "vote_count" : 63,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6669921875,
+      "file_path" : "/9WxMYf8obcS8O8mv6W0PcoQdzcm.jpg",
+      "height" : 2048,
+      "iso_639_1" : "en",
+      "vote_average" : 5.634,
+      "vote_count" : 14,
+      "width" : 1366
+    }, {
+      "aspect_ratio" : 0.6748046875,
+      "file_path" : "/zsLi3dfp7R7uysW1x0LMXF8WcGV.jpg",
+      "height" : 2048,
+      "iso_639_1" : "en",
+      "vote_average" : 5.508,
+      "vote_count" : 34,
+      "width" : 1382
+    }, {
+      "aspect_ratio" : 0.666,
+      "file_path" : "/df8kJTrVImRiWz2G1WiFiVxwBfn.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.46,
+      "vote_count" : 25,
+      "width" : 1998
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/6wjoI3LO0WZHDQdfGlq4de0FHEj.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.392,
+      "vote_count" : 8,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.7142857142857143,
+      "file_path" : "/hBq7WTCWQlPIjpMBL2Mkz8dwNyS.jpg",
+      "height" : 2100,
+      "iso_639_1" : "en",
+      "vote_average" : 5.384,
+      "vote_count" : 2,
+      "width" : 1500
+    }, {
+      "aspect_ratio" : 0.6669921875,
+      "file_path" : "/di1bCAfGoJ0BzNEavLsPyxQ2AaB.jpg",
+      "height" : 2048,
+      "iso_639_1" : "en",
+      "vote_average" : 5.368,
+      "vote_count" : 33,
+      "width" : 1366
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/lNVHB85FUDZqLzvug3k6FA07RIr.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.36,
+      "vote_count" : 27,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/5W8QfnI4eKKJQwGi2tdkkizemJj.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.326,
+      "vote_count" : 7,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/djpjjR2qt1g7CwACKuxNWpQSf8Q.jpg",
+      "height" : 1350,
+      "iso_639_1" : "en",
+      "vote_average" : 5.318,
+      "vote_count" : 3,
+      "width" : 900
+    }, {
+      "aspect_ratio" : 0.7173601147776184,
+      "file_path" : "/tGKDb2USVmj6GDq2KC01UH121lO.jpg",
+      "height" : 1394,
+      "iso_639_1" : "en",
+      "vote_average" : 5.312,
+      "vote_count" : 1,
+      "width" : 1000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/vnUHdKvRR0AjdpXVy2bPc4yiucI.jpg",
+      "height" : 1500,
+      "iso_639_1" : "en",
+      "vote_average" : 5.282,
+      "vote_count" : 14,
+      "width" : 1000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/n4LOUvyygvxtGRXWWGggGYuM5LH.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.258,
+      "vote_count" : 6,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/pT2cxw776c4DPiFZEy6DFREV7fs.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.25,
+      "vote_count" : 23,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/fzlqe3E3uBDlCTZKid2v8FpeER2.jpg",
+      "height" : 1500,
+      "iso_639_1" : "en",
+      "vote_average" : 5.246,
+      "vote_count" : 2,
+      "width" : 1000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/6ULkxXCXDnL487a9BLQ3Kd4mufj.jpg",
+      "height" : 1500,
+      "iso_639_1" : "en",
+      "vote_average" : 5.246,
+      "vote_count" : 2,
+      "width" : 1000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/dVyULReVahzM7V6cJuhs2exgfAf.jpg",
+      "height" : 1500,
+      "iso_639_1" : "en",
+      "vote_average" : 5.246,
+      "vote_count" : 2,
+      "width" : 1000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/ruvlcjK8ZhFckfNh4ihrt4LuAIC.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.246,
+      "vote_count" : 2,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/tNgp6lXiiHZ18wWFg37BNeX3RCx.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.246,
+      "vote_count" : 2,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/Ak25l8tyKn6ucKRrhHGLnUQOM9I.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.246,
+      "vote_count" : 2,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.666875,
+      "file_path" : "/6z3WPb6SZSLScbctwU9uqns3s1e.jpg",
+      "height" : 1600,
+      "iso_639_1" : "en",
+      "vote_average" : 5.238,
+      "vote_count" : 19,
+      "width" : 1067
+    }, {
+      "aspect_ratio" : 0.6747638326585695,
+      "file_path" : "/iesh3R6gfgbe9kMB7GMAjCTHjf1.jpg",
+      "height" : 2964,
+      "iso_639_1" : "en",
+      "vote_average" : 5.238,
+      "vote_count" : 19,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6669921875,
+      "file_path" : "/ms7955SgEYRWTUzhpGRLIJmB1nf.jpg",
+      "height" : 2048,
+      "iso_639_1" : "en",
+      "vote_average" : 5.22,
+      "vote_count" : 13,
+      "width" : 1366
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/tOgs6u618eP731yTMLaS2dBA0Ag.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.206,
+      "vote_count" : 9,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/cLzTFW0X0wSZgsFRn9WrDr9unFg.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.198,
+      "vote_count" : 7,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/3Z5qD7ujVuz40im0UqBwFLDGLGA.jpg",
+      "height" : 1500,
+      "iso_639_1" : "en",
+      "vote_average" : 5.19,
+      "vote_count" : 5,
+      "width" : 1000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/l0vV625zbqbAP6qZQOdyZmSzlbB.jpg",
+      "height" : 1800,
+      "iso_639_1" : "en",
+      "vote_average" : 5.172,
+      "vote_count" : 1,
+      "width" : 1200
+    }, {
+      "aspect_ratio" : 0.6669019054340155,
+      "file_path" : "/8xh4q4c5jLi4H9zViBB8OL9vWHb.jpg",
+      "height" : 1417,
+      "iso_639_1" : "en",
+      "vote_average" : 5.172,
+      "vote_count" : 1,
+      "width" : 945
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/cAWFrpseRp0WfBvwoiaYnJr4lz.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 5.118,
+      "vote_count" : 4,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/kVncByhW16reQgvmXEjWfrMZDO9.jpg",
+      "height" : 1080,
+      "iso_639_1" : "en",
+      "vote_average" : 5.118,
+      "vote_count" : 4,
+      "width" : 720
+    }, {
+      "aspect_ratio" : 0.6788025889967637,
+      "file_path" : "/sfNt2nXjqMKgLBggr8V0wPgpMVg.jpg",
+      "height" : 1236,
+      "iso_639_1" : "en",
+      "vote_average" : 5.106,
+      "vote_count" : 2,
+      "width" : 839
+    }, {
+      "aspect_ratio" : 0.6788025889967637,
+      "file_path" : "/bhD4LyrmuhU5xAMThiptKlrFJlj.jpg",
+      "height" : 1236,
+      "iso_639_1" : "en",
+      "vote_average" : 5.106,
+      "vote_count" : 2,
+      "width" : 839
+    }, {
+      "aspect_ratio" : 0.6749915626054674,
+      "file_path" : "/ix9sVMdzdWRZZbwfq9KRTXZbHJP.jpg",
+      "height" : 2963,
+      "iso_639_1" : "en",
+      "vote_average" : 5.106,
+      "vote_count" : 2,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.7048387096774194,
+      "file_path" : "/7yEoSjP8sPXuD4YcoRc5IGTkqj4.jpg",
+      "height" : 2480,
+      "iso_639_1" : "en",
+      "vote_average" : 5.08,
+      "vote_count" : 9,
+      "width" : 1748
+    }, {
+      "aspect_ratio" : 0.6669921875,
+      "file_path" : "/yJXqWqS5qfdvoxEoPqLdgKNT8Up.jpg",
+      "height" : 2048,
+      "iso_639_1" : "en",
+      "vote_average" : 5.056,
+      "vote_count" : 5,
+      "width" : 1366
+    }, {
+      "aspect_ratio" : 0.6668564920273349,
+      "file_path" : "/gg8k8bzpbfbDzHAmU7m1Wptsx9Z.jpg",
+      "height" : 1756,
+      "iso_639_1" : "en",
+      "vote_average" : 5.056,
+      "vote_count" : 5,
+      "width" : 1171
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/iurbE8nt3xZZ1RYrKh33vM8RMV5.jpg",
+      "height" : 1500,
+      "iso_639_1" : "en",
+      "vote_average" : 5.056,
+      "vote_count" : 5,
+      "width" : 1000
+    }, {
+      "aspect_ratio" : 0.6746666666666666,
+      "file_path" : "/ytLSDyXfHrVoC8H4fECUDg27VmN.jpg",
+      "height" : 1500,
+      "iso_639_1" : "en",
+      "vote_average" : 5.044,
+      "vote_count" : 3,
+      "width" : 1012
+    }, {
+      "aspect_ratio" : 0.6748046875,
+      "file_path" : "/5exHSjo21C1nEqt17F2UYoozAyg.jpg",
+      "height" : 2048,
+      "iso_639_1" : "en",
+      "vote_average" : 5.01,
+      "vote_count" : 8,
+      "width" : 1382
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/6Bhq34qGEN20qeWR5lwh7OkX3G.jpg",
+      "height" : 3000,
+      "iso_639_1" : "en",
+      "vote_average" : 4.996,
+      "vote_count" : 6,
+      "width" : 2000
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/pajGgyGueYKwDYOx4U9RLpYYvtM.jpg",
+      "height" : 1119,
+      "iso_639_1" : "en",
+      "vote_average" : 4.982,
+      "vote_count" : 13,
+      "width" : 746
+    }, {
+      "aspect_ratio" : 0.6748046875,
+      "file_path" : "/dqLJXusNpdQbls1NqnUCqxxHhH6.jpg",
+      "height" : 2048,
+      "iso_639_1" : "en",
+      "vote_average" : 4.968,
+      "vote_count" : 11,
+      "width" : 1382
+    }, {
+      "aspect_ratio" : 0.675,
+      "file_path" : "/2aolwZyGwYYEaJOLdNVcYW919NI.jpg",
+      "height" : 1200,
+      "iso_639_1" : "en",
+      "vote_average" : 4.954,
+      "vote_count" : 9,
+      "width" : 810
+    }, {
+      "aspect_ratio" : 0.6798866855524079,
+      "file_path" : "/vZxMIJOSwjnkYopfTFPW2wXoop9.jpg",
+      "height" : 1059,
+      "iso_639_1" : "en",
+      "vote_average" : 4.922,
+      "vote_count" : 5,
+      "width" : 720
+    }, {
+      "aspect_ratio" : 0.6318449873631002,
+      "file_path" : "/lO7lCwg75ZlwdUF7ddlK4FpuExa.jpg",
+      "height" : 1187,
+      "iso_639_1" : "en",
+      "vote_average" : 4.724,
+      "vote_count" : 11,
+      "width" : 750
+    }, {
+      "aspect_ratio" : 0.6318449873631002,
+      "file_path" : "/f1BD5d5CZCc82zjvgKlvEVdhuny.jpg",
+      "height" : 1187,
+      "iso_639_1" : "en",
+      "vote_average" : 4.724,
+      "vote_count" : 11,
+      "width" : 750
+    }, {
+      "aspect_ratio" : 0.75,
+      "file_path" : "/yAvHpFBXNbIPDwpiokwGx3dK2Jt.jpg",
+      "height" : 2560,
+      "iso_639_1" : "en",
+      "vote_average" : 0.0,
+      "vote_count" : 0,
+      "width" : 1920
+    }, {
+      "aspect_ratio" : 0.6753333333333333,
+      "file_path" : "/4QGp8x4Lobq0cJ5opoWOfCeJxev.jpg",
+      "height" : 1500,
+      "iso_639_1" : "en",
+      "vote_average" : 0.0,
+      "vote_count" : 0,
+      "width" : 1013
+    }, {
+      "aspect_ratio" : 0.6666666666666666,
+      "file_path" : "/y8fYmXpvrYCr1mUpErO0qr30k7t.jpg",
+      "height" : 750,
+      "iso_639_1" : "en",
+      "vote_average" : 0.0,
+      "vote_count" : 0,
+      "width" : 500
+    } ]
+  },
+  "recommendations" : {
+    "page" : 1,
+    "results" : [ {
+      "genre_ids" : [ 28, 27, 878 ],
+      "original_language" : "en",
+      "original_title" : "The New Mutants",
+      "poster_path" : "/xZNw9xxtwbEf25NYoz52KdbXHPM.jpg",
+      "video" : false,
+      "vote_average" : 6.4,
+      "id" : 340102,
+      "overview" : "Five young mutants, just discovering their abilities while held in a secret facility against their will, fight to escape their past sins and save themselves.",
+      "release_date" : "2020-08-26",
+      "vote_count" : 1535,
+      "title" : "The New Mutants",
+      "adult" : false,
+      "backdrop_path" : "/lrNbt21hRirjyTK0SeLA0L4RAVS.jpg",
+      "popularity" : 371.221
+    }, {
+      "genre_ids" : [ 28, 53, 878 ],
+      "original_language" : "en",
+      "original_title" : "Tenet",
+      "poster_path" : "/k68nPLbIST6NP96JmTxmZijEvCA.jpg",
+      "video" : false,
+      "vote_average" : 7.3,
+      "overview" : "Armed with only one word - Tenet - and fighting for the survival of the entire world, the Protagonist journeys through a twilight world of international espionage on a mission that will unfold in something beyond real time.",
+      "release_date" : "2020-08-22",
+      "vote_count" : 4377,
+      "title" : "Tenet",
+      "adult" : false,
+      "backdrop_path" : "/wzJRB4MKi3yK138bJyuL9nx47y6.jpg",
+      "id" : 577922,
+      "popularity" : 953.705
+    }, {
+      "vote_count" : 4772,
+      "overview" : "Joe Gardner is a middle school teacher with a love for jazz music. After a successful gig at the Half Note Club, he suddenly gets into an accident that separates his soul from his body and is transported to the You Seminar, a center in which souls develop and gain passions before being transported to a newborn child. Joe must enlist help from the other souls-in-training, like 22, a soul who has spent eons in the You Seminar, in order to get back to Earth.",
+      "release_date" : "2020-12-25",
+      "title" : "Soul",
+      "id" : 508442,
+      "adult" : false,
+      "backdrop_path" : "/kf456ZqeC45XTvo6W9pW5clYKfQ.jpg",
+      "original_title" : "Soul",
+      "genre_ids" : [ 10751, 16, 35, 18, 10402, 14 ],
+      "video" : false,
+      "original_language" : "en",
+      "vote_average" : 8.3,
+      "poster_path" : "/hm58Jw4Lw8OIeECIq5qyPYhAeRJ.jpg",
+      "popularity" : 1106.235
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/m0ObOaJBerZ3Unc74l471ar8Iiy.jpg",
+      "genre_ids" : [ 28, 14 ],
+      "id" : 547016,
+      "original_language" : "en",
+      "original_title" : "The Old Guard",
+      "overview" : "Four undying warriors who've secretly protected humanity for centuries become targeted for their mysterious powers just as they discover a new immortal.",
+      "poster_path" : "/cjr4NWURcVN3gW5FlHeabgBHLrY.jpg",
+      "release_date" : "2020-07-10",
+      "title" : "The Old Guard",
+      "video" : false,
+      "vote_average" : 7.3,
+      "vote_count" : 2618,
+      "popularity" : 37.255
+    }, {
+      "original_language" : "en",
+      "original_title" : "Project Power",
+      "id" : 605116,
+      "video" : false,
+      "vote_average" : 6.6,
+      "overview" : "An ex-soldier, a teen and a cop collide in New Orleans as they hunt for the source behind a dangerous new pill that grants users temporary superpowers.",
+      "release_date" : "2020-08-14",
+      "vote_count" : 1836,
+      "adult" : false,
+      "backdrop_path" : "/qVygtf2vU15L2yKS4Ke44U4oMdD.jpg",
+      "title" : "Project Power",
+      "genre_ids" : [ 28, 80, 878 ],
+      "poster_path" : "/TnOeov4w0sTtV2gqICqIxVi74V.jpg",
+      "popularity" : 29.044
+    }, {
+      "backdrop_path" : "/tweDJNQzBGgsWVF5MC8JhSAk07p.jpg",
+      "genre_ids" : [ 53, 878, 27 ],
+      "title" : "The Invisible Man",
+      "original_language" : "en",
+      "original_title" : "The Invisible Man",
+      "poster_path" : "/5EufsDwXdY2CVttYOk2WtYhgKpa.jpg",
+      "video" : false,
+      "vote_average" : 7.2,
+      "overview" : "When Cecilia's abusive ex takes his own life and leaves her his fortune, she suspects his death was a hoax. As a series of coincidences turn lethal, Cecilia works to prove that she is being hunted by someone nobody can see.",
+      "release_date" : "2020-02-26",
+      "id" : 570670,
+      "vote_count" : 3445,
+      "adult" : false,
+      "popularity" : 54.19
+    }, {
+      "genre_ids" : [ 28, 35, 14 ],
+      "original_language" : "en",
+      "original_title" : "Shazam!",
+      "poster_path" : "/xnopI5Xtky18MPhK40cZAGAOVeV.jpg",
+      "video" : false,
+      "vote_average" : 7.1,
+      "overview" : "A boy is given the ability to become an adult superhero in times of need with a single magic word.",
+      "release_date" : "2019-03-29",
+      "vote_count" : 6119,
+      "title" : "Shazam!",
+      "adult" : false,
+      "backdrop_path" : "/qwgGtdlLMKYvT2tV8hLY22syRHN.jpg",
+      "id" : 287947,
+      "popularity" : 180.416
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/vfuzELmhBjBTswXj2Vqxnu5ge4g.jpg",
+      "genre_ids" : [ 53, 80 ],
+      "original_language" : "en",
+      "original_title" : "The Little Things",
+      "id" : 602269,
+      "vote_count" : 304,
+      "title" : "The Little Things",
+      "vote_average" : 6.3,
+      "video" : false,
+      "overview" : "Deputy Sheriff Joe \"Deke\" Deacon joins forces with Sgt. Jim Baxter to search for a serial killer who's terrorizing Los Angeles. As they track the culprit, Baxter is unaware that the investigation is dredging up echoes of Deke's past, uncovering disturbing secrets that could threaten more than his case.",
+      "release_date" : "2021-01-27",
+      "poster_path" : "/c7VlGCCgM9GZivKSzBgzuOVxQn7.jpg",
+      "popularity" : 1669.19
+    }, {
+      "genre_ids" : [ 878, 28, 12 ],
+      "original_language" : "en",
+      "original_title" : "Dark Phoenix",
+      "poster_path" : "/kZv92eTc0Gg3mKxqjjDAM73z9cy.jpg",
+      "video" : false,
+      "vote_average" : 6.1,
+      "overview" : "The X-Men face their most formidable and powerful foe when one of their own, Jean Grey, starts to spiral out of control. During a rescue mission in outer space, Jean is nearly killed when she's hit by a mysterious cosmic force. Once she returns home, this force not only makes her infinitely more powerful, but far more unstable. The X-Men must now band together to save her soul and battle aliens that want to use Grey's new abilities to rule the galaxy.",
+      "id" : 320288,
+      "vote_count" : 4302,
+      "title" : "Dark Phoenix",
+      "adult" : false,
+      "backdrop_path" : "/phxiKFDvPeQj4AbkvJLmuZEieDU.jpg",
+      "release_date" : "2019-06-05",
+      "popularity" : 211.642
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/dueiWzWc81UAgnbDAyH4Gjqnh4n.jpg",
+      "genre_ids" : [ 878, 18 ],
+      "original_language" : "en",
+      "original_title" : "The Midnight Sky",
+      "id" : 614911,
+      "vote_count" : 1079,
+      "title" : "The Midnight Sky",
+      "vote_average" : 5.9,
+      "video" : false,
+      "overview" : "A lone scientist in the Arctic races to contact a crew of astronauts returning home to a mysterious global catastrophe.",
+      "release_date" : "2020-12-10",
+      "poster_path" : "/51JxCk77ZCqLzbLkrDl9Qho6KUh.jpg",
+      "popularity" : 40.756
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/oazPqs1z78LcIOFslbKtJLGlueo.jpg",
+      "genre_ids" : [ 35, 878, 12 ],
+      "original_language" : "en",
+      "original_title" : "Bill & Ted Face the Music",
+      "poster_path" : "/4V2nTPfeB59TcqJcUfQ9ziTi7VN.jpg",
+      "video" : false,
+      "id" : 501979,
+      "vote_count" : 369,
+      "overview" : "Yet to fulfill their rock and roll destiny, the now middle-aged best friends Bill and Ted set out on a new adventure when a visitor from the future warns them that only their song can save life as we know it. Along the way, they are helped by their daughters, a new batch of historical figures and a few music legends—to seek the song that will set their world right and bring harmony to the universe.",
+      "release_date" : "2020-08-27",
+      "vote_average" : 6.3,
+      "title" : "Bill & Ted Face the Music",
+      "popularity" : 31.906
+    }, {
+      "vote_count" : 6901,
+      "overview" : "Harley Quinn joins forces with a singer, an assassin and a police detective to help a young girl who had a hit placed on her after she stole a rare diamond from a crime lord.",
+      "release_date" : "2020-02-05",
+      "title" : "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
+      "id" : 495764,
+      "adult" : false,
+      "backdrop_path" : "/9xNOiv6DZZjH7ABoUUDP0ZynouU.jpg",
+      "original_title" : "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)",
+      "genre_ids" : [ 28, 80 ],
+      "video" : false,
+      "original_language" : "en",
+      "vote_average" : 7.1,
+      "poster_path" : "/h4VB6m0RwcicVEZvzftYZyKXs6K.jpg",
+      "popularity" : 672.339
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/hbrXbVoE0NuA1ORoSGGYNASagrl.jpg",
+      "genre_ids" : [ 35 ],
+      "original_language" : "en",
+      "original_title" : "Borat Subsequent Moviefilm",
+      "poster_path" : "/kwh9dYvZLn7yJ9nfU5sPj2h9O7l.jpg",
+      "video" : false,
+      "vote_average" : 6.6,
+      "vote_count" : 1315,
+      "overview" : "14 years after making a film about his journey across the USA, Borat risks life and limb when he returns to the United States with his young daughter, and reveals more about the culture, the COVID-19 pandemic, and the political elections.",
+      "release_date" : "2020-10-23",
+      "title" : "Borat Subsequent Moviefilm",
+      "id" : 740985,
+      "popularity" : 34.312
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/zMrk2G3XsnfYKiIp1NEfdtvDyBH.jpg",
+      "genre_ids" : [ 12, 14 ],
+      "original_language" : "en",
+      "original_title" : "Mulan",
+      "id" : 337401,
+      "vote_count" : 4300,
+      "title" : "Mulan",
+      "vote_average" : 7.1,
+      "video" : false,
+      "overview" : "When the Emperor of China issues a decree that one man per family must serve in the Imperial Chinese Army to defend the country from Huns, Hua Mulan, the eldest daughter of an honored warrior, steps in to take the place of her ailing father. She is spirited, determined and quick on her feet. Disguised as a man by the name of Hua Jun, she is tested every step of the way and must harness her innermost strength and embrace her true potential.",
+      "release_date" : "2020-09-04",
+      "poster_path" : "/aKx1ARwG55zZ0GpRvU2WrGrCG9o.jpg",
+      "popularity" : 291.616
+    }, {
+      "backdrop_path" : "/d7JUXVvjvVCXWs1mlpyO5ESdWdT.jpg",
+      "genre_ids" : [ 35, 10749, 14, 9648, 878 ],
+      "title" : "Palm Springs",
+      "original_language" : "en",
+      "original_title" : "Palm Springs",
+      "poster_path" : "/yf5IuMW6GHghu39kxA0oFx7Bxmj.jpg",
+      "video" : false,
+      "vote_average" : 7.4,
+      "overview" : "When carefree Nyles and reluctant maid of honor Sarah have a chance encounter at a Palm Springs wedding, things get complicated when they find themselves unable to escape the venue, themselves, or each other.",
+      "release_date" : "2020-07-10",
+      "id" : 587792,
+      "vote_count" : 1123,
+      "adult" : false,
+      "popularity" : 30.553
+    }, {
+      "title" : "Star Wars: The Rise of Skywalker",
+      "original_language" : "en",
+      "original_title" : "Star Wars: The Rise of Skywalker",
+      "poster_path" : "/db32LaOibwEliAmSL2jjDF6oDdj.jpg",
+      "video" : false,
+      "vote_average" : 6.5,
+      "overview" : "The surviving Resistance faces the First Order once again as the journey of Rey, Finn and Poe Dameron continues. With the power and knowledge of generations behind them, the final battle begins.",
+      "id" : 181812,
+      "vote_count" : 6375,
+      "adult" : false,
+      "backdrop_path" : "/jn52me8AagfNt7r84SgQbV0R9ZG.jpg",
+      "release_date" : "2019-12-18",
+      "genre_ids" : [ 28, 12, 878 ],
+      "popularity" : 223.752
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/3Y7lAFEdpk3a25LFE1xzqTaGIXi.jpg",
+      "genre_ids" : [ 35, 878, 28, 12 ],
+      "vote_count" : 648,
+      "original_language" : "en",
+      "original_title" : "Love and Monsters",
+      "poster_path" : "/r4Lm1XKP0VsTgHX4LG4syAwYA2I.jpg",
+      "title" : "Love and Monsters",
+      "video" : false,
+      "vote_average" : 7.5,
+      "release_date" : "2020-10-16",
+      "overview" : "Seven years after the Monsterpocalypse, Joel Dawson, along with the rest of humanity, has been living underground ever since giant creatures took control of the land. After reconnecting over radio with his high school girlfriend Aimee, who is now 80 miles away at a coastal colony, Joel begins to fall for her again. As Joel realizes that there’s nothing left for him underground, he decides against all logic to venture out to Aimee, despite all the dangerous monsters that stand in his way.",
+      "id" : 590223,
+      "popularity" : 88.619
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/rUeqBuNDR9zN6vZV9kpEFMtQm0E.jpg",
+      "genre_ids" : [ 80, 18, 53 ],
+      "original_language" : "en",
+      "original_title" : "The Devil All the Time",
+      "id" : 499932,
+      "vote_count" : 1683,
+      "title" : "The Devil All the Time",
+      "vote_average" : 7.3,
+      "video" : false,
+      "overview" : "In Knockemstiff, Ohio and its neighboring backwoods, sinister characters converge around young Arvin Russell as he fights the evil forces that threaten him and his family.",
+      "release_date" : "2020-09-11",
+      "poster_path" : "/bVL7LGq528h3KzeNI90HOVbV5uW.jpg",
+      "popularity" : 35.216
+    }, {
+      "genre_ids" : [ 27, 53, 35, 14 ],
+      "original_language" : "en",
+      "original_title" : "Freaky",
+      "poster_path" : "/8xC6QSyxrpm0D5A6iyHNemEWBVe.jpg",
+      "video" : false,
+      "vote_average" : 6.8,
+      "id" : 551804,
+      "overview" : "A mystical, ancient dagger causes a notorious serial killer to magically switch bodies with a 17-year-old girl.",
+      "release_date" : "2020-11-12",
+      "vote_count" : 452,
+      "title" : "Freaky",
+      "adult" : false,
+      "backdrop_path" : "/eShw0LB5CkoEfYtpUcXPD85oz5Q.jpg",
+      "popularity" : 95.687
+    }, {
+      "genre_ids" : [ 28, 53 ],
+      "original_language" : "en",
+      "original_title" : "Greenland",
+      "poster_path" : "/bNo2mcvSwIvnx8K6y1euAc1TLVq.jpg",
+      "video" : false,
+      "vote_average" : 7.2,
+      "overview" : "John Garrity, his estranged wife and their young son embark on a perilous journey to find sanctuary as a planet-killing comet hurtles toward Earth. Amid terrifying accounts of cities getting levelled, the Garrity's experience the best and worst in humanity. As the countdown to the global apocalypse approaches zero, their incredible trek culminates in a desperate and last-minute flight to a possible safe haven.",
+      "release_date" : "2020-07-29",
+      "vote_count" : 1892,
+      "title" : "Greenland",
+      "adult" : false,
+      "backdrop_path" : "/2Fk3AB8E9dYIBc2ywJkxk8BTyhc.jpg",
+      "id" : 524047,
+      "popularity" : 684.669
+    } ],
+    "total_pages" : 2,
+    "total_results" : 40
+  },
+  "similar" : {
+    "page" : 1,
+    "results" : [ {
+      "adult" : false,
+      "backdrop_path" : "/2ex2beZ4ssMeOduLD0ILzXKCiep.jpg",
+      "genre_ids" : [ 28, 12, 878, 14 ],
+      "id" : 246655,
+      "original_language" : "en",
+      "original_title" : "X-Men: Apocalypse",
+      "overview" : "After the re-emergence of the world's first mutant, world-destroyer Apocalypse, the X-Men must unite to defeat his extinction level plan.",
+      "poster_path" : "/2mtQwJKVKQrZgTz49Dizb25eOQQ.jpg",
+      "release_date" : "2016-05-18",
+      "title" : "X-Men: Apocalypse",
+      "video" : false,
+      "vote_average" : 6.5,
+      "vote_count" : 10205,
+      "popularity" : 108.523
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/isDbx0OEFgYKevzbg7wBJZmQgbM.jpg",
+      "genre_ids" : [ 28, 12, 14, 878 ],
+      "id" : 9738,
+      "original_language" : "en",
+      "original_title" : "Fantastic Four",
+      "overview" : "During a space voyage, four scientists are altered by cosmic rays: Reed Richards gains the ability to stretch his body; Sue Storm can become invisible; Johnny Storm controls fire; and Ben Grimm is turned into a super-strong … thing. Together, these \"Fantastic Four\" must now thwart the evil plans of Dr. Doom and save the world from certain destruction.",
+      "poster_path" : "/8HLQLILZLhDQWO6JDpvY6XJLH75.jpg",
+      "release_date" : "2005-06-29",
+      "title" : "Fantastic Four",
+      "video" : false,
+      "vote_average" : 5.8,
+      "vote_count" : 7235,
+      "popularity" : 31.89
+    }, {
+      "backdrop_path" : "/jesRqfL9v6HNnowe795xjmuKUXl.jpg",
+      "genre_ids" : [ 12, 28, 878 ],
+      "original_language" : "en",
+      "original_title" : "Iron Man 2",
+      "poster_path" : "/6WBeq4fCfn7AN0o21W9qNcRF2l9.jpg",
+      "title" : "Iron Man 2",
+      "vote_average" : 6.8,
+      "vote_count" : 15648,
+      "overview" : "With the world now aware of his dual life as the armored superhero Iron Man, billionaire inventor Tony Stark faces pressure from the government, the press and the public to share his technology with the military. Unwilling to let go of his invention, Stark, with Pepper Potts and James 'Rhodey' Rhodes at his side, must forge new alliances – and confront powerful enemies.",
+      "release_date" : "2010-04-28",
+      "id" : 10138,
+      "video" : false,
+      "adult" : false,
+      "popularity" : 83.398
+    }, {
+      "genre_ids" : [ 28, 878, 12 ],
+      "original_language" : "en",
+      "original_title" : "Iron Man",
+      "poster_path" : "/78lPtwv72eTNqFW9COBYI0dWDJa.jpg",
+      "video" : false,
+      "vote_average" : 7.6,
+      "overview" : "After being held captive in an Afghan cave, billionaire engineer Tony Stark creates a unique weaponized suit of armor to fight evil.",
+      "id" : 1726,
+      "vote_count" : 20017,
+      "title" : "Iron Man",
+      "adult" : false,
+      "backdrop_path" : "/vbY95t58MDArtyUXUIb8Fx1dCry.jpg",
+      "release_date" : "2008-04-30",
+      "popularity" : 95.274
+    }, {
+      "backdrop_path" : "/yHB0eNR8rvCpn0VdghEwBsXAC0N.jpg",
+      "genre_ids" : [ 28, 12, 878 ],
+      "original_language" : "en",
+      "original_title" : "Captain America: The Winter Soldier",
+      "poster_path" : "/5r1zWuzbsVAYSPzvCecAReGhN7k.jpg",
+      "title" : "Captain America: The Winter Soldier",
+      "vote_average" : 7.7,
+      "vote_count" : 14051,
+      "overview" : "After the cataclysmic events in New York with The Avengers, Steve Rogers, aka Captain America is living quietly in Washington, D.C. and trying to adjust to the modern world. But when a S.H.I.E.L.D. colleague comes under attack, Steve becomes embroiled in a web of intrigue that threatens to put the world at risk. Joining forces with the Black Widow, Captain America struggles to expose the ever-widening conspiracy while fighting off professional assassins sent to silence him at every turn. When the full scope of the villainous plot is revealed, Captain America and the Black Widow enlist the help of a new ally, the Falcon. However, they soon find themselves up against an unexpected and formidable enemy—the Winter Soldier.",
+      "release_date" : "2014-03-20",
+      "video" : false,
+      "id" : 100402,
+      "adult" : false,
+      "popularity" : 47.372
+    }, {
+      "genre_ids" : [ 12, 14, 28 ],
+      "original_language" : "en",
+      "original_title" : "Thor",
+      "poster_path" : "/prSfAi1xGrhLQNxVSUFh61xQ4Qy.jpg",
+      "video" : false,
+      "vote_average" : 6.8,
+      "overview" : "Against his father Odin's will, The Mighty Thor - a powerful but arrogant warrior god - recklessly reignites an ancient war. Thor is cast down to Earth and forced to live among humans as punishment. Once here, Thor learns what it takes to be a true hero when the most dangerous villain of his world sends the darkest forces of Asgard to invade Earth.",
+      "release_date" : "2011-04-21",
+      "vote_count" : 16052,
+      "title" : "Thor",
+      "adult" : false,
+      "backdrop_path" : "/3SDoquTjagne0jWzdxEu31KFLmw.jpg",
+      "id" : 10195,
+      "popularity" : 75.852
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/yFuKvT4Vm3sKHdFY4eG6I4ldAnn.jpg",
+      "genre_ids" : [ 28, 12, 878 ],
+      "id" : 1771,
+      "original_language" : "en",
+      "original_title" : "Captain America: The First Avenger",
+      "overview" : "During World War II, Steve Rogers is a sickly man from Brooklyn who's transformed into super-soldier Captain America to aid in the war effort. Rogers must stop the Red Skull – Adolf Hitler's ruthless head of weaponry, and the leader of an organization that intends to use a mysterious device of untold powers for world domination.",
+      "poster_path" : "/vSNxAJTlD0r02V9sPYpOjqDZXUK.jpg",
+      "release_date" : "2011-07-22",
+      "title" : "Captain America: The First Avenger",
+      "video" : false,
+      "vote_average" : 6.9,
+      "vote_count" : 16253,
+      "popularity" : 53.321
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/va57B6HQg0DHBYvT4Y9R4WPu4fn.jpg",
+      "genre_ids" : [ 28, 18, 12, 53 ],
+      "id" : 497698,
+      "original_language" : "en",
+      "original_title" : "Black Widow",
+      "overview" : "Natasha Romanoff, also known as Black Widow, confronts the darker parts of her ledger when a dangerous conspiracy with ties to her past arises. Pursued by a force that will stop at nothing to bring her down, Natasha must deal with her history as a spy and the broken relationships left in her wake long before she became an Avenger.",
+      "poster_path" : "/qAZ0pzat24kLdO3o8ejmbLxyOac.jpg",
+      "release_date" : "2021-04-29",
+      "title" : "Black Widow",
+      "video" : false,
+      "vote_average" : 0.0,
+      "vote_count" : 0,
+      "popularity" : 68.904
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/4hPJT531skippmci5BfGrJYGfRv.jpg",
+      "genre_ids" : [ 12, 14, 28, 53 ],
+      "vote_count" : 6086,
+      "original_language" : "en",
+      "original_title" : "Fantastic Four: Rise of the Silver Surfer",
+      "poster_path" : "/9wRfzTcMyyzkQxVDqBHv8RwuZOv.jpg",
+      "id" : 1979,
+      "video" : false,
+      "vote_average" : 5.6,
+      "title" : "Fantastic Four: Rise of the Silver Surfer",
+      "overview" : "The Fantastic Four return to the big screen as a new and all powerful enemy threatens the Earth. The seemingly unstoppable 'Silver Surfer', but all is not what it seems and there are old and new enemies that pose a greater threat than the intrepid superheroes realize.",
+      "release_date" : "2007-06-13",
+      "popularity" : 31.749
+    }, {
+      "backdrop_path" : "/yfpA0hb18w9TR2XBm1P9zhkBsQ9.jpg",
+      "genre_ids" : [ 12, 28, 878 ],
+      "original_language" : "en",
+      "original_title" : "Captain America: Civil War",
+      "poster_path" : "/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg",
+      "title" : "Captain America: Civil War",
+      "vote_average" : 7.4,
+      "vote_count" : 17513,
+      "overview" : "Following the events of Age of Ultron, the collective governments of the world pass an act designed to regulate all superhuman activity. This polarizes opinion amongst the Avengers, causing two factions to side with Iron Man or Captain America, which causes an epic battle between former allies.",
+      "release_date" : "2016-04-27",
+      "id" : 271110,
+      "video" : false,
+      "adult" : false,
+      "popularity" : 115.786
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/wPgcxHNvnEEMXx94l2911gqZ4o9.jpg",
+      "genre_ids" : [ 28, 12, 878 ],
+      "id" : 68721,
+      "original_language" : "en",
+      "original_title" : "Iron Man 3",
+      "overview" : "When Tony Stark's world is torn apart by a formidable terrorist called the Mandarin, he starts an odyssey of rebuilding and retribution.",
+      "poster_path" : "/qhPtAc1TKbMPqNvcdXSOn9Bn7hZ.jpg",
+      "release_date" : "2013-04-18",
+      "title" : "Iron Man 3",
+      "video" : false,
+      "vote_average" : 6.9,
+      "vote_count" : 17295,
+      "popularity" : 89.265
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/hZnnUq0mrUQ3e54SJVca4mf2oAQ.jpg",
+      "genre_ids" : [ 27, 28 ],
+      "id" : 36647,
+      "original_language" : "en",
+      "original_title" : "Blade",
+      "overview" : "The Daywalker known as \"Blade\" - a half-vampire, half-mortal man - becomes the protector of humanity against an underground army of vampires.",
+      "poster_path" : "/e6ErRnIgKmoBtcKpht3amsMfo52.jpg",
+      "release_date" : "1998-08-21",
+      "title" : "Blade",
+      "video" : false,
+      "vote_average" : 6.7,
+      "vote_count" : 4159,
+      "popularity" : 33.429
+    }, {
+      "backdrop_path" : "/zO1nXPpmJylWVHg2eL00HysZqE5.jpg",
+      "genre_ids" : [ 28, 16, 878, 10751 ],
+      "original_language" : "en",
+      "original_title" : "Superman: Doomsday",
+      "poster_path" : "/itvuWm7DFWWzWgW0xgiaKzzWszP.jpg",
+      "title" : "Superman: Doomsday",
+      "vote_average" : 6.6,
+      "vote_count" : 365,
+      "overview" : "When LexCorp accidentally unleashes a murderous creature, Superman meets his greatest challenge as a champion. Based on the \"The Death of Superman\" storyline that appeared in DC Comics' publications in the 1990s.",
+      "release_date" : "2007-09-18",
+      "id" : 13640,
+      "video" : false,
+      "adult" : false,
+      "popularity" : 76.659
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/w2PMyoyLU22YvrGK3smVM9fW1jj.jpg",
+      "genre_ids" : [ 28, 12, 878 ],
+      "original_language" : "en",
+      "original_title" : "Captain Marvel",
+      "id" : 299537,
+      "vote_count" : 10831,
+      "title" : "Captain Marvel",
+      "vote_average" : 7.0,
+      "video" : false,
+      "overview" : "The story follows Carol Danvers as she becomes one of the universe’s most powerful heroes when Earth is caught in the middle of a galactic war between two alien races. Set in the 1990s, Captain Marvel is an all-new adventure from a previously unseen period in the history of the Marvel Cinematic Universe.",
+      "release_date" : "2019-03-06",
+      "poster_path" : "/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg",
+      "popularity" : 257.815
+    }, {
+      "title" : "Superman",
+      "original_language" : "en",
+      "original_title" : "Superman",
+      "poster_path" : "/d7px1FQxW4tngdACVRsCSaZq0Xl.jpg",
+      "video" : false,
+      "vote_average" : 7.1,
+      "overview" : "Mild-mannered Clark Kent works as a reporter at the Daily Planet alongside his crush, Lois Lane. Clark must summon his superhero alter-ego when the nefarious Lex Luthor launches a plan to take over the world.",
+      "id" : 1924,
+      "vote_count" : 2578,
+      "adult" : false,
+      "backdrop_path" : "/v6MVBFnQOscITvmAy5N5ras2JKZ.jpg",
+      "release_date" : "1978-12-13",
+      "genre_ids" : [ 878, 28, 12 ],
+      "popularity" : 27.135
+    }, {
+      "genre_ids" : [ 35, 878, 28, 12 ],
+      "original_language" : "en",
+      "original_title" : "Superman III",
+      "poster_path" : "/c4oR6qgZW2s5foGkQi2Dd86KuAS.jpg",
+      "video" : false,
+      "vote_average" : 5.5,
+      "overview" : "Aiming to defeat the Man of Steel, wealthy executive Ross Webster hires bumbling but brilliant Gus Gorman to develop synthetic kryptonite, which yields some unexpected psychological effects in the third installment of the 1980s Superman franchise. Between rekindling romance with his high school sweetheart and saving himself, Superman must contend with a powerful supercomputer.",
+      "release_date" : "1983-06-17",
+      "vote_count" : 1163,
+      "title" : "Superman III",
+      "adult" : false,
+      "backdrop_path" : "/qvBt5JJKX3rnmAU3CIZOGrOaq8m.jpg",
+      "id" : 9531,
+      "popularity" : 19.791
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/rsmBSRCnU5KyWObfOnNdKh6sGn7.jpg",
+      "genre_ids" : [ 878, 28, 12 ],
+      "id" : 8536,
+      "original_language" : "en",
+      "original_title" : "Superman II",
+      "overview" : "Three escaped criminals from the planet Krypton test the Man of Steel's mettle. Led by General Zod, the Kryptonians take control of the White House and partner with Lex Luthor to destroy Superman and rule the world. But Superman, who attempts to make himself human in order to get closer to Lois, realizes he has a responsibility to save the planet.",
+      "poster_path" : "/r9ZRah6rYBoRuPyj8g5Ei411XNM.jpg",
+      "release_date" : "1980-12-04",
+      "title" : "Superman II",
+      "video" : false,
+      "vote_average" : 6.7,
+      "vote_count" : 1530,
+      "popularity" : 20.527
+    }, {
+      "backdrop_path" : "/8eRscFbRYl681zDfkjv1jjW1KAA.jpg",
+      "genre_ids" : [ 878, 28, 12 ],
+      "original_language" : "en",
+      "original_title" : "Superman Returns",
+      "poster_path" : "/qIegbn6DSUYmggfwxOBNOVS35q.jpg",
+      "title" : "Superman Returns",
+      "vote_average" : 5.6,
+      "vote_count" : 3019,
+      "overview" : "Superman returns to discover his 5-year absence has allowed Lex Luthor to walk free, and that those he was closest to felt abandoned and have moved on. Luthor plots his ultimate revenge that could see millions killed and change the face of the planet forever, as well as ridding himself of the Man of Steel.",
+      "release_date" : "2006-06-28",
+      "id" : 1452,
+      "video" : false,
+      "adult" : false,
+      "popularity" : 23.938
+    }, {
+      "adult" : false,
+      "backdrop_path" : "/kYd1ZMWvG9K2Jeop3XWXcTpJ2dB.jpg",
+      "genre_ids" : [ 28, 878 ],
+      "id" : 1927,
+      "original_language" : "en",
+      "original_title" : "Hulk",
+      "overview" : "Bruce Banner, a genetics researcher with a tragic past, suffers massive radiation exposure in his laboratory that causes him to transform into a raging green monster when he gets angry.",
+      "poster_path" : "/qnngKqAcqfH2pBxDoKu5lxzSbTo.jpg",
+      "release_date" : "2003-06-19",
+      "title" : "Hulk",
+      "video" : false,
+      "vote_average" : 5.5,
+      "vote_count" : 4191,
+      "popularity" : 38.149
+    }, {
+      "original_title" : "Superman II: The Richard Donner Cut",
+      "poster_path" : "/oPYeFSFO0ljmly8XvrjwWzVXT6e.jpg",
+      "video" : false,
+      "vote_average" : 7.4,
+      "overview" : "Superman agrees to sacrifice his powers to start a relationship with Lois Lane, unaware that three Kryptonian criminals he inadvertently released are conquering Earth.",
+      "release_date" : "2006-11-02",
+      "vote_count" : 112,
+      "adult" : false,
+      "backdrop_path" : "/em8XPC14V414dsHlf3TSLawHNBH.jpg",
+      "title" : "Superman II: The Richard Donner Cut",
+      "genre_ids" : [ 878, 28, 12 ],
+      "id" : 624479,
+      "original_language" : "en",
+      "popularity" : 18.472
+    } ],
+    "total_pages" : 18,
+    "total_results" : 350
+  },
+  "watch/providers" : {
+    "results" : {
+      "AU" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=AU",
+        "rent" : [ {
+          "display_priority" : 2,
+          "logo_path" : "/q6tl6Ib6X5FT80RMlcDbexIo4St.jpg",
+          "provider_id" : 2,
+          "provider_name" : "Apple iTunes"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 10,
+          "logo_path" : "/sVBEF7q7LqjHAWSnKwDbzmr2EMY.jpg",
+          "provider_id" : 10,
+          "provider_name" : "Amazon Video"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/vDCcryHD32b0yMeSCgBhuYavsmx.jpg",
+          "provider_id" : 192,
+          "provider_name" : "YouTube"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ],
+        "buy" : [ {
+          "display_priority" : 2,
+          "logo_path" : "/q6tl6Ib6X5FT80RMlcDbexIo4St.jpg",
+          "provider_id" : 2,
+          "provider_name" : "Apple iTunes"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 10,
+          "logo_path" : "/sVBEF7q7LqjHAWSnKwDbzmr2EMY.jpg",
+          "provider_id" : 10,
+          "provider_name" : "Amazon Video"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/vDCcryHD32b0yMeSCgBhuYavsmx.jpg",
+          "provider_id" : 192,
+          "provider_name" : "YouTube"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ]
+      },
+      "BR" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=BR",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/jkBsuKubyoStcP1whxrbxzDMnMD.jpg",
+          "provider_id" : 47,
+          "provider_name" : "Looke"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ],
+        "buy" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ],
+        "flatrate" : [ {
+          "display_priority" : 23,
+          "logo_path" : "/dNAz0MMIPiqCD2axGIktXSFWmkz.jpg",
+          "provider_id" : 484,
+          "provider_name" : "NOW"
+        } ]
+      },
+      "CA" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=CA",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 10,
+          "logo_path" : "/sVBEF7q7LqjHAWSnKwDbzmr2EMY.jpg",
+          "provider_id" : 10,
+          "provider_name" : "Amazon Video"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/vDCcryHD32b0yMeSCgBhuYavsmx.jpg",
+          "provider_id" : 192,
+          "provider_name" : "YouTube"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/xEWgUq2tJyggisxbJ3fNOV9Inj2.jpg",
+          "provider_id" : 140,
+          "provider_name" : "Cineplex"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ]
+      },
+      "EE" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=EE",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 9,
+          "logo_path" : "/gX0ivBWeCv3JcbOko3UoVYDITjL.jpg",
+          "provider_id" : 373,
+          "provider_name" : "Go3"
+        } ],
+        "buy" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ]
+      },
+      "ES" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=ES",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 18,
+          "logo_path" : "/wuViyDkbFp4r7VqI0efPW5hFfQj.jpg",
+          "provider_id" : 35,
+          "provider_name" : "Rakuten TV"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ],
+        "flatrate" : [ {
+          "display_priority" : 9,
+          "logo_path" : "/3kZQY7nIwC5sIJmURyF6W91pAkg.jpg",
+          "provider_id" : 149,
+          "provider_name" : "Movistar Plus"
+        } ]
+      },
+      "GB" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=GB",
+        "rent" : [ {
+          "display_priority" : 2,
+          "logo_path" : "/q6tl6Ib6X5FT80RMlcDbexIo4St.jpg",
+          "provider_id" : 2,
+          "provider_name" : "Apple iTunes"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 8,
+          "logo_path" : "/pZgeSWpfvD59x6sY6stT5c6uc2h.jpg",
+          "provider_id" : 130,
+          "provider_name" : "Sky Store"
+        }, {
+          "display_priority" : 10,
+          "logo_path" : "/sVBEF7q7LqjHAWSnKwDbzmr2EMY.jpg",
+          "provider_id" : 10,
+          "provider_name" : "Amazon Video"
+        }, {
+          "display_priority" : 11,
+          "logo_path" : "/vjKeS7Y9fNyqNtvp2ROCc71iu1u.jpg",
+          "provider_id" : 40,
+          "provider_name" : "Chili"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/vDCcryHD32b0yMeSCgBhuYavsmx.jpg",
+          "provider_id" : 192,
+          "provider_name" : "YouTube"
+        }, {
+          "display_priority" : 18,
+          "logo_path" : "/wuViyDkbFp4r7VqI0efPW5hFfQj.jpg",
+          "provider_id" : 35,
+          "provider_name" : "Rakuten TV"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ]
+      },
+      "ID" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=ID",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/pDNmGWlZj9sMIG6sfCedgqCoqML.jpg",
+          "provider_id" : 159,
+          "provider_name" : "Catchplay"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ],
+        "buy" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ]
+      },
+      "IE" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=IE",
+        "rent" : [ {
+          "display_priority" : 2,
+          "logo_path" : "/q6tl6Ib6X5FT80RMlcDbexIo4St.jpg",
+          "provider_id" : 2,
+          "provider_name" : "Apple iTunes"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 8,
+          "logo_path" : "/pZgeSWpfvD59x6sY6stT5c6uc2h.jpg",
+          "provider_id" : 130,
+          "provider_name" : "Sky Store"
+        }, {
+          "display_priority" : 18,
+          "logo_path" : "/wuViyDkbFp4r7VqI0efPW5hFfQj.jpg",
+          "provider_id" : 35,
+          "provider_name" : "Rakuten TV"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ]
+      },
+      "IN" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=IN",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/vDCcryHD32b0yMeSCgBhuYavsmx.jpg",
+          "provider_id" : 192,
+          "provider_name" : "YouTube"
+        } ],
+        "buy" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/vDCcryHD32b0yMeSCgBhuYavsmx.jpg",
+          "provider_id" : 192,
+          "provider_name" : "YouTube"
+        } ]
+      },
+      "IT" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=IT",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 11,
+          "logo_path" : "/vjKeS7Y9fNyqNtvp2ROCc71iu1u.jpg",
+          "provider_id" : 40,
+          "provider_name" : "Chili"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/mn4yGYhpzVMKr9WFvcxmZK9RK86.jpg",
+          "provider_id" : 109,
+          "provider_name" : "Timvision"
+        }, {
+          "display_priority" : 13,
+          "logo_path" : "/cbwQoqHtOFJGU8EJoaRyU6BHdeB.jpg",
+          "provider_id" : 110,
+          "provider_name" : "Infinity"
+        }, {
+          "display_priority" : 18,
+          "logo_path" : "/wuViyDkbFp4r7VqI0efPW5hFfQj.jpg",
+          "provider_id" : 35,
+          "provider_name" : "Rakuten TV"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ],
+        "buy" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 11,
+          "logo_path" : "/vjKeS7Y9fNyqNtvp2ROCc71iu1u.jpg",
+          "provider_id" : 40,
+          "provider_name" : "Chili"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/mn4yGYhpzVMKr9WFvcxmZK9RK86.jpg",
+          "provider_id" : 109,
+          "provider_name" : "Timvision"
+        }, {
+          "display_priority" : 18,
+          "logo_path" : "/wuViyDkbFp4r7VqI0efPW5hFfQj.jpg",
+          "provider_id" : 35,
+          "provider_name" : "Rakuten TV"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ]
+      },
+      "KR" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=KR",
+        "buy" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 4,
+          "logo_path" : "/gvykO994iHcqL1Cgpii4RJCtDud.jpg",
+          "provider_id" : 96,
+          "provider_name" : "Naver Store"
+        } ]
+      },
+      "MX" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=MX",
+        "buy" : [ {
+          "display_priority" : 2,
+          "logo_path" : "/q6tl6Ib6X5FT80RMlcDbexIo4St.jpg",
+          "provider_id" : 2,
+          "provider_name" : "Apple iTunes"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 8,
+          "logo_path" : "/mzu37NQphDvqN2BHKM0Rwq9Es3r.jpg",
+          "provider_id" : 167,
+          "provider_name" : "Claro video"
+        }, {
+          "display_priority" : 10,
+          "logo_path" : "/sVBEF7q7LqjHAWSnKwDbzmr2EMY.jpg",
+          "provider_id" : 10,
+          "provider_name" : "Amazon Video"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ],
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 8,
+          "logo_path" : "/mzu37NQphDvqN2BHKM0Rwq9Es3r.jpg",
+          "provider_id" : 167,
+          "provider_name" : "Claro video"
+        }, {
+          "display_priority" : 10,
+          "logo_path" : "/sVBEF7q7LqjHAWSnKwDbzmr2EMY.jpg",
+          "provider_id" : 10,
+          "provider_name" : "Amazon Video"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ]
+      },
+      "MY" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=MY",
+        "buy" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ],
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ]
+      },
+      "NZ" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=NZ",
+        "buy" : [ {
+          "display_priority" : 2,
+          "logo_path" : "/q6tl6Ib6X5FT80RMlcDbexIo4St.jpg",
+          "provider_id" : 2,
+          "provider_name" : "Apple iTunes"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ],
+        "rent" : [ {
+          "display_priority" : 2,
+          "logo_path" : "/wRfIw4x22z9Zag6DZ8qLYwzpjOA.jpg",
+          "provider_id" : 273,
+          "provider_name" : "Neon TV"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        } ]
+      },
+      "PT" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=PT",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/vDCcryHD32b0yMeSCgBhuYavsmx.jpg",
+          "provider_id" : 192,
+          "provider_name" : "YouTube"
+        }, {
+          "display_priority" : 18,
+          "logo_path" : "/wuViyDkbFp4r7VqI0efPW5hFfQj.jpg",
+          "provider_id" : 35,
+          "provider_name" : "Rakuten TV"
+        } ]
+      },
+      "RU" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=RU",
+        "rent" : [ {
+          "display_priority" : 2,
+          "logo_path" : "/2DpMZHxP9jzu3v70bph1UD3LLv3.jpg",
+          "provider_id" : 113,
+          "provider_name" : "Ivi"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/As8vTHasikgyhZPkSOI9QzAst4L.jpg",
+          "provider_id" : 115,
+          "provider_name" : "Okko"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 17,
+          "logo_path" : "/4AWMLvjQUQNmU3CkpLp7FSSIyZX.jpg",
+          "provider_id" : 501,
+          "provider_name" : "Wink"
+        } ],
+        "buy" : [ {
+          "display_priority" : 2,
+          "logo_path" : "/2DpMZHxP9jzu3v70bph1UD3LLv3.jpg",
+          "provider_id" : 113,
+          "provider_name" : "Ivi"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/As8vTHasikgyhZPkSOI9QzAst4L.jpg",
+          "provider_id" : 115,
+          "provider_name" : "Okko"
+        }, {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 17,
+          "logo_path" : "/4AWMLvjQUQNmU3CkpLp7FSSIyZX.jpg",
+          "provider_id" : 501,
+          "provider_name" : "Wink"
+        } ]
+      },
+      "SG" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=SG",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ],
+        "buy" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ]
+      },
+      "TH" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=TH",
+        "buy" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ],
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ]
+      },
+      "US" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=US",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        }, {
+          "display_priority" : 10,
+          "logo_path" : "/sVBEF7q7LqjHAWSnKwDbzmr2EMY.jpg",
+          "provider_id" : 10,
+          "provider_name" : "Amazon Video"
+        }, {
+          "display_priority" : 12,
+          "logo_path" : "/vDCcryHD32b0yMeSCgBhuYavsmx.jpg",
+          "provider_id" : 192,
+          "provider_name" : "YouTube"
+        }, {
+          "display_priority" : 18,
+          "logo_path" : "/eqr1RvnDiHcM7UxmaZOIjdTmyx3.jpg",
+          "provider_id" : 105,
+          "provider_name" : "FandangoNOW"
+        }, {
+          "display_priority" : 24,
+          "logo_path" : "/pgaPsqgFh2grkcr7ROkoBajHJnf.jpg",
+          "provider_id" : 7,
+          "provider_name" : "Vudu"
+        }, {
+          "display_priority" : 35,
+          "logo_path" : "/paq2o2dIfQnxcERsVoq7Ys8KYz8.jpg",
+          "provider_id" : 68,
+          "provider_name" : "Microsoft Store"
+        }, {
+          "display_priority" : 37,
+          "logo_path" : "/nSr2IQSwc5C2QrttIWen8s06ofe.jpg",
+          "provider_id" : 279,
+          "provider_name" : "Redbox"
+        }, {
+          "display_priority" : 41,
+          "logo_path" : "/qZdEeINwQotbr1Rq15dL5G2BaAh.jpg",
+          "provider_id" : 358,
+          "provider_name" : "DIRECTV"
+        } ]
+      },
+      "ZA" : {
+        "link" : "https://www.themoviedb.org/movie/464052-wonder-woman-1984/watch?locale=ZA",
+        "rent" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ],
+        "buy" : [ {
+          "display_priority" : 3,
+          "logo_path" : "/p3Z12gKq2qvJaUOMeKNU2mzKVI9.jpg",
+          "provider_id" : 3,
+          "provider_name" : "Google Play Movies"
+        } ]
+      }
+    }
+  }
+}

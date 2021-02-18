@@ -1,26 +1,12 @@
-run: 
-	gradle build
-
-deploy:
-	chmod 400 vestly.pem
-	scp -i "vestly.pem" docker-compose.yml ec2-user@ec2-18-236-70-145.us-west-2.compute.amazonaws.com:/home/ec2-user/
-	scp -i "vestly.pem" nginx.conf ec2-user@ec2-18-236-70-145.us-west-2.compute.amazonaws.com:/home/ec2-user/
-	ssh -i "vestly.pem" ec2-user@ec2-18-236-70-145.us-west-2.compute.amazonaws.com 'echo "TAG=$(TAG)" > .env && sudo docker-compose pull && sudo docker-compose down && sudo docker-compose up -d'
+version := local$(shell bash -c 'echo $$RANDOM')
 
 login:
-	ssh -i "vestly.pem" ec2-user@ec2-18-236-70-145.us-west-2.compute.amazonaws.com
+	aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 990223444407.dkr.ecr.us-west-2.amazonaws.com
 
-build: build_ui build_api
-	kubectl apply -f deploy/
-
-build_ui:
-	cd ui &&\
-	docker build -t bingematch-ui . &&\
-	docker tag  bingematch-ui:latest 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-ui:latest &&\
-	docker push ui/Dockerfile 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-ui:latest
-
-build_api:
-	cd api
-	docker build -t bingematch-api .
-	docker tag bingematch-api:latest 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:latest
-	docker push 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:latest
+deployApi: login
+	docker build -f api/Dockerfile -t bingematch-api:${version} api
+	docker tag bingematch-api:${version} 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:${version}
+	docker push 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:${version}
+	#replace version in deployment
+	sed 's/VERSION/${version}/g' deploy/api-deployment.yaml > /tmp/api-deployment-${version}.yaml
+	kubectl apply -f /tmp/api-deployment-${version}.yaml

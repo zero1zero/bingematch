@@ -1,11 +1,10 @@
 package store
 
-import ListItem
+import etc.ListItem
 import org.apache.commons.lang3.RandomUtils
 import org.junit.Test
 import java.time.LocalDate
 import kotlin.test.assertEquals
-
 
 internal class ListStoreTest {
 
@@ -14,7 +13,7 @@ internal class ListStoreTest {
         val awsUtil = AWSUtil()
         val listStore = ListStore(awsUtil.ddb)
 
-        val items = MutableList(10) {ListItem(RandomUtils.nextInt(), ListItem.State.QUEUED, LocalDate.now(), LocalDate.now())}
+        val items = MutableList(10) { ListItem(RandomUtils.nextInt(), ListItem.State.QUEUED, LocalDate.now(), LocalDate.now()) }
             .sortedBy { it.id }
 
         listStore.addToList("tester", items)

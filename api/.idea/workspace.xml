@@ -1,24 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="bd716662-c327-479f-87bb-cde1c09d86d6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/K8sClient.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cache/Cache.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cache/RedisCache.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/catalog/Catalog.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/RedisCacheTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/cache/InMemoryCache.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/catalog/CatalogStoreTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testResources/tmdb_movie_full_1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testResources/tmdb_movie_popular_full_1.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/model/model.proto" beforeDir="false" afterPath="$PROJECT_DIR$/resources/model/model.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/catalog/CatalogStore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/catalog/CatalogStore.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/k8s/K8sClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/JsonMarshalling.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/K8sClient.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MetadataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/catalog/MetadataSource.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/etc/Model.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PasswordUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/etc/PasswordUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/JwtConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/JwtConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/catalog/CatalogStore.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routing/Queue.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/routing/Queue.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docker-compose.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routing/Users.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/routing/Users.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/ListStore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/ListStore.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/UserStore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/UserStore.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/ApplicationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/ApplicationTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/MetadataSourceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/MetadataSourceTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/PasswordUtilTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/PasswordUtilTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/store/ListStoreTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/test/store/ListStoreTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testResources/global_quote_response.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../deploy/api-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../deploy/api-deployment.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../deploy/nginx-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../deploy/nginx-deployment.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../deploy/redis-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../deploy/redis-deployment.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradlew.bat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nginx.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/yarn.lock" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,9 +68,22 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="api" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="api" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -44,18 +93,34 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="Kotlin Interface" />
         <option value="Kotlin File" />
+        <option value="JUnit5 Test Class" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="ProjectId" id="1oEjU2aD2YSlOCO8xQu2QZrh5PY" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
@@ -71,43 +136,53 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.smartKeys" />
+  </component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="store" />
-    </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/test" />
+      <recent name="$PROJECT_DIR$/src/etc" />
       <recent name="$PROJECT_DIR$/src/store" />
     </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="test" />
+      <recent name="catalog" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="catalog" />
+      <recent name="cache" />
+      <recent name="store" />
+    </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager" selected="JUnit.ApplicationTest">
-    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-    </configuration>
+  <component name="RunManager" selected="JUnit.CatalogStoreTest.getMovie">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -122,11 +197,34 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ApplicationTest.updatePassword" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CatalogStoreTest.getMovie" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="api.test" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="ApplicationTest" />
-      <option name="METHOD_NAME" value="updatePassword" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="catalog.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="catalog" />
+      <option name="MAIN_CLASS_NAME" value="catalog.CatalogStoreTest" />
+      <option name="METHOD_NAME" value="getMovie" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InMemoryCacheTest.mem" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="api.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cache.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cache" />
+      <option name="MAIN_CLASS_NAME" value="cache.InMemoryCacheTest" />
+      <option name="METHOD_NAME" value="mem" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
@@ -144,17 +242,6 @@
       <option name="PACKAGE_NAME" value="store" />
       <option name="MAIN_CLASS_NAME" value="store.ListStoreTest" />
       <option name="METHOD_NAME" value="putAndGetItems" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MetadataSourceTest.tmdb" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="api.test" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="MetadataSourceTest" />
-      <option name="METHOD_NAME" value="tmdb" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
@@ -189,31 +276,31 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.CatalogStoreTest.getMovie" />
+        <item itemvalue="JUnit.InMemoryCacheTest.mem" />
+        <item itemvalue="JUnit.ListStoreTest.putAndGetItems" />
         <item itemvalue="JUnit.ApplicationTest" />
         <item itemvalue="JUnit.PasswordUtilTest" />
-        <item itemvalue="JUnit.ApplicationTest.updatePassword" />
-        <item itemvalue="JUnit.ListStoreTest.putAndGetItems" />
-        <item itemvalue="JUnit.MetadataSourceTest.tmdb" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

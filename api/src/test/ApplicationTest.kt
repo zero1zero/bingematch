@@ -1,22 +1,21 @@
-import Login
-import Register
-import UpdateUser
-import User
+package test
+
 import UserWToken
 import auth.JwtConfig
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.setBody
-import io.ktor.server.testing.withTestApplication
+import etc.Login
+import etc.Register
+import etc.UpdateUser
+import etc.User
+import io.ktor.http.*
+import io.ktor.server.testing.*
 import module
 import objectMapper
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import kotlin.test.*
-
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.fail
 
 class ApplicationTest {
 
@@ -195,7 +194,7 @@ class ApplicationTest {
 //
 //        withTestApplication({ module() }) {
 //
-//            val updateUser = UpdateUser(user.email, "5039843253", "hello there")
+//            val updateUser = etc.UpdateUser(user.email, "5039843253", "hello there")
 //
 //            handleRequest(HttpMethod.Put, "/user/${user.id}") {
 //                addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(user)}")

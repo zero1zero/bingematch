@@ -1,13 +1,9 @@
 package routing
 
-import io.ktor.application.call
-import io.ktor.auth.UserIdPrincipal
-import io.ktor.auth.principal
+import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.routing.*
 import store.UserStore
-import io.ktor.routing.Routing
-import io.ktor.routing.get
-import io.ktor.routing.post
-import io.ktor.routing.route
 
 
 fun Routing.queue(userStore : UserStore) {

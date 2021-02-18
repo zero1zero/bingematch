@@ -1,3 +1,5 @@
+package catalog
+
 import com.fasterxml.jackson.databind.JsonNode
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.jackson.responseObject
@@ -5,14 +7,7 @@ import com.github.kittinunf.fuel.jackson.responseObject
 
 class MetadataSource {
 
-    /**
-     * The Open Movie Database
-     * http://www.omdbapi.com/
-     *
-     * Better posters?
-     */
-    class OMDb {
-    }
+    val tmdb = TMDB()
 
     /**
      * The Movie DB
@@ -28,10 +23,37 @@ class MetadataSource {
     class TMDB {
 
         val key = "ba647fb82147021ea5fd00ccf6ebb571"
+        val baseURL = "https://api.themoviedb.org/3"
 
-        fun getMostPopular() : JsonNode {
+        fun getMovie(tmdbId : Int) : JsonNode {
             val (request, response, result) = Fuel.get(
-                "https://api.themoviedb.org/3/discover/movie", listOf(
+                "$baseURL/movie/$tmdbId", listOf(
+                    "api_key" to key,
+                    "language" to "en",
+                    "append_to_response" to "videos,images,recommendations,similar,watch/providers"
+                ))
+                .responseObject<JsonNode>()
+
+            return result.get()
+        }
+
+        fun getPopular() : JsonNode {
+            val (request, response, result) = Fuel.get(
+                "$baseURL/discover/movie", listOf(
+                    "api_key" to key,
+                    "language" to "en",
+                    "sort_by" to "popularity.desc",
+                    "include_adult" to "false",
+                    "include_video" to "true"
+                ))
+                .responseObject<JsonNode>()
+
+            return result.get()
+        }
+
+        fun getTrending() : JsonNode {
+            val (request, response, result) = Fuel.get(
+                "$baseURL/trending/all/week", listOf(
                     "api_key" to key,
                     "language" to "en",
                     "sort_by" to "popularity.desc",
@@ -49,6 +71,15 @@ class MetadataSource {
      */
     class EntertainmentDataHub {
 
+    }
+
+    /**
+     * The Open Movie Database
+     * http://www.omdbapi.com/
+     *
+     * Better posters?
+     */
+    class OMDb {
     }
 
     /**
@@ -79,11 +110,5 @@ class MetadataSource {
 
             return result.get()
         }
-    }
-
-
-
-    fun getGenres() {
-
     }
 }

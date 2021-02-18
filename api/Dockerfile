@@ -4,7 +4,7 @@ WORKDIR /build
 RUN apt-get update && apt-get install -y protobuf-compiler
 
 COPY . .
-RUN ./gradlew shadowJar
+RUN ./gradlew --no-daemon shadowJar
 
 FROM openjdk:11-jre-slim AS run
 

@@ -1,6 +1,7 @@
+package etc
+
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.apache.commons.lang3.RandomStringUtils
-import java.time.Instant
 import java.time.LocalDate
 
 data class Register(

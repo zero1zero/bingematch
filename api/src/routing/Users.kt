@@ -1,29 +1,27 @@
 package routing
 
-import Login
-import Register
-import store.UserStore
-import UpdateUser
-import User
-import store.UserAlreadyExists
 import UserWToken
 import auth.JwtConfig
-import io.ktor.application.call
-import io.ktor.auth.ForbiddenResponse
-import io.ktor.auth.authenticate
-import io.ktor.http.HttpStatusCode
-import io.ktor.request.receive
-import io.ktor.response.respond
-import io.ktor.response.respondText
+import etc.Login
+import etc.Register
+import etc.UpdateUser
+import etc.User
+import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.http.*
+import io.ktor.request.*
+import io.ktor.response.*
 import io.ktor.routing.*
 import principalNoMatch
+import store.UserAlreadyExists
+import store.UserStore
 
 fun Routing.user(userStore : UserStore) {
 
     route("/user") {
 
         /**
-         * Login user
+         * etc.Login user
          */
         post("/login") {
             val credentials = call.receive<Login>()

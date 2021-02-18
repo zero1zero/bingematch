@@ -1,3 +1,5 @@
+package etc
+
 import at.favre.lib.crypto.bcrypt.BCrypt
 
 class PasswordUtil {
@@ -5,7 +7,7 @@ class PasswordUtil {
     val bcrypt = BCrypt.withDefaults()
     val verifier = BCrypt.verifyer()
 
-//    fun hashIfClear(user : User) {
+//    fun hashIfClear(user : etc.User) {
 //        if (!isHashed(user.hash)) {
 //            user.hash = hash(user.hash)
 //        }
