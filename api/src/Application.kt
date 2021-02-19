@@ -18,6 +18,7 @@ import io.ktor.http.*
 import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 import org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
 import org.junit.platform.launcher.core.LauncherFactory
@@ -25,6 +26,8 @@ import org.junit.platform.launcher.listeners.SummaryGeneratingListener
 import routing.user
 import store.AWSUtil
 import store.UserStore
+import test.ApplicationTest
+import test.RedisCacheTest
 import java.io.PrintWriter
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -117,7 +120,10 @@ fun Application.module() {
 
                 val listener = SummaryGeneratingListener()
                 val request = LauncherDiscoveryRequestBuilder.request()
-                    .selectors(selectPackage("test"))
+                    .selectors(
+                        selectClass(ApplicationTest::class.java),
+                        selectClass(RedisCacheTest::class.java)
+                    )
                     .build()
                 val launcher = LauncherFactory.create()
                 launcher.discover(request)
