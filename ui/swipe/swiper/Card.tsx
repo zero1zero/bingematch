@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import {Animated, Dimensions, PanResponder, useWindowDimensions} from "react-native";
+import React, {useRef} from "react";
+import {Animated, PanResponder, useWindowDimensions} from "react-native";
 
 export interface Props {
     movable,

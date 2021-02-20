@@ -1,0 +1,66 @@
+plugins {
+  id 'java-library'
+  id 'com.google.protobuf' version '0.8.15'
+}
+
+project.ext.set('protobufVersion', '3.9.2')
+project.ext.set('protocVersion', project.protobufVersion)
+
+group 'com.bingematch'
+version '0.0.1'
+
+repositories {
+  jcenter()
+  mavenCentral()
+}
+
+dependencies {
+  implementation  'com.google.protobuf:protobuf-java:3.11.0'
+}
+
+sourceSets {
+  main.proto.srcDirs = ['proto']
+  main.java.srcDirs = ["$buildDir/classes/java/main"]
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:${protocVersion}"
+  }
+  plugins {
+    ts {
+      path = file(
+        './node_modules/.bin/protoc-gen-ts'
+      )
+    }
+  }
+  generateProtoTasks {
+    generateProto.finalizedBy copyGeneratedProto
+    all().each { task ->
+      task.plugins {
+        ts {}
+      }
+      task.builtins {
+        java{}
+        js {
+          option 'import_style=commonjs,binary'
+        }
+      }
+      task.dependsOn npmInstall
+    }
+  }
+}
+
+task copyGeneratedProto(type: Copy) {
+  from "$protobuf.generatedFilesBaseDir/main/ts", "$protobuf.generatedFilesBaseDir/main/js"
+  into '../ui/swipe/model'
+}
+
+task npmInstall(type: Exec) {
+  description 'Installs node dependencies'
+  inputs.file('yarn.lock').withPathSensitivity(PathSensitivity.RELATIVE)
+  outputs.dir('node_modules')
+  outputs.cacheIf { true }
+  commandLine 'npm', 'install'
+}
+

@@ -3,12 +3,6 @@ import cache.Cache
 import cache.RedisCache
 import catalog.Catalog
 import catalog.MetadataSource
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.databind.exc.InvalidFormatException
-import com.fasterxml.jackson.databind.exc.ValueInstantiationException
-import com.fasterxml.jackson.databind.module.SimpleModule
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import etc.PasswordUtil
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -16,13 +10,16 @@ import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.jackson.*
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import io.ktor.util.pipeline.*
 import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
-import org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
 import org.junit.platform.launcher.core.LauncherFactory
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener
+import queue.Queues
+import routing.queue
 import routing.user
 import store.AWSUtil
 import store.UserStore
@@ -43,6 +40,7 @@ fun Application.module() {
 
     val cache : Cache = RedisCache()
     val catalog = Catalog(metadata, cache)
+    val queue = Queues(catalog)
 
     environment.monitor.subscribe(ApplicationStarted){
         println("LET'S ROCKKKKK")
@@ -89,26 +87,6 @@ fun Application.module() {
         }
     }
 
-    install(StatusPages) {
-        exception<ValueInstantiationException> { cause ->
-            call.respond(HttpStatusCode.BadRequest, cause.originalMessage)
-        }
-
-        exception<InvalidFormatException> { cause ->
-            call.respond(HttpStatusCode.BadRequest, cause.originalMessage)
-        }
-    }
-
-    install(ContentNegotiation) {
-        register(ContentType.Application.Json, JacksonConverter(objectMapper.apply {
-            enable(SerializationFeature.INDENT_OUTPUT)
-            registerModule(JavaTimeModule())
-
-            val module = SimpleModule()
-            registerModule(module)
-        }))
-    }
-
     routing {
         route("/ready") {
             get("/") {
@@ -127,8 +105,8 @@ fun Application.module() {
                     .build()
                 val launcher = LauncherFactory.create()
                 launcher.discover(request)
-                launcher.registerTestExecutionListeners(listener);
-                launcher.execute(request);
+                launcher.registerTestExecutionListeners(listener)
+                launcher.execute(request)
 
                 val summary = listener.summary
 
@@ -141,7 +119,7 @@ fun Application.module() {
 
         //all users stuff
         user(storage)
-
+        queue(queue)
     }
 }
 
@@ -156,6 +134,4 @@ suspend fun principalNoMatch(userId: String, call: ApplicationCall): Boolean {
 
     return false
 }
-
-val objectMapper = ObjectMapper()
 

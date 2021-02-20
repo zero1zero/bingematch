@@ -1,15 +1,48 @@
-import React, {Component, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
-import {data} from "./data";
-import {View, StyleSheet, Text, Animated, ImageBackground, useWindowDimensions} from "react-native";
+import {Animated, ImageBackground, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import Cards from "./swiper/Cards";
-
-let cards = [...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data]
 
 export interface Props {
 }
 
 const Deck : React.FC<Props> = (props) => {
+
+    const queue = []
+
+    fetch('http://192.168.64.2/api/queue/', {
+        method: 'GET',
+    }).then(r => {
+        console.log(r.status)
+
+    })
+        // let deserialize = AllItems.decode()
+        // let item : Item = allItems[0]
+        // console.log(item.getId())
+    // .then(bytes => {
+    //     // let allItems = proto.queue.AllItems.deserializeBinary(Uint8Array.from(bytes))
+    //     // console.log(allItems[0])
+    // })
+
+    // fetch('http://192.168.64.2/api/queue/', {
+    //     method: 'GET',
+    // }).then(r => {
+    //     return r.blob()
+    // }).then(blob => {
+    //     let t = new TextEncoder()
+    //     console.log(blob)
+    //     // let item : proto.queue.Item = allItems[0]
+    //     // console.log(item.getId())
+    //     // return r.blob()
+    // })
+    //     .catch(e => {
+    //         console.log(e)
+    //     })
+    // // .then(bytes => {
+    // //     // let allItems = proto.queue.AllItems.deserializeBinary(Uint8Array.from(bytes))
+    // //     // console.log(allItems[0])
+    // // })
+
 
     const window = useWindowDimensions();
     const cardHeight = window.height * .9
@@ -29,7 +62,7 @@ const Deck : React.FC<Props> = (props) => {
     return (
         <View style={styles.container}>
             <Cards
-                items={cards}
+                items={queue}
                 showableCards={5}
                 onMoveStart={() => {}}
                 onSwipeUp={(item, index) => update("up", item, index)}

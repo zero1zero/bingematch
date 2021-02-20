@@ -2,7 +2,8 @@ package catalog
 
 import cache.InMemoryCache
 import org.junit.Test
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
 
 internal class CatalogTest {
 

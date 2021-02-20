@@ -1,16 +1,20 @@
 package store
 
 import com.google.common.base.Joiner
-import movie.Queue
+import queue.Queue
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
-import software.amazon.awssdk.services.dynamodb.model.*
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue
+import software.amazon.awssdk.services.dynamodb.model.BatchWriteItemRequest
+import software.amazon.awssdk.services.dynamodb.model.QueryRequest
+import software.amazon.awssdk.services.dynamodb.model.QueryResponse
+import software.amazon.awssdk.services.dynamodb.model.WriteRequest
 
 
 class QueueStore(private val ddb : DynamoDbClient) {
 
-    private val table = "list"
+    private val table = "queue"
 
-    fun addToList(userId : String, items: List<Queue.Item>) {
+    fun addToQueue(userId : String, items: List<Queue.Item>) {
         val allOperations = items.map { item ->
             val attrs = mapOf(
                 "id" to AttributeValue.builder()
@@ -36,7 +40,7 @@ class QueueStore(private val ddb : DynamoDbClient) {
         ddb.batchWriteItem(batch)
     }
 
-    fun getUserList(userId : String, state : Queue.Item.State) : List<Queue.Item> {
+    fun getUserQueue(userId : String, state : Queue.Item.State) : List<Queue.Item> {
         val attrs = mapOf(
             ":userState" to AttributeValue.builder()
                 .s(Joiner.on("-").join(userId, state.number))

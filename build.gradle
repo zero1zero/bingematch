@@ -14,8 +14,6 @@ task deployApi {
 
   def ver = project.hasProperty('version') ? project.getProperty('version') : "local-" + new Random().nextInt(10)
 
-print(ver)
-
   doLast {
     exec {
       commandLine "docker build -f api/Dockerfile -t bingewatch-api:${ver} api".split(' ')

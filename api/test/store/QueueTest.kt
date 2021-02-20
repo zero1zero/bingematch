@@ -1,12 +1,12 @@
 package store
 
 import etc.generateId
-import movie.Queue
 import org.apache.commons.lang3.RandomUtils
 import org.junit.Test
+import queue.Queue
 import kotlin.test.assertEquals
 
-internal class QueueStoreTest {
+internal class QueueTest {
 
     @Test
     fun putAndGetItems() {
@@ -20,17 +20,16 @@ internal class QueueStoreTest {
                 .setState(Queue.Item.State.Queued)
                 .build()
         }
+
+        queueStore.addToQueue("tester", items)
+
+        val queried = queueStore.getUserQueue("tester", Queue.Item.State.Queued)
             .sortedBy { it.id }
 
-        queueStore.addToList("tester", items)
-
-        val queried = queueStore.getUserList("tester", Queue.Item.State.Queued)
-            .sortedBy { it.id }
-
-        assertEquals(items, queried)
+        assertEquals(items.intersect(queried).size, items.size)
 
         queueStore.deleteQueueItems(queried.map { it.id })
 
-        assertEquals(0, queueStore.getUserList("tester", Queue.Item.State.Queued).size)
+        assertEquals(0, queueStore.getUserQueue("tester", Queue.Item.State.Queued).size)
     }
 }

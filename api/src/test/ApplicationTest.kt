@@ -4,7 +4,6 @@ import auth.JwtConfig
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import module
-import objectMapper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.BeforeClass
@@ -32,10 +31,10 @@ class ApplicationTest {
             handleRequest(HttpMethod.Post, "/user/login") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-                setBody(objectMapper.writeValueAsString(User.Login.newBuilder()
+                setBody(User.Login.newBuilder()
                     .setEmail(testRegister.email)
                     .setPassword(testRegister.password)
-                    .build()))
+                    .build().toByteString().toString())
             }.apply {
                 if (response.status() == HttpStatusCode.Forbidden) {
                     latch.countDown()
@@ -62,12 +61,12 @@ class ApplicationTest {
             handleRequest(HttpMethod.Post, "/user") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-                setBody(objectMapper.writeValueAsString(testRegister))
+                setBody(testRegister.toByteString().toString())
             }.apply {
                 if (response.content == "user-exists") {
                     fail("user-exists during attempt to create, something is wrong with the test flow")
                 }
-                val userwtoken = objectMapper.readValue(response.content, User.DetailAndToken::class.java)
+                val userwtoken = User.DetailAndToken.parseFrom(response.byteContent)
                 user = userwtoken.detail
             }
         }
@@ -81,10 +80,10 @@ class ApplicationTest {
             handleRequest(HttpMethod.Post, "/user/login") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-                setBody(objectMapper.writeValueAsString(User.Login.newBuilder()
+                setBody(User.Login.newBuilder()
                     .setEmail(testRegister.email)
                     .setPassword("a wrong password")
-                    .build()))
+                    .build().toByteArray())
             }.apply {
                 assertEquals(HttpStatusCode.Forbidden, response.status())
             }
@@ -105,7 +104,7 @@ class ApplicationTest {
             handleRequest(HttpMethod.Post, "/user/login") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-                setBody(objectMapper.writeValueAsString(login))
+                setBody(login.toByteArray())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
 
@@ -118,7 +117,7 @@ class ApplicationTest {
             }
                 .apply {
                     assertEquals(HttpStatusCode.OK, response.status())
-                    val user1 = objectMapper.readValue(response.content, User.Detail::class.java)
+                    val user1 = User.Detail.parseFrom(response.byteContent)
 
                     assertEquals(user.id, user1.id)
                 }
@@ -133,12 +132,13 @@ class ApplicationTest {
 
             val updateUser = User.Detail.newBuilder()
                 .setEmail(user.email)
+                .build()
 
             handleRequest(HttpMethod.Put, "/user/${user.id}") {
                 addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(user)}")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-                setBody(objectMapper.writeValueAsString(updateUser))
+                setBody(updateUser.toByteArray())
             }
                 .apply {
                     assertEquals(HttpStatusCode.OK, response.status())
@@ -150,7 +150,7 @@ class ApplicationTest {
                 .apply {
                     assertEquals(HttpStatusCode.OK, response.status())
 
-                    val user1 = objectMapper.readValue(response.content, User.Detail::class.java)
+                    val user1 = User.Detail.parseFrom(response.byteContent)
 
                     assertEquals(user.id, user1.id)
 //                    assertEquals(updateUser.phone, user1.phone)
@@ -176,7 +176,7 @@ class ApplicationTest {
                 addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(user)}")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-                setBody(objectMapper.writeValueAsString(updateUser))
+                setBody(updateUser.toByteArray())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
@@ -185,10 +185,10 @@ class ApplicationTest {
             handleRequest(HttpMethod.Post, "/user/login") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-                setBody(objectMapper.writeValueAsString(User.Login.newBuilder()
+                setBody(User.Login.newBuilder()
                     .setEmail(user.email)
                     .setPassword("hello there")
-                    .build()))
+                    .build().toByteArray())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
@@ -198,10 +198,10 @@ class ApplicationTest {
                 addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(user)}")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-                setBody(objectMapper.writeValueAsString(User.Update.newBuilder()
+                setBody(User.Update.newBuilder()
                     .setEmail(user.email)
                     .setPassword(testRegister.password)
-                    .build()))
+                    .build().toByteArray())
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
