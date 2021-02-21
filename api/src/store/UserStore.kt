@@ -1,6 +1,7 @@
 package store
 
 import etc.PasswordUtil
+import etc.generateId
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import software.amazon.awssdk.services.dynamodb.model.AttributeValueUpdate
@@ -119,6 +120,7 @@ class UserStore(private val passwordUtil: PasswordUtil,
 
     fun createUser(signUp: User.Register): User.Detail {
         val user = User.Detail.newBuilder()
+            .setId(generateId())
             .setEmail(signUp.email)
             .build()
 

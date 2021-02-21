@@ -14,7 +14,9 @@ const Deck : React.FC<Props> = (props) => {
         method: 'GET',
     }).then(r => {
         console.log(r.status)
-
+        r.json().then(text => {
+            console.log(text)
+        })
     })
 
     const window = useWindowDimensions();

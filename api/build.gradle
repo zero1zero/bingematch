@@ -87,7 +87,7 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
     implementation "org.junit.platform:junit-platform-launcher:1.7.1"
     implementation "io.ktor:ktor-server-tests:$ktor_version"
-    implementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+    implementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.3.0'
 }
 
 compileKotlin {

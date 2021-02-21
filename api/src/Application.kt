@@ -1,22 +1,15 @@
 import auth.JwtConfig
-import cache.Cache
-import cache.RedisCache
-import catalog.Catalog
-import catalog.MetadataSource
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonSerializer
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
-import com.google.protobuf.GeneratedMessageV3
 import com.google.protobuf.Message
-import com.google.protobuf.MessageOrBuilder
-import com.google.protobuf.TypeRegistry
 import com.google.protobuf.util.JsonFormat
-import etc.PasswordUtil
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
@@ -27,43 +20,34 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.util.pipeline.*
+import movie.Movie
 import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
 import org.junit.platform.launcher.core.LauncherFactory
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener
 import queue.Queue
-import queue.Queues
 import routing.queue
 import routing.user
-import store.AWSUtil
-import store.UserStore
-import test.ApplicationTest
 import test.RedisCacheTest
+import user.User
 import java.io.PrintWriter
 import java.text.DateFormat
+import java.util.*
 import kotlin.reflect.KClass
+import kotlin.streams.toList
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+val objectMapper = ObjectMapper()
+
 @Suppress("unused") // Referenced in application.conf
-fun Application.module() {
-
-    //dependencies
-    val passwordUtil = PasswordUtil()
-    val awsUtil = AWSUtil()
-    val storage = UserStore(passwordUtil, awsUtil.ddb)
-    val metadata = MetadataSource()
-
-    val cache : Cache = RedisCache()
-    val catalog = Catalog(metadata, cache)
-    val queue = Queues(catalog)
-
+fun Application.module(deps : Dependencies = ProdDeps()) {
     environment.monitor.subscribe(ApplicationStarted){
         println("LET'S ROCKKKKK")
     }
     environment.monitor.subscribe(ApplicationStopped){
         println("Game over, man")
-        cache.close()
+        deps.cache().close()
     }
 
     install(Authentication) {
@@ -77,7 +61,7 @@ fun Application.module() {
             realm = "bingematch.com"
             validate { it ->
                 it.payload.getClaim("id").asString().let {
-                    UserIdPrincipal(storage.getUser(it).getOrThrow().id)
+                    UserIdPrincipal(deps.storage().getUser(it).getOrThrow().id)
                 }
             }
         }
@@ -115,7 +99,6 @@ fun Application.module() {
                 val listener = SummaryGeneratingListener()
                 val request = LauncherDiscoveryRequestBuilder.request()
                     .selectors(
-                        selectClass(ApplicationTest::class.java),
                         selectClass(RedisCacheTest::class.java)
                     )
                     .build()
@@ -134,33 +117,41 @@ fun Application.module() {
         }
 
         install(ContentNegotiation) {
-            jackson {
+            register(ContentType.Application.Json, JacksonConverter(objectMapper.apply {
                 enable(SerializationFeature.INDENT_OUTPUT)
                 dateFormat = DateFormat.getDateInstance()
 
                 val module = SimpleModule()
-                val messages : Set<KClass<out Message>> = setOf(
-                    Queue.AllItems::class
-                )
+
+                val messages : List<Class<out Message>> = setOf(
+                    User::class,
+                    Queue::class,
+                    Movie::class
+                ).stream().flatMap {
+                    it.java.declaredClasses.asList().stream()
+                }.map { it as Class<out Message> }
+                    .toList()
 
                 messages.forEach { clazz ->
-                    module.addSerializer(clazz.java, ProtoSerializer())
-                    module.addDeserializer(clazz.java, ProtoDeserializer(clazz.java))
+                    module.addSerializer(clazz, ProtoSerializer())
+                    module.addDeserializer(clazz, ProtoDeserializer(clazz))
                 }
                 registerModule(module)
-            }
+            }))
         }
 
         //all users stuff
-        user(storage)
-        queue(queue)
+        user(deps.storage())
+        queue(deps.queues())
     }
 }
 
 class ProtoSerializer : JsonSerializer<Message>() {
 
+    val printer = JsonFormat.printer()
+
     override fun serialize(value: Message, gen: JsonGenerator, serializers: SerializerProvider) {
-        JsonFormat.printer().print(value)
+        gen.writeString(printer.print(value))
     }
 }
 
@@ -169,10 +160,9 @@ class ProtoDeserializer<T>(val clazz : Class<out Message>) : JsonDeserializer<T>
     val parser = JsonFormat.parser()
 
     override fun deserialize(p: JsonParser, ctxt: DeserializationContext): T {
-        val message : Message.Builder = clazz.getDeclaredConstructor().newInstance()
-            .toBuilder()
+        val message : Message.Builder = clazz.getMethod("newBuilder").invoke(null) as Message.Builder
 
-            parser.merge(p.text, message)
+        parser.merge(p.text, message)
 
         return message.build() as T
     }
