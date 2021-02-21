@@ -1,4 +1,5 @@
 import cache.Cache
+import cache.InMemoryCache
 import cache.RedisCache
 import catalog.Catalog
 import catalog.MetadataSource
@@ -16,14 +17,14 @@ interface Dependencies {
 }
 
 open class ProdDeps : Dependencies {
+
     private val passwordUtil = PasswordUtil()
     private val awsUtil = AWSUtil()
     private val metadata = MetadataSource()
-
-    private val storage = UserStore(passwordUtil, awsUtil.ddb)
     private val cache : Cache = RedisCache()
     private val catalog = Catalog(metadata, cache)
     private val queues = Queues(catalog)
+    private val storage = UserStore(passwordUtil, awsUtil.ddb)
 
     override fun storage(): UserStore {
         return storage

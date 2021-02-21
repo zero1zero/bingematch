@@ -3,7 +3,11 @@ import user.User
 import auth.JwtConfig
 import cache.Cache
 import cache.InMemoryCache
+import cache.RedisCache
+import catalog.Catalog
+import catalog.MetadataSource
 import com.fasterxml.jackson.databind.ObjectMapper
+import etc.PasswordUtil
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import module
@@ -12,19 +16,35 @@ import org.junit.Assert.fail
 import org.junit.BeforeClass
 import org.junit.Test
 import queue.Queues
+import store.AWSUtil
 import store.UserStore
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-class TestDeps : ProdDeps() {
-    val cache = InMemoryCache()
+class TestDeps : Dependencies {
+    private val passwordUtil = PasswordUtil()
+    private val awsUtil = AWSUtil()
+    private val metadata = MetadataSource()
+    private val storage = UserStore(passwordUtil, awsUtil.ddb)
+
+    //test overrides
+    private val cache = InMemoryCache()
+    private val catalog = Catalog(metadata, cache)
+    private val queues = Queues(catalog)
+
+    override fun storage(): UserStore {
+        return storage
+    }
+
+    override fun queues(): Queues {
+        return queues
+    }
 
     override fun cache(): Cache {
         return cache
     }
-
 }
 
 class ApplicationTest {
@@ -218,12 +238,12 @@ class ApplicationTest {
                 addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(user)}")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 
-                val updateUser = User.Update.newBuilder()
+                val updated = User.Update.newBuilder()
                     .setEmail(user.email)
                     .setPassword(testRegister.password)
                     .build()
 
-                setBody(objectMapper.writeValueAsString(updateUser))
+                setBody(objectMapper.writeValueAsString(updated))
             }.apply {
                 kotlin.test.assertEquals(HttpStatusCode.OK, response.status())
             }

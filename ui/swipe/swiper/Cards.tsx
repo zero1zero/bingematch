@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {StyleSheet, View} from "react-native";
 import Card from "./Card";
+import {queue} from "../model/compiled";
 
 let offset = 0;
 
 export interface Props {
     showableCards,
-    items,
+    items : queue.IItem[],
     renderItem,
     onSwipe,
     onSwipeUp,

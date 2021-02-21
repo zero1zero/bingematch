@@ -4,6 +4,7 @@ login:
 	aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 990223444407.dkr.ecr.us-west-2.amazonaws.com
 
 deployApi: login
+	./gradlew shadowJar
 	docker build -f api/Dockerfile -t bingematch-api:${version} api
 	docker tag bingematch-api:${version} 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:${version}
 	docker push 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:${version}

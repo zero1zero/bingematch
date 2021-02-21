@@ -1,13 +1,17 @@
 import auth.JwtConfig
+import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.core.io.SegmentedStringWriter
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.google.protobuf.Message
 import com.google.protobuf.util.JsonFormat
 import io.ktor.application.*
@@ -21,6 +25,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.util.pipeline.*
 import movie.Movie
+import org.apache.http.impl.io.EmptyInputStream
 import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
 import org.junit.platform.launcher.core.LauncherFactory
@@ -30,7 +35,17 @@ import routing.queue
 import routing.user
 import test.RedisCacheTest
 import user.User
+import java.io.BufferedWriter
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.io.PipedInputStream
 import java.io.PrintWriter
+import java.io.SequenceInputStream
+import java.io.StringReader
+import java.io.StringWriter
 import java.text.DateFormat
 import java.util.*
 import kotlin.reflect.KClass
@@ -148,21 +163,23 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
 
 class ProtoSerializer : JsonSerializer<Message>() {
 
-    val printer = JsonFormat.printer()
+    private val printer = JsonFormat.printer()
 
     override fun serialize(value: Message, gen: JsonGenerator, serializers: SerializerProvider) {
-        gen.writeString(printer.print(value))
+        gen.writeRawValue(printer.print(value))
     }
 }
 
-class ProtoDeserializer<T>(val clazz : Class<out Message>) : JsonDeserializer<T>() {
+class ProtoDeserializer<T>(private val clazz : Class<out Message>) : StdDeserializer<T>(clazz) {
 
-    val parser = JsonFormat.parser()
+    private val parser = JsonFormat.parser()
 
     override fun deserialize(p: JsonParser, ctxt: DeserializationContext): T {
         val message : Message.Builder = clazz.getMethod("newBuilder").invoke(null) as Message.Builder
 
-        parser.merge(p.text, message)
+        val node = p.readValueAsTree<ObjectNode>()
+
+        parser.merge(node.toString(), message)
 
         return message.build() as T
     }

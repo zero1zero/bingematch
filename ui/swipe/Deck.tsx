@@ -2,22 +2,18 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {Animated, ImageBackground, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import Cards from "./swiper/Cards";
+import Api from "./api/api";
+import {queue} from "./model/compiled";
+import {act} from "react-dom/test-utils";
 
 export interface Props {
 }
 
 const Deck : React.FC<Props> = (props) => {
 
-    const queue = []
+    const [activeQueue, setActiveQueue] = useState(new queue.AllItems())
 
-    fetch('http://192.168.64.2/api/queue/', {
-        method: 'GET',
-    }).then(r => {
-        console.log(r.status)
-        r.json().then(text => {
-            console.log(text)
-        })
-    })
+    const api = new Api()
 
     const window = useWindowDimensions();
     const cardHeight = window.height * .9
@@ -30,14 +26,21 @@ const Deck : React.FC<Props> = (props) => {
         setStatus(status)
     }
 
+    const hydrate = () => {
+        api.popular().then(items => {
+            setActiveQueue(items)
+        })
+    }
     // removing any status
     useEffect(() => {
         setStatus("");
+        hydrate()
+
     }, []);
     return (
         <View style={styles.container}>
             <Cards
-                items={queue}
+                items={activeQueue.items}
                 showableCards={5}
                 onMoveStart={() => {}}
                 onSwipeUp={(item, index) => update("up", item, index)}
@@ -59,6 +62,7 @@ const Deck : React.FC<Props> = (props) => {
                     ]).start();
                 }}
                 onDataEnd={() => {
+                    hydrate()
                     console.log("done with items")
                     // hiding the status after one second of the final swipe
                     setTimeout(() => {
@@ -69,10 +73,10 @@ const Deck : React.FC<Props> = (props) => {
                     }, 1000);
 
                 }}
-                renderItem={(item) => (
+                renderItem={(item : queue.IItem) => (
                     <View style={{height: cardHeight, width: cardWidth, ...styles.box, ...styles.shadow}}>
-                        <ImageBackground style={styles.image} source={{uri: item.pics[0]}}/>
-                        <Text>{item.name}</Text>
+                        <ImageBackground style={styles.image} source={{uri: `https://image.tmdb.org/t/p/w500${item.movie.posterPath}`}}/>
+                        <Text>{item.movie.title}</Text>
                     </View>
                 )}
             />
