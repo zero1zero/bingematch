@@ -14,7 +14,7 @@ fun Routing.queue(queues : Queues) {
         get("/") {
             val principal = call.principal<UserIdPrincipal>()
 
-            call.respond(queues.getQueued().toByteArray())
+            call.respond(queues.getQueued())
         }
     }
 }

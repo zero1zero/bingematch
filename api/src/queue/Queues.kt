@@ -3,7 +3,6 @@ package queue
 import catalog.Catalog
 import etc.generateId
 
-
 class Queues(private val catalog : Catalog) {
 
     fun getQueued() : Queue.AllItems {

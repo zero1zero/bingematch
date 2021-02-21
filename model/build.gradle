@@ -20,7 +20,7 @@ dependencies {
 
 sourceSets {
   main.proto.srcDirs = ['proto']
-  main.java.srcDirs = ["$buildDir/classes/java/main"]
+  main.java.srcDirs = ["$buildDir/generated/source/proto/main/java"]
 }
 
 protobuf {

@@ -3,6 +3,19 @@ import cache.Cache
 import cache.RedisCache
 import catalog.Catalog
 import catalog.MetadataSource
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.JsonDeserializer
+import com.fasterxml.jackson.databind.JsonSerializer
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.module.SimpleModule
+import com.google.protobuf.GeneratedMessageV3
+import com.google.protobuf.Message
+import com.google.protobuf.MessageOrBuilder
+import com.google.protobuf.TypeRegistry
+import com.google.protobuf.util.JsonFormat
 import etc.PasswordUtil
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -18,6 +31,7 @@ import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
 import org.junit.platform.launcher.core.LauncherFactory
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener
+import queue.Queue
 import queue.Queues
 import routing.queue
 import routing.user
@@ -26,6 +40,8 @@ import store.UserStore
 import test.ApplicationTest
 import test.RedisCacheTest
 import java.io.PrintWriter
+import java.text.DateFormat
+import kotlin.reflect.KClass
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -117,9 +133,48 @@ fun Application.module() {
             }
         }
 
+        install(ContentNegotiation) {
+            jackson {
+                enable(SerializationFeature.INDENT_OUTPUT)
+                dateFormat = DateFormat.getDateInstance()
+
+                val module = SimpleModule()
+                val messages : Set<KClass<out Message>> = setOf(
+                    Queue.AllItems::class
+                )
+
+                messages.forEach { clazz ->
+                    module.addSerializer(clazz.java, ProtoSerializer())
+                    module.addDeserializer(clazz.java, ProtoDeserializer(clazz.java))
+                }
+                registerModule(module)
+            }
+        }
+
         //all users stuff
         user(storage)
         queue(queue)
+    }
+}
+
+class ProtoSerializer : JsonSerializer<Message>() {
+
+    override fun serialize(value: Message, gen: JsonGenerator, serializers: SerializerProvider) {
+        JsonFormat.printer().print(value)
+    }
+}
+
+class ProtoDeserializer<T>(val clazz : Class<out Message>) : JsonDeserializer<T>() {
+
+    val parser = JsonFormat.parser()
+
+    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): T {
+        val message : Message.Builder = clazz.getDeclaredConstructor().newInstance()
+            .toBuilder()
+
+            parser.merge(p.text, message)
+
+        return message.build() as T
     }
 }
 

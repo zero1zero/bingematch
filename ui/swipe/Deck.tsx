@@ -16,33 +16,6 @@ const Deck : React.FC<Props> = (props) => {
         console.log(r.status)
 
     })
-        // let deserialize = AllItems.decode()
-        // let item : Item = allItems[0]
-        // console.log(item.getId())
-    // .then(bytes => {
-    //     // let allItems = proto.queue.AllItems.deserializeBinary(Uint8Array.from(bytes))
-    //     // console.log(allItems[0])
-    // })
-
-    // fetch('http://192.168.64.2/api/queue/', {
-    //     method: 'GET',
-    // }).then(r => {
-    //     return r.blob()
-    // }).then(blob => {
-    //     let t = new TextEncoder()
-    //     console.log(blob)
-    //     // let item : proto.queue.Item = allItems[0]
-    //     // console.log(item.getId())
-    //     // return r.blob()
-    // })
-    //     .catch(e => {
-    //         console.log(e)
-    //     })
-    // // .then(bytes => {
-    // //     // let allItems = proto.queue.AllItems.deserializeBinary(Uint8Array.from(bytes))
-    // //     // console.log(allItems[0])
-    // // })
-
 
     const window = useWindowDimensions();
     const cardHeight = window.height * .9
