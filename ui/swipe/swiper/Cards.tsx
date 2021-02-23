@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 import {StyleSheet, View} from "react-native";
 import Card from "./Card";
 import {queue} from "../model/compiled";
@@ -8,7 +8,7 @@ let offset = 0;
 export interface Props {
     showableCards,
     items : queue.IItem[],
-    renderItem,
+    renderItem : (item : queue.IItem, index : number) => ReactNode,
     onSwipe,
     onSwipeUp,
     onSwipeDown,
@@ -26,7 +26,7 @@ const Cards : React.FC<Props> = (props) => {
     }, []);
 
     return (
-        <View>
+        <>
             {props.items
                 .slice(0, props.showableCards)
                 .reverse()
@@ -38,7 +38,6 @@ const Cards : React.FC<Props> = (props) => {
                             : props.items.length - index - 1;
                     return (
                         <Card
-                            movable={currentCardIdx === index + offset}
                             onSwipe={() => {
                                 props.items.shift();
                                 offset++;
@@ -49,11 +48,6 @@ const Cards : React.FC<Props> = (props) => {
                                 if (props.onDataEnd && props.items.length === 0) {
                                     props.onDataEnd();
                                 }
-                            }}
-                            cardStyles={{
-                                ...(currentCardIdx !== index + offset
-                                    ? { ...styles.card }
-                                    : {}),
                             }}
                             onSwipeUp={props.onSwipeUp}
                             onSwipeDown={props.onSwipeDown}
@@ -67,15 +61,8 @@ const Cards : React.FC<Props> = (props) => {
                         />
                     );
                 })}
-        </View>
+        </>
     );
 };
-
-const styles = StyleSheet.create({
-    card: {
-        position: "absolute",
-        zIndex: -1,
-    },
-});
 
 export default Cards;

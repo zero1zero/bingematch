@@ -1,13 +1,18 @@
-import React, {useRef} from "react";
-import {Animated, PanResponder, useWindowDimensions} from "react-native";
+import React, {ReactNode, useRef} from "react";
+import {
+    Animated,
+    GestureResponderEvent,
+    PanResponder,
+    PanResponderGestureState,
+    useWindowDimensions
+} from "react-native";
+import {queue} from "../model/compiled";
 
 export interface Props {
-    movable,
     onSwipe,
-    cardStyles,
     item,
     index,
-    renderItem,
+    renderItem : (item : queue.IItem, index : number) => ReactNode,
     onSwipeRight,
     onSwipeLeft,
     onSwipeUp,
@@ -44,14 +49,6 @@ let triggerDownSwipe = (props : Props) => {
 }
 
 const Card : React.FC<Props> = (props) => {
-    if (!props.movable) {
-        return (
-            <Animated.View style={props.cardStyles}>
-                {props.renderItem(props.item, props.index)}
-            </Animated.View>
-        );
-    }
-
     const card = useRef(new Animated.ValueXY()).current;
     const scale = useRef(new Animated.Value(1)).current;
     const rotate = useRef(new Animated.Value(0)).current;
@@ -61,19 +58,21 @@ const Card : React.FC<Props> = (props) => {
     const window = useWindowDimensions();
     const WIDTH_HALF = window.width / 2;
     const HEIGHT_HALF = window.height / 2;
+    const moved = (evt : GestureResponderEvent, gestureState : PanResponderGestureState) => {
+        return Math.abs(gestureState.dx) >= 1 || Math.abs(gestureState.dy) >= 1
+    }
 
     const panResponder = useRef(
         PanResponder.create({
             // Ask to be the responder:
-            onStartShouldSetPanResponder: (evt, gestureState) => true,
-            onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+            onStartShouldSetPanResponder: moved,
+            onStartShouldSetPanResponderCapture: moved,
             onMoveShouldSetPanResponder: (evt, gestureState) => true,
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
             onPanResponderGrant: (evt, gestureState) => {
                 // whenever the touch starts it will scale the card to 1.2 value
                 Animated.spring(scale, {
-                    toValue: 1.2,
+                    toValue: 1.05,
                     useNativeDriver: true,
                 }).start();
                 if (props.onMoveStart) {
@@ -88,7 +87,7 @@ const Card : React.FC<Props> = (props) => {
                     y: gestureState.dy,
                 });
                 // and it also sets the rotation value
-                rotate.setValue(gestureState.dx * (1 / WIDTH_HALF));
+                rotate.setValue(gestureState.dx * (.1 / WIDTH_HALF));
 
                 const value = (gestureState.dx / WIDTH_HALF) * 2;
                 if (gestureState.dx > 0) {
@@ -190,7 +189,6 @@ const Card : React.FC<Props> = (props) => {
     return (
         <Animated.View
             style={{
-                ...props.cardStyles,
                 transform: [
                     { scale },
                     { translateX: card.x },

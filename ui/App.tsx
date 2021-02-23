@@ -1,22 +1,19 @@
 import React from 'react';
 import Deck from "./swipe/Deck";
-import {StyleSheet, View} from "react-native";
+import * as eva from '@eva-design/eva';
+import {ApplicationProvider, IconRegistry, Layout, Text} from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 export default function App() {
 
   return (
-      <View style={styles.container}>
+      <ApplicationProvider {...eva} theme={eva.light}>
+          <IconRegistry icons={EvaIconsPack} />
+          <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
 
-          <Deck />
+              <Deck />
 
-      </View>
+          </Layout>
+      </ApplicationProvider>
   );
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});

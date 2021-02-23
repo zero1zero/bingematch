@@ -19,15 +19,6 @@ sourceSets {
   main.proto.srcDirs = ['proto']
   main.java.srcDirs = ["$buildDir/generated/source/proto/main/java"]
 }
-//
-//task npmInstall(type: Exec) {
-//  description 'Installs node dependencies'
-//  inputs.file('yarn.lock').withPathSensitivity(PathSensitivity.RELATIVE)
-//  outputs.dir('node_modules')
-//  outputs.cacheIf { true }
-//  commandLine 'yarn', 'install'
-//}
-
 
 def ts = task ts(type:Exec) {
   commandLine "./node_modules/protobufjs/bin/pbts -o ../ui/swipe/model/compiled.d.ts ../ui/swipe/model/compiled.js".split(' ')
