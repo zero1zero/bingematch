@@ -73,6 +73,9 @@ const Deck : React.FC<Props> = (props) => {
 
     return (
         <View style={styles.home}>
+            <View style={styles.settings}>
+                <Icon name='settings-2' />
+            </View>
             <View style={styles.deck}>
                 <Cards
                     items={activeQueue.items}
@@ -88,11 +91,11 @@ const Deck : React.FC<Props> = (props) => {
                         console.log("done with items")
                     }}
                     renderItem={(item : queue.IItem, index : number) => (
-                        <View style={{...styles.card, width: cardWidth, height: cardHeight}}>
-                            <ImageBackground style={styles.image} source={{uri: `https://image.tmdb.org/t/p/w500${item.movie.posterPath}`}}/>
-                            <View style={styles.details}>
+                        <View style={{...cardStyles.card, width: cardWidth, height: cardHeight}}>
+                            <ImageBackground style={cardStyles.image} source={{uri: `https://image.tmdb.org/t/p/w500${item.movie.posterPath}`}}/>
+                            <View style={cardStyles.details}>
                                 {/*<Text category='h1'>{item.movie.title}</Text>*/}
-                                <Text style={styles.detailsText} numberOfLines={4}>{item.movie.overview}</Text>
+                                <Text style={cardStyles.detailsText} numberOfLines={4}>{item.movie.overview}</Text>
                             </View>
                         </View>
                     )}
@@ -131,19 +134,34 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    settings: {
+        flex: 1,
+
+    },
     deck: {
-        flex: 10,
-        flexDirection: "row",
+        flex: 14,
     },
 
+    actions: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: 'space-around',
+        marginBottom: 16,
+    },
+
+    button: {
+        flex: 1,
+        flexDirection: "column",
+    },
+});
+
+const cardStyles = StyleSheet.create({
     card: {
         position: "absolute",
+        alignSelf: "center",
         zIndex: -1,
         borderRadius: 5,
         backgroundColor: "#FFF",
-
-        left: 17,
-        top: 44,
 
         shadowColor: "#000",
         shadowOffset: {
@@ -155,38 +173,20 @@ const styles = StyleSheet.create({
 
         elevation: 6,
     },
-
     image: {
         flex: 7,
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
         overflow: 'hidden'
     },
-
     details: {
         flex: 2,
         padding: 5,
     },
-
     detailsText: {
         fontSize: 13
     },
-
-    detailsMore: {
-
-    },
-
-    actions: {
-        flex: 1,
-        flexDirection: "row",
-        marginBottom: 16,
-    },
-
-    button: {
-        flex: 1,
-        flexDirection: "column",
-    },
-});
+})
 
 export default Deck;
 
