@@ -1,12 +1,17 @@
-import React, {Component, MutableRefObject, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {RouteProp} from '@react-navigation/native';
 
-import {Animated, ImageBackground, StyleSheet, TouchableHighlight, useWindowDimensions, View} from "react-native";
+import {Animated, ImageBackground, SafeAreaView, StyleSheet, useWindowDimensions, View} from "react-native";
 import Cards from "./swiper/Cards";
-import Api from "./api/api";
+import API from "./api/API";
 import {queue} from "./model/compiled";
-import {Button, Icon, Text} from '@ui-kitten/components';
+import {Button, Icon, Text, TopNavigation, TopNavigationAction} from '@ui-kitten/components';
+import {StackNavigationProp} from "@react-navigation/stack";
+import {RootStackParamList} from "../App";
 
 export interface Props {
+    navigation: StackNavigationProp<RootStackParamList, 'Deck'>,
+    route: RouteProp<RootStackParamList, 'Deck'>,
 }
 
 enum Action{
@@ -27,11 +32,11 @@ const Deck : React.FC<Props> = (props) => {
         hydrate()
     }, []);
 
-    const api = new Api()
+    const api = new API()
 
     const window = useWindowDimensions();
-    const cardHeight = window.height * .84
-    const cardWidth = window.width * .92
+    const cardHeight = window.height * .78
+    const cardWidth = window.width * .96
 
     const actionAnimationState : Map<Action, Animated.Value> = new Map([
        [Action.Dislike, useRef(new Animated.Value(1)).current],
@@ -71,11 +76,18 @@ const Deck : React.FC<Props> = (props) => {
                 onPress={() => {actionPress(action)}}>{text}</Button>
     }
 
+    const profileAction = () => (
+        <TopNavigationAction icon={ () => (<Icon name='person' fill='#8F9BB3' style={styles.settingsIcon} />) }
+            onPress={ () => props.navigation.navigate('Login') }
+        />
+    )
+
     return (
-        <View style={styles.home}>
-            <View style={styles.settings}>
-                <Icon name='settings-2' />
-            </View>
+        <SafeAreaView style={styles.home}>
+            <TopNavigation style={styles.top}
+                title='BingeMatch'
+                accessoryRight={profileAction}
+            />
             <View style={styles.deck}>
                 <Cards
                     items={activeQueue.items}
@@ -124,7 +136,7 @@ const Deck : React.FC<Props> = (props) => {
                     {actionButton(Action.Like, 'I\'d Watch' , 'success', 'heart')}
                 </Animated.View>
             </View>
-        </View>
+        </SafeAreaView>
 );
 }
 
@@ -133,22 +145,28 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
+        backgroundColor: '#f5f3f4'
     },
-    settings: {
-        flex: 1,
-
+    top: {
+        backgroundColor: '#f5f3f4',
+        paddingVertical: 0,
+        marginBottom: 9,
+        minHeight: 35
+    },
+    settingsIcon: {
+        alignSelf: 'flex-end',
+        width: 35,
+        height: 35,
     },
     deck: {
-        flex: 14,
+        flex: 10,
     },
 
     actions: {
-        flex: 1,
         flexDirection: "row",
         justifyContent: 'space-around',
-        marginBottom: 16,
+        alignItems: "center"
     },
-
     button: {
         flex: 1,
         flexDirection: "column",

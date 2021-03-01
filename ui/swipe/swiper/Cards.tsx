@@ -1,9 +1,6 @@
 import React, {ReactNode, useEffect, useState} from "react";
-import {StyleSheet, View} from "react-native";
 import Card from "./Card";
 import {queue} from "../model/compiled";
-
-let offset = 0;
 
 export interface Props {
     showableCards,
@@ -18,6 +15,8 @@ export interface Props {
     onDataEnd,
 }
 const Cards : React.FC<Props> = (props) => {
+
+    let offset = 0;
 
     const [currentCardIdx, setCurrentCardIdx] = useState(0);
 
