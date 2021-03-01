@@ -5,8 +5,9 @@ const tokenKey = 'token'
 
 export default class Storage {
 
-    isLoggedIn = async () => {
+    isLoggedIn = async () : Promise<Boolean> => {
         return this.get(tokenKey)
+            .then(() => tokenKey != null)
     }
 
     clearToken = async () => {
@@ -18,23 +19,29 @@ export default class Storage {
     }
 
     getToken = async () : Promise<string | void> => {
-        return this.get(tokenKey)
+        return await this.get(tokenKey)
             .then(token => {
-                jwt_decode(token);
+                if (!token) {
+                    return
+                }
+                return token
             })
     }
 
+    getUserFromToken = (token : string) : string => {
+        const decoded = jwt_decode(token);
+        // @ts-ignore
+        return decoded.id
+    }
+
     getUser = async () : Promise<string | void> => {
-        return this.getToken()
+        return await this.getToken()
             .then(token => {
                 if (!token) {
                     return
                 }
 
-                const decoded = jwt_decode(token);
-
-                // @ts-ignore
-                return decoded.id
+                return this.getUserFromToken(token)
             })
     }
 

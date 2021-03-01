@@ -10,7 +10,7 @@ import store.UserStore
 
 interface Dependencies {
 
-    fun storage() : UserStore
+    fun userStore() : UserStore
     fun queues() : Queues
     fun cache() : Cache
 
@@ -26,7 +26,7 @@ open class ProdDeps : Dependencies {
     private val queues = Queues(catalog)
     private val storage = UserStore(passwordUtil, awsUtil.ddb)
 
-    override fun storage(): UserStore {
+    override fun userStore(): UserStore {
         return storage
     }
 

@@ -8,9 +8,11 @@ const { apiUrl } = getEnvVars();
 
 export default class API {
 
-    static instance = new API()
+    private storage : Storage
 
-    private storage : Storage = new Storage()
+    constructor(storage: Storage) {
+        this.storage = storage
+    }
 
     signup = async (signup: user.IRegister) : Promise<user.DetailAndToken> => {
         return this.post('/user/', signup)
@@ -18,9 +20,18 @@ export default class API {
             .then(json => user.DetailAndToken.fromObject(json))
     }
 
+    deleteUser = async (id : string) : Promise<void> => {
+        return this.delete('/user/' + id)
+            .then(() => {return})
+    }
+
     login = async (login: user.ILogin) : Promise<string> => {
-        return this.post('/login/', login)
+        return this.post('/user/login/', login)
             .then(r => r.text())
+            .then(token => {
+                return this.storage.setToken(token)
+                    .then(() => token)
+            })
     }
 
     popular = async () : Promise<queue.AllItems> => {
@@ -29,81 +40,97 @@ export default class API {
             .then(json => queue.AllItems.fromObject(json))
     }
 
-    delete = async (url: string, authenticate = false): Promise<Response> => {
-        return new Promise((resolve, reject) => {
-            const headers: Record<string, string> = {}
+    /*
+     *  General purpose below
+     */
 
-            if (authenticate) {
-                headers['Authorization'] = 'Bearer ' + this.storage.getToken()
-            }
+    delete = async (url: string): Promise<Response> => {
+        return this.storage.getToken()
+            .then(token => {
+                return new Promise((resolve, reject) => {
+                    const headers: Record<string, string> = {}
 
-            fetch(apiUrl + url, {
-                headers: headers,
-                method: 'delete'
+                    if (token) {
+                        headers['Authorization'] = 'Bearer ' + token
+                    }
+
+                    fetch(apiUrl + url, {
+                        headers: headers,
+                        method: 'delete'
+                    })
+                        .then(r => r.ok ? resolve(r) : reject(r))
+                        .catch(error => reject(error))
+                });
             })
-                .then(r => r.ok ? resolve(r) : reject(r))
-                .catch(error => reject(error))
-        });
     }
 
-    get = async (url: string, authenticate = false): Promise<Response> => {
-        return new Promise((resolve, reject) => {
-            const headers: Record<string, string> = {
-                'Accept': 'application/json',
-            };
+    get = async (url: string): Promise<Response> => {
+        return this.storage.getToken()
+            .then(token => {
+                return new Promise((resolve, reject) => {
+                    const headers: Record<string, string> = {
+                        'Accept': 'application/json',
+                    }
 
-            if (authenticate) {
-                headers['Authorization'] = 'Bearer ' + this.storage.getToken()
-            }
+                    if (token) {
+                        headers['Authorization'] = 'Bearer ' + token
+                    }
 
-            fetch(apiUrl + url, {
-                headers: headers,
-                method: 'get'
+                    fetch(apiUrl + url, {
+                        headers: headers,
+                        method: 'get'
+                    })
+                        .then(r => r.ok ? resolve(r) : reject(r))
+                        .catch(error => reject(error))
+                })
             })
-                .then(r => r.ok ? resolve(r) : reject(r))
-                .catch(error => reject(error))
-        });
     }
 
-    post = async (url: string, payload: any, guest = false): Promise<Response> => {
-        return new Promise<Response>((resolve, reject) => {
-            const headers: Record<string, string> = {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            };
+    post = async (url: string, payload: any): Promise<Response> => {
+        return this.storage.getToken()
+            .then(token => {
+                return new Promise<Response>((resolve, reject) => {
+                    const headers: Record<string, string> = {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    };
 
-            if (!guest) {
-                headers['Authorization'] = 'Bearer ' + this.storage.getToken()
-            }
+                    if (token) {
+                        headers['Authorization'] = 'Bearer ' + token
+                    }
 
-            fetch(apiUrl + url, {
-                headers: headers,
-                method: 'post',
-                body: JSON.stringify(payload)
+                    fetch(apiUrl + url, {
+                        headers: headers,
+                        method: 'post',
+                        body: JSON.stringify(payload)
+                    })
+                        .then(r => r.ok ? resolve(r) : reject(r))
+                        .catch(error => reject(error))
+                });
             })
-                .then(r => r.ok ? resolve(r) : reject(r))
-                .catch(error => reject(error))
-        });
     }
 
-    put = async (url: string, payload: any, guest = false): Promise<Response> => {
-        return new Promise<Response>((resolve, reject) => {
-            const headers: Record<string, string> = {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            };
+    put = async (url: string, payload: any): Promise<Response> => {
+        return this.storage.getToken()
+            .then(token => {
+                return new Promise<Response>((resolve, reject) => {
+                    const headers: Record<string, string> = {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    };
 
-            if (!guest) {
-                headers['Authorization'] = 'Bearer ' + this.storage.getToken()
-            }
+                    if (token) {
+                        headers['Authorization'] = 'Bearer ' + token
+                    }
 
-            fetch(apiUrl + url, {
-                headers: headers,
-                method: 'put',
-                body: JSON.stringify(payload)
+                    fetch(apiUrl + url, {
+                        headers: headers,
+                        method: 'put',
+                        body: JSON.stringify(payload)
+                    })
+                        .then(r => r.ok ? resolve(r) : reject(r))
+                        .catch(error => reject(error))
+                });
             })
-                .then(r => r.ok ? resolve(r) : reject(r))
-                .catch(error => reject(error))
-        });
     }
 }

@@ -1,10 +1,7 @@
 import auth.JwtConfig
-import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.core.io.SegmentedStringWriter
 import com.fasterxml.jackson.databind.DeserializationContext
-import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -20,12 +17,9 @@ import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.jackson.*
-import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.util.pipeline.*
 import movie.Movie
-import org.apache.http.impl.io.EmptyInputStream
 import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
 import org.junit.platform.launcher.core.LauncherFactory
@@ -35,20 +29,8 @@ import routing.queue
 import routing.user
 import test.RedisCacheTest
 import user.User
-import java.io.BufferedWriter
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
-import java.io.PipedInputStream
 import java.io.PrintWriter
-import java.io.SequenceInputStream
-import java.io.StringReader
-import java.io.StringWriter
 import java.text.DateFormat
-import java.util.*
-import kotlin.reflect.KClass
 import kotlin.streams.toList
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -76,7 +58,7 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
             realm = "bingematch.com"
             validate { it ->
                 it.payload.getClaim("id").asString().let {
-                    UserIdPrincipal(deps.storage().getUser(it).getOrThrow().id)
+                    UserIdPrincipal(deps.userStore().getUser(it).getOrThrow().id)
                 }
             }
         }
@@ -156,7 +138,7 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
         }
 
         //all users stuff
-        user(deps.storage())
+        user(deps.userStore())
         queue(deps.queues())
     }
 }

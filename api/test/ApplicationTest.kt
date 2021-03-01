@@ -34,7 +34,7 @@ class TestDeps : Dependencies {
     private val catalog = Catalog(metadata, cache)
     private val queues = Queues(catalog)
 
-    override fun storage(): UserStore {
+    override fun userStore(): UserStore {
         return storage
     }
 
