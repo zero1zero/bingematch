@@ -20,10 +20,6 @@ const Cards : React.FC<Props> = (props) => {
 
     const [currentCardIdx, setCurrentCardIdx] = useState(0);
 
-    useEffect(() => {
-        setCurrentCardIdx(0);
-    }, []);
-
     return (
         <>
             {props.items

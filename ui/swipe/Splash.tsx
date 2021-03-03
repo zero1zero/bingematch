@@ -23,7 +23,7 @@ const Splash : React.FC<BaseProps> = (props) => {
                 justifyContent: 'center',
                 alignItems: 'center'
             }}
-            source={require('./assets/image-background.jpg')}>
+            source={require('./assets/bp.jpg')}>
 
                 <Spinner
                     status='basic'/>

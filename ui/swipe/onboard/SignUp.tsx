@@ -47,7 +47,7 @@ const SignUp : React.FC<BaseProps> = (props) => {
         <KeyboardAvoidingView style={{flex: 1}}>
             <ImageOverlay
                 style={{ flex: 1}}
-                source={require('../assets/img.png')}>
+                source={require('../assets/super.png')}>
                 <SafeAreaView style={styles.container}>
                     <View style={styles.headerContainer}>
                         <Text

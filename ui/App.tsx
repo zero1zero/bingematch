@@ -1,6 +1,7 @@
 import React from 'react';
 import Deck from "./swipe/deck/Deck";
 import * as eva from '@eva-design/eva';
+import { enableScreens } from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -24,12 +25,15 @@ export default function App() {
 
     const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
 
+    //for expo setup https://reactnavigation.org/docs/react-native-screens
+    enableScreens();
+
     return (
         <ApplicationProvider {...eva} theme={eva.light}>
             <IconRegistry icons={EvaIconsPack} />
             <NavigationContainer>
                 <Navigator headerMode='none'
-                           initialRouteName='Login'
+                           initialRouteName='Splash'
                            mode="modal">
                     <Screen name='Splash' component={Splash} />
                     <Screen name='Login' component={Login} />

@@ -81,7 +81,7 @@ const Deck : React.FC<BaseProps> = (props) => {
             <View style={styles.deck}>
                 <Cards
                     items={activeQueue.items}
-                    showableCards={20}
+                    showableCards={6}
                     onMoveStart={() => {}}
                     onSwipeUp={(item : queue.IItem, index) => swipe(Action.Love, item, index)}
                     onSwipeDown={(item : queue.IItem, index) => swipe(Action.Hate, item, index)}
@@ -149,6 +149,16 @@ const styles = StyleSheet.create({
     },
     deck: {
         flex: 10,
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+
+        elevation: 6,
     },
 
     actions: {
@@ -169,16 +179,6 @@ const cardStyles = StyleSheet.create({
         zIndex: -1,
         borderRadius: 5,
         backgroundColor: "#FFF",
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
-
-        elevation: 6,
     },
     image: {
         flex: 7,
@@ -188,10 +188,10 @@ const cardStyles = StyleSheet.create({
     },
     details: {
         flex: 2,
-        padding: 5,
+        padding: 8,
     },
     detailsText: {
-        fontSize: 13
+        fontSize: 13,
     },
 })
 

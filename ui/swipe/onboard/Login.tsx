@@ -50,7 +50,7 @@ const Login : React.FC<BaseProps> = (props) => {
         <KeyboardAvoidingView style={{flex: 1}}>
             <ImageOverlay
                 style={{ flex: 1}}
-                source={require('../assets/image-background.jpg')}>
+                source={require('../assets/bp.jpg')}>
                 <SafeAreaView
                     style={styles.container}>
                     <View style={styles.headerContainer}>
