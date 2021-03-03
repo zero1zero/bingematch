@@ -21,3 +21,11 @@ export const EmailIcon = (style: ImageStyle): IconElement => (
 export const PasswordIcon = (style: ImageStyle): IconElement => (
     <Icon {...style} name='lock'/>
 );
+
+export const PersonIcon = (style: ImageStyle): IconElement => (
+    <Icon {...style} name='person'/>
+);
+
+export const PlusIcon = (style: ImageStyle): IconElement => (
+    <Icon {...style} name='plus'/>
+);

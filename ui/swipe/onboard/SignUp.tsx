@@ -1,45 +1,41 @@
 import React from "react";
-import {ImageStyle, KeyboardAvoidingView, SafeAreaView, View} from "react-native";
-import {Button, Icon, IconElement, StyleService, Text, TopNavigation, TopNavigationAction} from "@ui-kitten/components";
+import {KeyboardAvoidingView, SafeAreaView, View} from "react-native";
+import {Button, StyleService, Text} from "@ui-kitten/components";
 import {ImageOverlay} from "../etc/ImageOverlay";
 import Social from "./components/Social";
 import EmailInput from "./components/EmailInput";
 import PasswordInput from "./components/PasswordInput";
 import {BaseProps} from "../etc/BaseProps";
-import API from "../api/API";
-
-export const PersonIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='person'/>
-);
-
-export const PlusIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='plus'/>
-);
+import Dependencies from "../Dependencies";
 
 const SignUp : React.FC<BaseProps> = (props) => {
-    const BackIcon = (props) => (
-        <Icon {...props} name='arrow-back' fill='#FFF' />
-    );
-    const BackAction = () => (
-        <TopNavigationAction icon={BackIcon} onPress={() => props.navigation.navigate('Login')} />
-    );
 
-    const [email, setEmail] = React.useState<string>()
-    const [emailValid, setEmailValid] = React.useState<boolean>()
+    const api = Dependencies.instance.api
 
-    const [password, setPassword] = React.useState<string>()
-    const [passwordValid, setPasswordValid] = React.useState<boolean>()
+    const emailRef = React.useRef<() => string | undefined>()
+    const emailRefCallback = (verifyCheck: () => string | undefined) => {
+        emailRef.current = verifyCheck
+    }
+
+    const passwordRef = React.useRef<() => string | undefined>()
+    const passwordRefCallback = (verifyCheck: () => string | undefined) => {
+        passwordRef.current = verifyCheck
+    }
 
     const onSignUpButtonPress = (): void => {
-        if (!emailValid || !passwordValid) {
+        const email = emailRef.current()
+        const password = passwordRef.current()
+
+        if (!email || !password) {
             return
         }
 
-        API.instance.login({
+        api.signup({
             email: email,
             password: password
+
         }).then(token => {
-            console.log(token)
+            props.navigation.navigate('Deck');
         })
     };
 
@@ -51,9 +47,8 @@ const SignUp : React.FC<BaseProps> = (props) => {
         <KeyboardAvoidingView style={{flex: 1}}>
             <ImageOverlay
                 style={{ flex: 1}}
-                source={require('../assets/image-background.jpg')}>
+                source={require('../assets/img.png')}>
                 <SafeAreaView style={styles.container}>
-                    <TopNavigation accessoryLeft={BackAction} style={{ backgroundColor: 'transparent' }} />
                     <View style={styles.headerContainer}>
                         <Text
                             category='h1'
@@ -68,15 +63,10 @@ const SignUp : React.FC<BaseProps> = (props) => {
                     </View>
                     <View style={styles.formContainer}>
                         <EmailInput
-                            value={email}
-                            onTextChange={setEmail}
-                            onValidChange={setEmailValid}
-                        />
+                            checkCallback={emailRefCallback}/>
                         <PasswordInput
-                            value={password}
-                            onValidChange={setPasswordValid}
-                            onTextChange={setPassword}
-                            verify={true} />
+                            verify={true}
+                            checkCallback={passwordRefCallback}/>
                         <Button
                             style={styles.signUpButton}
                             size='giant'

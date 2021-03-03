@@ -1,7 +1,7 @@
 import React from "react";
 import {Icon, Text, TopNavigation, TopNavigationAction} from "@ui-kitten/components";
 import {SafeAreaView} from "react-native";
-import {BaseProps} from "../../App";
+import {BaseProps} from "../etc/BaseProps";
 
 const ForgotPassword : React.FC<BaseProps> = (props) => {
 

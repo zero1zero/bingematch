@@ -29,7 +29,7 @@ fun Routing.user(userStore : UserStore) {
                 }
                 .onSuccess {
                     val token: String = JwtConfig.makeToken(it)
-                    call.respondText(token)
+                    call.respond(token)
                 }
         }
 

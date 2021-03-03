@@ -117,7 +117,6 @@ class ApplicationTest {
     fun testLogin() {
         withTestApplication({ module(TestDeps()) }) {
 
-//            failed login!
             handleRequest(HttpMethod.Post, "/user/login") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 

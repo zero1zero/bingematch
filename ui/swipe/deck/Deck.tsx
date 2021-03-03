@@ -1,45 +1,37 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {RouteProp} from '@react-navigation/native';
 
 import {Animated, ImageBackground, SafeAreaView, StyleSheet, useWindowDimensions, View} from "react-native";
-import Cards from "./swiper/Cards";
-import API from "./api/API";
-import {queue} from "./model/compiled";
+import Cards from "./Cards";
+import {queue} from "../model/compiled";
 import {Button, Icon, Text, TopNavigation, TopNavigationAction} from '@ui-kitten/components';
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "../App";
-
-export interface Props {
-    navigation: StackNavigationProp<RootStackParamList, 'Deck'>,
-    route: RouteProp<RootStackParamList, 'Deck'>,
-}
+import {BaseProps} from "../etc/BaseProps";
+import Dependencies from "../Dependencies";
 
 enum Action{
     Like, Dislike, Love, Hate, Back
 }
 
-const Deck : React.FC<Props> = (props) => {
+const Deck : React.FC<BaseProps> = (props) => {
+
+    const api = Dependencies.instance.api
 
     const [activeQueue, setActiveQueue] = useState(new queue.AllItems())
+    const [empty, setEmpty] = useState(true)
 
-    const hydrate = () => {
-        console.log("hydrating...")
+    useEffect(() => {
         api.popular().then(items => {
             setActiveQueue(items)
         })
-    }
-    useEffect(() => {
-        hydrate()
-    }, []);
 
-    const api = new API()
+        return () => api.cleanup()
+    }, [empty]);
 
     const window = useWindowDimensions();
     const cardHeight = window.height * .78
     const cardWidth = window.width * .96
 
     const actionAnimationState : Map<Action, Animated.Value> = new Map([
-       [Action.Dislike, useRef(new Animated.Value(1)).current],
+        [Action.Dislike, useRef(new Animated.Value(1)).current],
         [Action.Back, useRef(new Animated.Value(1)).current],
         [Action.Like, useRef(new Animated.Value(1)).current],
     ]);
@@ -52,19 +44,17 @@ const Deck : React.FC<Props> = (props) => {
 
     const actionPress = (action : Action) => {
         const animate = actionAnimationState.get(action)
-        if (animate) {
-            Animated.sequence([
-                Animated.timing(animate, {
-                    toValue: 1.4,
-                    duration: 200,
-                    useNativeDriver: true,
-                }),
-                Animated.spring(animate, {
-                    toValue: 1,
-                    useNativeDriver: true,
-                }),
-            ]).start();
-        }
+        Animated.sequence([
+            Animated.timing(animate, {
+                toValue: 1.4,
+                duration: 200,
+                useNativeDriver: true,
+            }),
+            Animated.spring(animate, {
+                toValue: 1,
+                useNativeDriver: true,
+            }),
+        ]).start();
     }
 
     const actionButton = (action : Action, text : string, status : string, icon : string) => {
@@ -91,7 +81,7 @@ const Deck : React.FC<Props> = (props) => {
             <View style={styles.deck}>
                 <Cards
                     items={activeQueue.items}
-                    showableCards={5}
+                    showableCards={20}
                     onMoveStart={() => {}}
                     onSwipeUp={(item : queue.IItem, index) => swipe(Action.Love, item, index)}
                     onSwipeDown={(item : queue.IItem, index) => swipe(Action.Hate, item, index)}
@@ -99,8 +89,7 @@ const Deck : React.FC<Props> = (props) => {
                     onSwipeLeft={(item : queue.IItem, index) => swipe(Action.Dislike, item, index)}
                     onSwipe={() => {}}
                     onDataEnd={() => {
-                        hydrate()
-                        console.log("done with items")
+                        setEmpty(true)
                     }}
                     renderItem={(item : queue.IItem, index : number) => (
                         <View style={{...cardStyles.card, width: cardWidth, height: cardHeight}}>

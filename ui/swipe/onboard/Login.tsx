@@ -1,41 +1,40 @@
 import React from 'react';
 import {KeyboardAvoidingView, SafeAreaView, StyleSheet, View} from 'react-native';
-import {Button, Text, TopNavigation} from '@ui-kitten/components';
+import {Button, Text} from '@ui-kitten/components';
 import {ImageOverlay} from '../etc/ImageOverlay';
-import {api, BaseProps} from "../../App";
 import Social from "./components/Social";
 import EmailInput from "./components/EmailInput";
 import PasswordInput from "./components/PasswordInput";
-
-interface InputStatus {
-    status: 'danger' | 'control',
-    message: string
-}
-
-const validStatus : InputStatus = {
-    status: 'control',
-    message: ''
-}
+import {BaseProps} from "../etc/BaseProps";
+import Dependencies from "../Dependencies";
 
 const Login : React.FC<BaseProps> = (props) => {
 
-    const [email, setEmail] = React.useState<string>()
-    const [emailValid, setEmailValid] = React.useState<boolean>()
+    const api = Dependencies.instance.api
 
-    const [password, setPassword] = React.useState<string>()
-    const [passwordValid, setPasswordValid] = React.useState<boolean>()
+    const emailRef = React.useRef<() => string | undefined>()
+    const emailRefCallback = (verifyCheck: () => string | undefined) => {
+        emailRef.current = verifyCheck
+    }
 
-    const onLoginButtonPress = (): void => {
+    const passwordRef = React.useRef<() => string | undefined>()
+    const passwordRefCallback = (verifyCheck: () => string | undefined) => {
+        passwordRef.current = verifyCheck
+    }
 
-        if (!emailValid || !passwordValid) {
+    const onLoginButtonPress = () : void => {
+        const email = emailRef.current()
+        const password = passwordRef.current()
+
+        if (!email || !password) {
             return
         }
 
-        api.signup({
+        api.login({
             email: email,
             password: password
         }).then(token => {
-            console.log(token)
+            props.navigation.navigate('Deck');
         })
     };
 
@@ -54,7 +53,6 @@ const Login : React.FC<BaseProps> = (props) => {
                 source={require('../assets/image-background.jpg')}>
                 <SafeAreaView
                     style={styles.container}>
-                    <TopNavigation style={{ backgroundColor: 'transparent' }} />
                     <View style={styles.headerContainer}>
                         <Text
                             category='h1'
@@ -70,15 +68,10 @@ const Login : React.FC<BaseProps> = (props) => {
                     </View>
                     <View style={styles.formContainer}>
                         <EmailInput
-                            value={email}
-                            onTextChange={setEmail}
-                            onValidChange={setEmailValid}
-                        />
+                            checkCallback={emailRefCallback}/>
                         <PasswordInput
-                            value={password}
                             verify={false}
-                            onValidChange={setPasswordValid}
-                            onTextChange={setPassword} />
+                            checkCallback={passwordRefCallback}/>
 
                         <View style={styles.forgotPasswordContainer}>
                             <Button

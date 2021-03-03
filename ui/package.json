@@ -6,6 +6,7 @@
     "@react-navigation/stack": "^5.14.3",
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
+    "axios": "^0.21.1",
     "expo": "~40.0.0",
     "expo-constants": "~9.3.3",
     "google-protobuf": "^3.15.0",
@@ -42,7 +43,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest --verbose --coverage",
+    "test": "tsc && jest --verbose --coverage",
     "test:update": "jest --verbose --coverage --updateSnapshot",
     "test:watch": "jest --verbose --watch",
     "coverage": "jest --verbose --coverage && open ./coverage/lcov-report/index.html"

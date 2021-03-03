@@ -7,54 +7,50 @@ import {PasswordIcon} from "../../etc/Icons";
 const validMsg = ' '
 
 interface Props {
-    style?: StyleProp<TextStyle>;
-    value: string;
-    verify: boolean;
+    style?: StyleProp<TextStyle>
+    value?: string
+    verify: boolean
 
-    onValidChange: (valid: boolean) => void;
-    onTextChange: (email: string) => void;
+    checkCallback: ((verifyCheck: () => string | undefined) => void)
 }
 const PasswordInput : React.FC<Props> = (props) => {
 
-    const [password, doSetPassword] = React.useState<string>(props.value)
-    const [passwordValid, setPasswordValid] = React.useState<boolean>(false)
+    const [password, setPassword] = React.useState<string>(props.value)
     const [passwordMsg, setPasswordMsg] = React.useState<string>(validMsg)
     const [passwordStatus, setPasswordStatus] = React.useState<EvaStatus>('control')
 
     const [verify, setVerify] = React.useState<string>(props.value)
     const [verifyStatus, setVerifyStatus] = React.useState<string>('control')
 
-    const setPassword = (password : string) => {
-        doSetPassword(password)
-        props.onTextChange(password)
+    const validate = () : string | undefined => {
+        const valid = props.verify ?
+            passwordCheck() && verifyCheck()
+            : passwordCheck()
+
+        return valid ? password : undefined
     }
 
-    const verifyCheck = () => {
-        //wait for valid password first
-        if (!passwordValid) {
-            return
-        }
+    props.checkCallback(validate)
 
+    const verifyCheck = () : boolean => {
         if (password != verify) {
             setPasswordMsg('Please double check the two password fields match')
             setVerifyStatus('danger')
-            props.onValidChange(false)
-            return
+            return false
         }
 
         setPasswordMsg(validMsg)
         setVerifyStatus('control')
-        props.onValidChange(true)
+
+        return true
     }
 
-    const passwordCheck = () => {
+    const passwordCheck = () : boolean => {
         //verify or not, we need a value
         if (!password) {
             setPasswordMsg('Please enter your password')
             setPasswordStatus('danger')
-            props.onValidChange(false)
-            setPasswordValid(false)
-            return
+            return false
         }
 
         //rest is for verify, i.e. new signups and password edits
@@ -63,23 +59,21 @@ const PasswordInput : React.FC<Props> = (props) => {
             if (!password || password.length < 8) {
                 setPasswordMsg('Your password needs to be at least 8 characters')
                 setPasswordStatus('danger')
-                props.onValidChange(false)
-                setPasswordValid(false)
-                return
+                return false
             }
         }
 
         //we're good
         setPasswordMsg(validMsg)
         setPasswordStatus('control')
-        props.onValidChange(true)
-        setPasswordValid(true)
+        return true
     }
-    const passwordInput = () => (
+
+    const passwordInput = (
         <Input
             size='large'
             style={[props.style, styles]}
-            onBlur={passwordCheck}
+            onBlur={validate}
             status={passwordStatus}
             autoCapitalize='none'
             secureTextEntry={true}
@@ -92,7 +86,7 @@ const PasswordInput : React.FC<Props> = (props) => {
             onChangeText={setPassword}
         />
 )
-    const passwordTooltip = () => (
+    const passwordTooltip = (
         <Text
             style={{ textAlign: 'right'}}
             status='danger'>
@@ -100,11 +94,11 @@ const PasswordInput : React.FC<Props> = (props) => {
         </Text>
     )
 
-    const verifyInput = () => (
+    const verifyInput = (
         <Input
             size='large'
             textStyle={{fontSize: 20}}
-            onBlur={verifyCheck}
+            onBlur={validate}
             status={verifyStatus}
             autoCapitalize='none'
             secureTextEntry={true}
@@ -119,14 +113,14 @@ const PasswordInput : React.FC<Props> = (props) => {
 
     return props.verify ? (
         <View>
-            {passwordTooltip()}
-            {passwordInput()}
-            {verifyInput()}
+            {passwordTooltip}
+            {passwordInput}
+            {verifyInput}
         </View>
     ) : (
         <View>
-            {passwordTooltip()}
-            {passwordInput()}
+            {passwordTooltip}
+            {passwordInput}
         </View>
     )
 }
