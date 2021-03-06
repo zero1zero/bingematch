@@ -1,7 +1,7 @@
 import React from 'react';
-import Deck from "./swipe/deck/Deck";
+import Queue from "./swipe/queue/Queue";
 import * as eva from '@eva-design/eva';
-import { enableScreens } from 'react-native-screens';
+import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -17,7 +17,7 @@ export type RootStackParamList = {
     SignUp: undefined
     ForgotPassword: undefined
 
-    Deck: undefined
+    Queue: undefined
     Profile: undefined
 };
 
@@ -37,7 +37,7 @@ export default function App() {
                            mode="modal">
                     <Screen name='Splash' component={Splash} />
                     <Screen name='Login' component={Login} />
-                    <Screen name='Deck' component={Deck}/>
+                    <Screen name='Queue' component={Queue}/>
                     <Screen name='SignUp' component={SignUp}/>
                     <Screen name='ForgotPassword' component={ForgotPassword}/>
                 </Navigator>

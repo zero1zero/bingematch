@@ -10,7 +10,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
 import API from "../../api/API";
 import Storage from '../../Storage'
-import Deck from "../../deck/Deck";
+import Queue from "../../queue/Queue";
 import {user} from "../../model/compiled";
 
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
@@ -29,6 +29,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
     await api.deleteCurrentUser()
+    await api.cleanup()
 })
 
 test('given new SignUp, we can register a new user', async () => {
@@ -40,7 +41,7 @@ test('given new SignUp, we can register a new user', async () => {
             <NavigationContainer>
                 <Navigator headerMode='none'>
                     <Screen name='SignUp' component={SignUp} />
-                    <Screen name='Deck' component={Deck} />
+                    <Screen name='Queue' component={Queue} />
                 </Navigator>
             </NavigationContainer>
         </ApplicationProvider>

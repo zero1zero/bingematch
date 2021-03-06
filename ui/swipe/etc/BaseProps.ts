@@ -3,6 +3,6 @@ import {RouteProp} from "@react-navigation/native";
 import {RootStackParamList} from "../../App";
 
 export interface BaseProps {
-    navigation: StackNavigationProp<RootStackParamList, 'Deck'>,
-    route: RouteProp<RootStackParamList, 'Deck'>,
+    navigation: StackNavigationProp<RootStackParamList, 'Queue'>,
+    route: RouteProp<RootStackParamList, 'Queue'>,
 }

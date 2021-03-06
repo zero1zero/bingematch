@@ -33,8 +33,8 @@ const Login : React.FC<BaseProps> = (props) => {
         api.login({
             email: email,
             password: password
-        }).then(token => {
-            props.navigation.navigate('Deck');
+        }).then(() => {
+            props.navigation.navigate('Queue');
         })
     };
 

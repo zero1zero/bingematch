@@ -34,8 +34,8 @@ const SignUp : React.FC<BaseProps> = (props) => {
             email: email,
             password: password
 
-        }).then(token => {
-            props.navigation.navigate('Deck');
+        }).then(() => {
+            props.navigation.navigate('Queue');
         })
     };
 

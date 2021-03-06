@@ -10,7 +10,7 @@ const Splash : React.FC<BaseProps> = (props) => {
 
     useEffect(() => {
         storage.isLoggedIn()
-            .then(li => li ? 'Deck' : 'SignUp')
+            .then(li => li ? 'Queue' : 'SignUp')
             .then(route => {
                 props.navigation.navigate(route);
             })

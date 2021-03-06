@@ -1,6 +1,7 @@
-import React, {ReactNode, useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import {
     Animated,
+    Easing,
     GestureResponderEvent,
     PanResponder,
     PanResponderGestureState,
@@ -9,43 +10,19 @@ import {
 import {queue} from "../model/compiled";
 
 export interface Props {
-    onSwipe,
-    item,
-    index,
-    renderItem : (item : queue.IItem, index : number) => ReactNode,
-    onSwipeRight,
-    onSwipeLeft,
-    onSwipeUp,
-    onSwipeDown,
-    onMoveStart,
+    onSwipe: (action : SwipeAction) => void,
+    item: queue.IItem,
+    swipes: SwipeAction[]
 }
 
-let triggerRightSwipe = (props : Props) => {
-    props.onSwipe(props.item, props.index);
-    if (props.onSwipeRight) {
-        props.onSwipeRight(props.item, props.index);
-    }
+export enum Action{
+    Like, Dislike, Love, Hate, Back
 }
 
-let triggerLeftSwipe = (props : Props) => {
-    props.onSwipe(props.item, props.index);
-    if (props.onSwipeLeft) {
-        props.onSwipeLeft(props.item, props.index);
-    }
-}
-
-let triggerUpSwipe = (props : Props) => {
-    props.onSwipe(props.item, props.index);
-    if (props.onSwipeUp) {
-        props.onSwipeUp(props.item, props.index);
-    }
-}
-
-let triggerDownSwipe = (props : Props) => {
-    props.onSwipe(props.item, props.index);
-    if (props.onSwipeDown) {
-        props.onSwipeDown(props.item, props.index);
-    }
+export interface SwipeAction {
+    action: Action
+    item: queue.IItem
+    where: 'onscreen' | 'offscreen'
 }
 
 const Card : React.FC<Props> = (props) => {
@@ -62,6 +39,14 @@ const Card : React.FC<Props> = (props) => {
         return Math.abs(gestureState.dx) >= 1 || Math.abs(gestureState.dy) >= 1
     }
 
+    const triggerSwipe = (action : Action) => {
+        props.onSwipe({
+            action,
+            item: props.item,
+            where: 'offscreen'
+        })
+    }
+
     const panResponder = useRef(
         PanResponder.create({
             // Ask to be the responder:
@@ -75,9 +60,9 @@ const Card : React.FC<Props> = (props) => {
                     toValue: 1.05,
                     useNativeDriver: true,
                 }).start();
-                if (props.onMoveStart) {
-                    props.onMoveStart();
-                }
+                // if (props.onMoveStart) {
+                //     props.onMoveStart(item);
+                // }
             },
             onPanResponderMove: (evt, gestureState) => {
                 // whenever the touch moves it sets the card position depending
@@ -135,7 +120,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(triggerRightSwipe, 200, props)
+                    setTimeout(() => triggerSwipe(Action.Like), 200, props)
                     // left
                 } else if (value < -1) {
                     Animated.spring(card, {
@@ -145,7 +130,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(triggerLeftSwipe, 200, props)
+                    setTimeout(() => triggerSwipe(Action.Dislike), 200, props)
                     // up
                 } else if (upValue < -1) {
                     Animated.spring(card, {
@@ -155,7 +140,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(triggerUpSwipe, 200, props)
+                    setTimeout(() => triggerSwipe(Action.Love), 200, props)
                     // down
                 } else if (upValue > 1) {
                     Animated.spring(card, {
@@ -165,7 +150,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(triggerDownSwipe, 200, props)
+                    setTimeout(() => triggerSwipe(Action.Hate), 200, props)
                     // the card didn't reach its swipe position
                 } else {
                     Animated.spring(card, {
@@ -186,6 +171,56 @@ const Card : React.FC<Props> = (props) => {
         })
     ).current;
 
+    const throwitXYs : Map<Action, Animated.ValueXY> = new Map([
+        [Action.Dislike, new Animated.ValueXY({
+            x: -WIDTH_HALF * 3,
+            y: -HEIGHT_HALF * .15
+        })],
+        // [Action.Back, new Animated.Value(1)],
+        [Action.Like, new Animated.ValueXY({
+            x: WIDTH_HALF * 3,
+            y: -HEIGHT_HALF * .15
+        })],
+        // [Action.Love, new Animated.Value(1)],
+    ]);
+    const throwitRotates : Map<Action, Animated.Value> = new Map([
+        [Action.Dislike, new Animated.Value(-.10)],
+        // [Action.Back, new Animated.Value(1)],
+        [Action.Like, new Animated.Value(.10)],
+        // [Action.Love, new Animated.Value(1)],
+    ]);
+
+    const throwit = (action : Action) => {
+        Animated.parallel([
+            Animated.timing(scale, {
+                toValue: 1.1,
+                duration: 400,
+                useNativeDriver: true,
+            }),
+            Animated.timing(rotate, {
+                toValue: throwitRotates.get(action),
+                duration: 400,
+                useNativeDriver: true,
+            }),
+            Animated.timing(card, {
+                toValue: throwitXYs.get(action),
+                easing: Easing.back(1),
+                duration: 400,
+                useNativeDriver: true,
+            }),
+        ]).start()
+    }
+
+    useEffect(() => {
+        props.swipes.forEach(swipe => {
+            if (swipe.where == 'onscreen' && swipe.item.id == props.item.id) {
+                throwit(swipe.action)
+
+                setTimeout(() => triggerSwipe(swipe.action), 400, props)
+            }
+        })
+    }, [props.swipes])
+
     return (
         <Animated.View
             style={{
@@ -198,7 +233,14 @@ const Card : React.FC<Props> = (props) => {
             }}
             {...panResponder.panHandlers}
         >
-            {props.renderItem(props.item, props.index)}
+            {props.children}
+            {/*<View style={{*/}
+            {/*    position: 'absolute',*/}
+            {/*    left: 100,*/}
+            {/*    top: 100*/}
+            {/*}}>*/}
+            {/*    <Button title="THROW ME" onPress={teerow} />*/}
+            {/*</View>*/}
         </Animated.View>
     );
 }
