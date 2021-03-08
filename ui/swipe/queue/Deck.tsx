@@ -1,14 +1,16 @@
 import {ImageBackground, StyleSheet, useWindowDimensions, View} from "react-native";
-import Card, {SwipeAction} from "./Card";
 import {queue} from "../model/compiled";
 import {Text} from "@ui-kitten/components";
 import React from "react";
+import {afterHeadInclusive, beforeHeadExclusive} from "./HeadUtils";
+import {Event, Item, StateChange} from "./Event";
+import Card from "./Card";
 
 
 interface Props {
-    items: queue.IItem[]
-    swipes: SwipeAction[]
-    swipe: (action : SwipeAction) => void
+    items: Item[]
+    dispatch: React.Dispatch<StateChange>
+    head: string,
 }
 
 const Deck : React.FC<Props> = (props) => {
@@ -17,28 +19,27 @@ const Deck : React.FC<Props> = (props) => {
     const cardHeight = window.height * .78
     const cardWidth = window.width * .96
 
-    return (
+    const toCard = (item : Item) => (
+        <Card
+            item={item}
+            key={item.data.id}
+            dispatch={props.dispatch}>
+            <View style={{...styles.card, width: cardWidth, height: cardHeight}}>
+                <ImageBackground style={styles.image} source={{uri: `https://image.tmdb.org/t/p/w500${item.data.movie.posterPath}`}}/>
+                <View style={styles.details}>
+                    {/*<Text category='h1'>{item.movie.title}</Text>*/}
+                    <Text style={styles.detailsText} numberOfLines={4}>{item.data.movie.overview}</Text>
+                </View>
+            </View>
+        </Card>
+    )
 
+    return (
         <View style={styles.deck}>
             {props.items
-                .map(item => {
-                    // initializing the index according to the showing cards number
-                    return (
-                        <Card
-                            onSwipe={props.swipe}
-                            item={item}
-                            key={item.id}
-                            swipes={props.swipes}>
-                            <View style={{...styles.card, width: cardWidth, height: cardHeight}}>
-                                <ImageBackground style={styles.image} source={{uri: `https://image.tmdb.org/t/p/w500${item.movie.posterPath}`}}/>
-                                <View style={styles.details}>
-                                    {/*<Text category='h1'>{item.movie.title}</Text>*/}
-                                    <Text style={styles.detailsText} numberOfLines={4}>{item.movie.overview}</Text>
-                                </View>
-                            </View>
-                        </Card>
-                    );
-                })}
+                .slice()
+                .reverse()
+                .map(toCard)}
         </View>
     )
 }

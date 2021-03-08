@@ -2,48 +2,79 @@ import React, {useEffect, useRef} from "react";
 import {
     Animated,
     Easing,
+    EasingFunction,
     GestureResponderEvent,
     PanResponder,
     PanResponderGestureState,
     useWindowDimensions
 } from "react-native";
-import {queue} from "../model/compiled";
+import {EventName, Item, Sentiment, StateChange} from "./Event";
 
 export interface Props {
-    onSwipe: (action : SwipeAction) => void,
-    item: queue.IItem,
-    swipes: SwipeAction[]
+    item: Item,
+    dispatch: React.Dispatch<StateChange>,
 }
 
-export enum Action{
-    Like, Dislike, Love, Hate, Back
-}
-
-export interface SwipeAction {
-    action: Action
-    item: queue.IItem
-    where: 'onscreen' | 'offscreen'
+interface AnimValues {
+    scale: number
+    xy: { x: number, y: number },
+    rotate: number
+    easing: EasingFunction
 }
 
 const Card : React.FC<Props> = (props) => {
+    const window = useWindowDimensions();
+    const WIDTH_HALF = window.width / 2;
+    const HEIGHT_HALF = window.height / 2;
+
+    const animValues : Map<Sentiment, AnimValues> = new Map([
+        [Sentiment.Dislike, {
+            scale: 1.05,
+            xy: {
+                x: -WIDTH_HALF * 2.5,
+                y: 0
+            },
+            rotate: -.10,
+            easing: Easing.in(Easing.back(1))
+        }],
+        [Sentiment.Like, {
+            scale: 1.05,
+            xy: {
+                x: WIDTH_HALF * 2.5,
+                y: 0
+            },
+            rotate: .10,
+            easing: Easing.in(Easing.back(1))
+        }],
+
+        [Sentiment.Unknown, {
+            scale: 1,
+            xy: {
+                x: 0,
+                y: 0
+            },
+            rotate: 0,
+            easing: Easing.out(Easing.back(1))
+        }],
+    ])
+
     const card = useRef(new Animated.ValueXY()).current;
     const scale = useRef(new Animated.Value(1)).current;
     const rotate = useRef(new Animated.Value(0)).current;
     const left = useRef(new Animated.Value(0)).current;
     const right = useRef(new Animated.Value(0)).current;
 
-    const window = useWindowDimensions();
-    const WIDTH_HALF = window.width / 2;
-    const HEIGHT_HALF = window.height / 2;
     const moved = (evt : GestureResponderEvent, gestureState : PanResponderGestureState) => {
         return Math.abs(gestureState.dx) >= 1 || Math.abs(gestureState.dy) >= 1
     }
 
-    const triggerSwipe = (action : Action) => {
-        props.onSwipe({
-            action,
-            item: props.item,
-            where: 'offscreen'
+    const triggerSwipe = (action : EventName) => {
+        props.dispatch({
+            setOffscreen: props.item.data.id,
+            interaction: {
+                event: action,
+                item: props.item
+            }
         })
     }
 
@@ -55,14 +86,11 @@ const Card : React.FC<Props> = (props) => {
             onMoveShouldSetPanResponder: (evt, gestureState) => true,
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
             onPanResponderGrant: (evt, gestureState) => {
-                // whenever the touch starts it will scale the card to 1.2 value
+                // whenever the touch starts it will scale the card
                 Animated.spring(scale, {
-                    toValue: 1.05,
+                    toValue: animValues.get(Sentiment.Like).scale,
                     useNativeDriver: true,
                 }).start();
-                // if (props.onMoveStart) {
-                //     props.onMoveStart(item);
-                // }
             },
             onPanResponderMove: (evt, gestureState) => {
                 // whenever the touch moves it sets the card position depending
@@ -119,8 +147,8 @@ const Card : React.FC<Props> = (props) => {
                             y: 0,
                         },
                         useNativeDriver: true,
-                    }).start();
-                    setTimeout(() => triggerSwipe(Action.Like), 200, props)
+                    }).start()
+                    setTimeout(() => triggerSwipe(EventName.SwipeLike), 200, props)
                     // left
                 } else if (value < -1) {
                     Animated.spring(card, {
@@ -130,7 +158,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(() => triggerSwipe(Action.Dislike), 200, props)
+                    setTimeout(() => triggerSwipe(EventName.SwipeDislike), 200, props)
                     // up
                 } else if (upValue < -1) {
                     Animated.spring(card, {
@@ -140,7 +168,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(() => triggerSwipe(Action.Love), 200, props)
+                    setTimeout(() => triggerSwipe(EventName.SwipeLove), 200, props)
                     // down
                 } else if (upValue > 1) {
                     Animated.spring(card, {
@@ -150,7 +178,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(() => triggerSwipe(Action.Hate), 200, props)
+                    setTimeout(() => triggerSwipe(EventName.SwipeHate), 200, props)
                     // the card didn't reach its swipe position
                 } else {
                     Animated.spring(card, {
@@ -171,55 +199,71 @@ const Card : React.FC<Props> = (props) => {
         })
     ).current;
 
-    const throwitXYs : Map<Action, Animated.ValueXY> = new Map([
-        [Action.Dislike, new Animated.ValueXY({
-            x: -WIDTH_HALF * 3,
-            y: -HEIGHT_HALF * .15
-        })],
-        // [Action.Back, new Animated.Value(1)],
-        [Action.Like, new Animated.ValueXY({
-            x: WIDTH_HALF * 3,
-            y: -HEIGHT_HALF * .15
-        })],
-        // [Action.Love, new Animated.Value(1)],
-    ]);
-    const throwitRotates : Map<Action, Animated.Value> = new Map([
-        [Action.Dislike, new Animated.Value(-.10)],
-        // [Action.Back, new Animated.Value(1)],
-        [Action.Like, new Animated.Value(.10)],
-        // [Action.Love, new Animated.Value(1)],
-    ]);
-
-    const throwit = (action : Action) => {
+    const throwit = (animations: AnimValues) => {
         Animated.parallel([
             Animated.timing(scale, {
-                toValue: 1.1,
-                duration: 400,
-                useNativeDriver: true,
-            }),
-            Animated.timing(rotate, {
-                toValue: throwitRotates.get(action),
-                duration: 400,
+                toValue: animations.scale,
+                duration: 300,
                 useNativeDriver: true,
             }),
             Animated.timing(card, {
-                toValue: throwitXYs.get(action),
-                easing: Easing.back(1),
-                duration: 400,
+                toValue: animations.xy,
+                easing: animations.easing,
+                duration: 300,
+                useNativeDriver: true,
+            }),
+            Animated.timing(rotate, {
+                toValue: animations.rotate,
+                duration: 300,
                 useNativeDriver: true,
             }),
         ]).start()
     }
 
     useEffect(() => {
-        props.swipes.forEach(swipe => {
-            if (swipe.where == 'onscreen' && swipe.item.id == props.item.id) {
-                throwit(swipe.action)
 
-                setTimeout(() => triggerSwipe(swipe.action), 400, props)
+        const anims = animValues.get(props.item.sentiment)
+
+        //unscaled with a sentiment means there must have been a like/dislike button press
+        if (props.item.sentiment != Sentiment.Unknown && props.item.onscreen) {
+            switch (props.item.sentiment) {
+                case Sentiment.Like:
+                case Sentiment.Dislike:
+                    throwit(anims)
+                    break;
             }
-        })
-    }, [props.swipes])
+            setTimeout(() => {
+                props.dispatch({
+                    setOffscreen: props.item.data.id,
+                    advanceHead: props.item.data.id
+                })
+            }, 300)
+
+            return
+        }
+
+        //off screen but with no sentiment means back button!
+        if (props.item.sentiment == Sentiment.Unknown && !props.item.onscreen) {
+
+            throwit(anims)
+
+            // after timeout, regress head
+            setTimeout(() => {
+                props.dispatch({
+                    setOnscreen: props.item.data.id,
+                    regressHead: props.item.data.id
+                })
+            }, 300)
+            return
+        }
+
+        if (props.item.sentiment != Sentiment.Unknown) {
+            scale.setValue(anims.scale)
+            card.setValue(anims.xy)
+            rotate.setValue(anims.rotate)
+        }
+
+    }, [props.item])
 
     return (
         <Animated.View
@@ -234,13 +278,6 @@ const Card : React.FC<Props> = (props) => {
             {...panResponder.panHandlers}
         >
             {props.children}
-            {/*<View style={{*/}
-            {/*    position: 'absolute',*/}
-            {/*    left: 100,*/}
-            {/*    top: 100*/}
-            {/*}}>*/}
-            {/*    <Button title="THROW ME" onPress={teerow} />*/}
-            {/*</View>*/}
         </Animated.View>
     );
 }
