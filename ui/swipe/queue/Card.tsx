@@ -8,7 +8,7 @@ import {
     PanResponderGestureState,
     useWindowDimensions
 } from "react-native";
-import {EventName, Item, Sentiment, StateChange} from "./Event";
+import {EventName, Item, Sentiment, StateChange} from "./QueueEvents";
 
 export interface Props {
     item: Item,
@@ -44,6 +44,24 @@ const Card : React.FC<Props> = (props) => {
                 y: 0
             },
             rotate: .10,
+            easing: Easing.in(Easing.back(1))
+        }],
+        [Sentiment.Love, {
+            scale: 1.05,
+            xy: {
+                x: 0,
+                y: -HEIGHT_HALF * 2.5,
+            },
+            rotate: 0,
+            easing: Easing.in(Easing.back(1))
+        }],
+        [Sentiment.Hate, {
+            scale: 1.05,
+            xy: {
+                x: 0,
+                y: HEIGHT_HALF * 2.5,
+            },
+            rotate: 0,
             easing: Easing.in(Easing.back(1))
         }],
 

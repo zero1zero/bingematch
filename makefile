@@ -22,6 +22,6 @@ minikube:
 	minikube addons enable ingress
 	minikube addons enable registry-creds
 	minikube addons configure registry-creds
-	#kubectl proxy --address='0.0.0.0' --disable-filter=true
+	#kubectl port-forward --address 0.0.0.0 service/api 80:8080
 	#minikube tunnel &
 	#minikube dashboard &

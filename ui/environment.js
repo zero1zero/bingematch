@@ -8,7 +8,7 @@ import Constants from "expo-constants";
 
 const ENV = {
     dev: {
-        apiUrl: 'http://192.168.64.3/api',
+        apiUrl: 'http://192.168.1.192/',
     },
     staging: {
         apiUrl: "[your.staging.api.here]",

@@ -7,15 +7,18 @@ import {BaseProps} from "../etc/BaseProps";
 import Dependencies from "../Dependencies";
 import Deck from "./Deck";
 import {
+    beforeHeadExclusive,
     countAfterHeadInclusive,
     getHead,
     getItem,
-    getPrevious, next,
+    next,
     nextHead,
-    previousHead,
+    previous,
+    previousHead, removeFinishedAfterBacks,
     updateInPlace
-} from "./HeadUtils";
-import {EventName, Item, Sentiment, StateChange} from "./Event";
+} from "./QueueUtils";
+import {EventName, Item, Sentiment, StateChange, SyncStatus} from "./QueueEvents";
+import {PersonAdd, SettingsIcon} from "../etc/Icons";
 
 interface QueueState {
     cacheItems: queue.IItem[]
@@ -26,6 +29,7 @@ interface QueueState {
 
 const activeCardMax = 6
 const moreActiveAt = 3
+const backBuffer = 2
 
 type Reducer = (state : QueueState, change : StateChange) => QueueState
 const reducer = (state : QueueState, change : StateChange) : QueueState => {
@@ -43,7 +47,7 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
 
         //if back, lets act on the previous item instead of current
         const item = (change.interaction.event == EventName.ButtonBackPress
-            ? getPrevious(state.cardItems, change.interaction.item.data.id)
+            ? previous(state.cardItems, change.interaction.item.data.id)
             : getItem(state.cardItems, change.interaction.item.data.id))
 
         switch (change.interaction.event) {
@@ -66,7 +70,8 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
                 break;
         }
 
-        console.log("updating " + item.data.movie.title)
+        //remove any synced items after back queue
+        state.cardItems = removeFinishedAfterBacks(state.cardItems, state.head, backBuffer)
 
         //we set sentiment above, still propagate new state
         updateInPlace(state.cardItems, item)
@@ -102,7 +107,12 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
 
         console.log("regressing head")
 
-        state.head = previousHead(state.cardItems, state.head)
+        const prev = previous(state.cardItems, state.head)
+        prev.synced = SyncStatus.UnSynced
+
+        updateInPlace(state.cardItems, prev)
+
+        state.head = prev.data.id
     }
 
     if (change.setOnscreen) {
@@ -121,10 +131,30 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
         updateInPlace(state.cardItems, item)
     }
 
+    if (change.setSync) {
+        const item = getItem(state.cardItems, change.setSync.id)
+
+        item.synced = change.setSync.sync
+
+        updateInPlace(state.cardItems, item)
+    }
+
     if (state.cardItems) {
-        console.log(state.cardItems.map(i=>
-            i.data.movie.title + (i.data.id == state.head ? ' - 🎥' : '')
-        ))
+        console.log('====== Queue =======')
+        state.cardItems.map( item => {
+            let msg = '⇨ ' + item.data.movie.title + (item.data.id == state.head ? ' - 🎥' : '')
+            switch (item.synced) {
+                case SyncStatus.Syncing:
+                    msg += ' 🔄'
+                    break;
+                case SyncStatus.Synced:
+                    msg += ' ✅'
+                    break;
+
+            }
+            console.log(msg)
+        })
+        console.log('====== /Queue =======')
     }
 
     return Object.assign({}, state)
@@ -151,7 +181,8 @@ const checkForCardHydrate = (state : QueueState) : QueueState => {
                 .map(raw => { return {
                         onscreen: true,
                         data: raw,
-                        sentiment: Sentiment.Unknown
+                        sentiment: Sentiment.Unknown,
+                        synced: SyncStatus.UnSynced
                     }}
                 ))
 
@@ -184,7 +215,7 @@ const Queue : React.FC<BaseProps> = (props) => {
         Animated.sequence([
             Animated.timing(animate, {
                 toValue: 1.4,
-                duration: 200,
+                duration: 150,
                 useNativeDriver: true,
             }),
             Animated.spring(animate, {
@@ -194,7 +225,9 @@ const Queue : React.FC<BaseProps> = (props) => {
         ]).start();
     }
 
-    const [state, dispatch] = useReducer<Reducer>(reducer, {cardItems: [], cacheItems: [], head: undefined})
+    const [state, dispatch] = useReducer<Reducer>(reducer, {
+        cardItems: [], cacheItems: [], head: undefined
+    })
 
     useEffect(() => {
         if (state.cacheItems.length < activeCardMax) {
@@ -207,42 +240,17 @@ const Queue : React.FC<BaseProps> = (props) => {
     }, [state.cacheItems])
 
     useEffect(() => {
-        // const current = getHead(state.cardItems)
-        // switch (current.sentiment) {
-        //     case Sentiment.Like:
-        //     case Sentiment.Love:
-        //         buttonAnimate(ButtonType.Like)
-        //         break;
-        //     case Sentiment.Dislike:
-        //     case Sentiment.Hate:
-        //         buttonAnimate(ButtonType.Dislike)
-        //         break;
-        //     case Sentiment.Report:
-        //         break;
-        // }
-        state.cardItems.forEach(item => {
-        //     switch (item.lastAction) {
-        //         case EventName.SwipeLike:
-        //         case EventName.SwipeLove:
-        //         case EventName.ButtonLikePress: {
-        //             buttonAnimate(ButtonType.Like)
-        //             console.log("register like")
-        //             break;
-        //         }
-        //         case EventName.SwipeHate:
-        //         case EventName.SwipeDislike:
-        //         case EventName.ButtonDislikePress: {
-        //             buttonAnimate(ButtonType.Dislike)
-        //             console.log("register dislike")
-        //             break;
-        //         }
-        //         case EventName.ButtonBackPress: {
-        //             buttonAnimate(ButtonType.Back)
-        //             console.log("register back")
-        //             break;
-        //         }
-        //     }
-        })
+        beforeHeadExclusive(state.cardItems, state.head)
+            .filter(item => item.synced == SyncStatus.UnSynced)
+            .forEach(item => {
+                dispatch({ setSync: { sync: SyncStatus.Syncing, id: item.data.id }})
+                new Promise<Item>((resolve) => {
+                    console.log("send " + item.data.movie.title)
+                    resolve(item)
+                }).then(item => {
+                    dispatch({ setSync: { sync: SyncStatus.Synced, id: item.data.id }})
+                })
+            })
 
     }, [state.cardItems])
 
@@ -264,13 +272,13 @@ const Queue : React.FC<BaseProps> = (props) => {
     }
 
     const profileAction = () => (
-        <TopNavigationAction icon={ () => (<Icon name='settings' fill='#8F9BB3' style={styles.settingsIcon} />) }
+        <TopNavigationAction icon={() => <SettingsIcon {...styles.settingsIcon} />}
             onPress={ () => props.navigation.navigate('Login') }
         />
     )
 
     const addAction = () => (
-        <TopNavigationAction icon={ () => (<Icon name='person-add' fill='#8F9BB3' style={styles.settingsIcon} />) }
+        <TopNavigationAction icon={() => <PersonAdd {...styles.addIcon} />}
                              onPress={ () => props.navigation.navigate('Login') }
         />
     )
@@ -286,7 +294,6 @@ const Queue : React.FC<BaseProps> = (props) => {
             <Deck
                 items={state.cardItems}
                 dispatch={dispatch}
-                head={state.head}
             />
             <View style={styles.actions}>
                 <Animated.View
@@ -315,24 +322,29 @@ const Queue : React.FC<BaseProps> = (props) => {
 );
 }
 
+//https://coolors.co/353535-3c6e71-ffffff-d9d9d9-284b63
+const bg = '#284b63'
+
 const styles = StyleSheet.create({
     home: {
         flex: 1,
-        backgroundColor: '#f5f3f4'
+        backgroundColor: bg
     },
 
     top: {
-        backgroundColor: '#f5f3f4',
+        backgroundColor: bg,
         paddingVertical: 0,
         marginBottom: 9,
         minHeight: 35,
     },
     topTitle: {
+        color: 'white',
         fontSize: 25
     },
 
     settingsIcon: {
         alignSelf: 'flex-end',
+        backgroundColor: '#FFF',
         width: 35,
         height: 35,
     },

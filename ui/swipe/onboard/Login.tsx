@@ -7,6 +7,8 @@ import EmailInput from "./components/EmailInput";
 import PasswordInput from "./components/PasswordInput";
 import {BaseProps} from "../etc/BaseProps";
 import Dependencies from "../Dependencies";
+import {StateChange} from "../queue/QueueEvents";
+import {user} from "../model/compiled";
 
 const Login : React.FC<BaseProps> = (props) => {
 
@@ -21,6 +23,11 @@ const Login : React.FC<BaseProps> = (props) => {
     const passwordRefCallback = (verifyCheck: () => string | undefined) => {
         passwordRef.current = verifyCheck
     }
+
+    // type Reducer = (state : LoginState, change : StateChange) => QueueState
+    // const reducer = (state : QueueState, change : StateChange) : QueueState => {
+    //
+    // }
 
     const onLoginButtonPress = () : void => {
         const email = emailRef.current()

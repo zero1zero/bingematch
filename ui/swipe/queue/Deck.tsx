@@ -1,23 +1,39 @@
 import {ImageBackground, StyleSheet, useWindowDimensions, View} from "react-native";
-import {queue} from "../model/compiled";
-import {Text} from "@ui-kitten/components";
+import {Icon, Text} from "@ui-kitten/components";
 import React from "react";
-import {afterHeadInclusive, beforeHeadExclusive} from "./HeadUtils";
-import {Event, Item, StateChange} from "./Event";
+import {Item, StateChange} from "./QueueEvents";
 import Card from "./Card";
+import {ReportIcon} from "../etc/Icons";
 
 
 interface Props {
     items: Item[]
     dispatch: React.Dispatch<StateChange>
-    head: string,
 }
+
+//pulled from tmdb configuration
+const sizes = [92,
+    154,
+    185,
+    342,
+    500,
+    780]
 
 const Deck : React.FC<Props> = (props) => {
 
     const window = useWindowDimensions();
-    const cardHeight = window.height * .78
-    const cardWidth = window.width * .96
+    const cardHeight = window.height * .80
+    const cardWidth = window.width * .94
+
+    const closeToRes = (img) => Math.abs(img - cardHeight * .8)
+
+    const posterWidth = () : number => {
+        const [size] = sizes
+            .sort((a, b) => {
+                return closeToRes(a) - closeToRes(b)
+            })
+        return size
+    }
 
     const toCard = (item : Item) => (
         <Card
@@ -25,7 +41,9 @@ const Deck : React.FC<Props> = (props) => {
             key={item.data.id}
             dispatch={props.dispatch}>
             <View style={{...styles.card, width: cardWidth, height: cardHeight}}>
-                <ImageBackground style={styles.image} source={{uri: `https://image.tmdb.org/t/p/w500${item.data.movie.posterPath}`}}/>
+                <ImageBackground style={styles.image} source={{uri: `https://image.tmdb.org/t/p/w${posterWidth()}/${item.data.movie.posterPath}`}}>
+                    <ReportIcon {...styles.reportIcon} />
+                </ImageBackground>
                 <View style={styles.details}>
                     {/*<Text category='h1'>{item.movie.title}</Text>*/}
                     <Text style={styles.detailsText} numberOfLines={4}>{item.data.movie.overview}</Text>
@@ -64,13 +82,13 @@ const styles = StyleSheet.create({
         position: "absolute",
         alignSelf: "center",
         zIndex: -1,
-        borderRadius: 5,
+        borderRadius: 12,
         backgroundColor: "#FFF",
     },
     image: {
-        flex: 7,
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
+        flex: 11,//aspect ratio should be .666 for images
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         overflow: 'hidden'
     },
     details: {
@@ -79,5 +97,11 @@ const styles = StyleSheet.create({
     },
     detailsText: {
         fontSize: 13,
+    },
+    reportIcon: {
+        alignSelf: 'flex-end',
+        margin: 5,
+        width: 30,
+        height: 30,
     },
 })

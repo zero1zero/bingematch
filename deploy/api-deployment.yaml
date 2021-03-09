@@ -17,6 +17,13 @@ spec:
         - image: 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:VERSION
           name: api
           imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           ports:
             - containerPort: 8080
               protocol: TCP

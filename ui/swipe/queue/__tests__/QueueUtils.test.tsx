@@ -6,14 +6,16 @@ import {
     countAfterHeadInclusive,
     getItem,
     headIndex,
-    nextHead, previousHead
-} from "../HeadUtils";
-import {Item, Sentiment} from "../Event";
+    nextHead,
+    previousHead,
+    removeFinishedAfterBacks
+} from "../QueueUtils";
+import {Item, Sentiment, SyncStatus} from "../QueueEvents";
 
 const items : Item[] = [
-    'hello',
-    'my',
-    'name',
+    'hello', //synced
+    'my', //synced
+    'name', //syncing
     'is',
     'zack',//4
     'this',
@@ -21,10 +23,11 @@ const items : Item[] = [
     'a',
     'good',
     'test'
-].map((str) => {
+].map((str, idx) => {
     return {
         sentiment: Sentiment.Unknown,
         onscreen: true,
+        synced: idx < 2 ? SyncStatus.Synced : idx == 2 ? SyncStatus.Syncing : SyncStatus.UnSynced,
         data: queue.Item.create({
             id: str
         })
@@ -82,4 +85,18 @@ test('correctly get head item', async () => {
             id: 'ars'
         })
     })
+})
+
+test('remove all the synced items not including the back buffer', async () => {
+    expect.assertions(1)
+
+    expect(removeFinishedAfterBacks(items, 'ars', 2).map(item=>item.data.id))
+        .toEqual(['name', 'is', 'zack', 'this','ars', 'a', 'good', 'test'])
+})
+
+test('dont remove items in back buffer', async () => {
+    expect.assertions(1)
+
+    expect(removeFinishedAfterBacks(items, 'is', 2).map(item=>item.data.id))
+        .toEqual(['my', 'name', 'is', 'zack', 'this','ars', 'a', 'good', 'test'])
 })

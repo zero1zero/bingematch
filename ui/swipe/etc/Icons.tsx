@@ -1,4 +1,4 @@
-import {ImageStyle} from "react-native";
+import {ImageBackground, ImageStyle} from "react-native";
 import {Icon, IconElement} from "@ui-kitten/components";
 import React from "react";
 
@@ -29,3 +29,19 @@ export const PersonIcon = (style: ImageStyle): IconElement => (
 export const PlusIcon = (style: ImageStyle): IconElement => (
     <Icon {...style} name='plus'/>
 );
+
+export const FlagIcon = (style: ImageStyle): IconElement => (
+    <Icon {...style} name='flag' fill='#FFF' />
+);
+
+export const SettingsIcon = (style: ImageStyle): IconElement => (
+    <Icon {...style} name='settings' fill='#FFF' />
+);
+
+export const PersonAdd = (style: ImageStyle): IconElement => (
+    <Icon {...style} name='person-add' fill='#FFF'  />
+);
+
+export const ReportIcon = (style: ImageStyle): IconElement => (
+    <Icon {...style} name='flag' fill='#FFF' />
+)

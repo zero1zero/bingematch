@@ -40,7 +40,7 @@
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
-    "ios": "expo start --ios",
+    "ios": "expo start --lan --ios",
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "tsc && jest --verbose --coverage",

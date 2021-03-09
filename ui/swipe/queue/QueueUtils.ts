@@ -1,4 +1,4 @@
-import {EventName, Item} from "./Event";
+import {Item, SyncStatus} from "./QueueEvents";
 
 export const getItem = (items : Item[], id : string) : Item => {
     return items
@@ -11,7 +11,7 @@ export const updateInPlace = (items : Item[], item : Item) : Item[] => {
     return items
 }
 
-export const getPrevious = (items : Item[], head : string) : Item => {
+export const previous = (items : Item[], head : string) : Item => {
     if (!head) {
         return items[0]
     }
@@ -29,7 +29,7 @@ export const headIndex = (items : Item[], head : string | undefined) : number =>
 }
 
 export const previousHead = (items : Item[], head : string = undefined) : string => {
-    return getPrevious(items, head).data.id
+    return previous(items, head).data.id
 }
 
 export const getHead = (items : Item[], head : string) : Item => {
@@ -60,4 +60,18 @@ export const beforeHeadExclusive = (items : Item[], head : string) : Item[] => {
         return []
     }
     return items.slice(0, headIndex(items, head))
+}
+
+export const removeFinishedAfterBacks = (items : Item[], head : string, backs : number) : Item[] => {
+    //get the splitline where we are 4 items back from head. basically everything swiped
+    const splitLine = headIndex(items, head) - backs
+
+    if (splitLine <= 0) {
+        return items
+    }
+
+    //split the array and only add back to the top ones that havent been synced
+    return items.slice(0, splitLine)
+        .filter(item => item.synced != SyncStatus.Synced)
+        .concat(items.slice(splitLine))
 }

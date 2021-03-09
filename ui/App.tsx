@@ -23,10 +23,10 @@ export type RootStackParamList = {
 
 export default function App() {
 
-    const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
-
     //for expo setup https://reactnavigation.org/docs/react-native-screens
     enableScreens();
+
+    const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
 
     return (
         <ApplicationProvider {...eva} theme={eva.light}>
