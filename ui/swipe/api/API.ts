@@ -46,7 +46,7 @@ export default class API {
     refreshForTest = async (login : user.ILogin) : Promise<void> => {
         await this.login(login)
             .then(token => {
-                console.log("Cleaning up stale user for testing...")
+                console.debug("Cleaning up stale user for testing...")
                 //oops, we still have this user around
                 const id = this.storage.getUserFromToken(token)
                 return this.deleteUser(id)

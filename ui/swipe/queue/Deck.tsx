@@ -1,5 +1,5 @@
 import {ImageBackground, StyleSheet, useWindowDimensions, View} from "react-native";
-import {Icon, Text} from "@ui-kitten/components";
+import {Text} from "@ui-kitten/components";
 import React from "react";
 import {Item, StateChange} from "./QueueEvents";
 import Card from "./Card";

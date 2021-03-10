@@ -1,48 +1,54 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Input, StyleService, Text} from "@ui-kitten/components";
 import {StyleProp, TextStyle, View} from "react-native";
 import {EvaStatus} from "@ui-kitten/components/devsupport";
 import {EmailIcon} from "../../etc/Icons";
+import {InputState, StateChange, ValidationStatus} from "../OnboardEvents";
 
 const emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
 
 interface Props {
     style?: StyleProp<TextStyle>
-    value?: string
+    state: InputState
 
-    checkCallback: ((verifyCheck: () => string | undefined) => void)
+    dispatch: React.Dispatch<StateChange>
 }
 const EmailInput : React.FC<Props> = (props) => {
 
-    const [value, setValue] = React.useState<string>(props.value)
-    const [showMsg, setShowMsg] = React.useState<boolean>()
     const [status, setStatus] = React.useState<EvaStatus>('control')
 
-    const emailCheck = () : string | undefined => {
-        if (!value || value.length < 3 || !emailRegex.test(value)) {
-            setShowMsg(true)
-            setStatus('danger')
-            return undefined
-        } else {
-            setShowMsg(false)
-            setStatus('control')
-            return value
+    useEffect(() => {
+        if (props.state.validation.status != ValidationStatus.Verify) {
+            return
         }
-    }
 
-    props.checkCallback(emailCheck)
+        const email = props.state.value
+
+        if (!email || email.length < 3 || !emailRegex.test(email)) {
+            setStatus('danger')
+            props.dispatch({ email: {
+                    validation: {
+                        status: ValidationStatus.Invalid,
+                        message: 'Please enter a valid email'
+                    }}})
+            return
+        }
+
+        setStatus('success')
+        props.dispatch({ email: { validation: { status: ValidationStatus.Valid, message: '' }}})
+    }, [props.state])
 
     return (
         <View>
             <Text
-                style={{ textAlign: 'right'}}
+                style={{ textAlign: 'right', height: 20 }}
                 status='danger'>
-                {showMsg ? 'Please enter a valid email' : ' '}
+                {props.state.validation.message}
             </Text>
             <Input
                 size='large'
                 textStyle={{fontSize: 20}}
-                onBlur={emailCheck}
+                onBlur={() => props.dispatch({ email: { validation: { status: ValidationStatus.Verify }}})}
                 style={props.style}
                 status={status}
                 autoCapitalize='none'
@@ -52,8 +58,8 @@ const EmailInput : React.FC<Props> = (props) => {
                 textContentType='emailAddress'
                 keyboardType='email-address'
                 accessoryLeft={EmailIcon}
-                value={value}
-                onChangeText={setValue}
+                value={props.state.value}
+                onChangeText={(value) => props.dispatch({ email: { value }})}
             />
         </View>
 )

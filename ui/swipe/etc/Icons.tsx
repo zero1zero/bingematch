@@ -1,4 +1,4 @@
-import {ImageBackground, ImageStyle} from "react-native";
+import {ImageStyle} from "react-native";
 import {Icon, IconElement} from "@ui-kitten/components";
 import React from "react";
 

@@ -14,10 +14,11 @@ import {
     next,
     nextHead,
     previous,
-    previousHead, removeFinishedAfterBacks,
+    previousHead,
+    removeFinishedAfterBacks,
     updateInPlace
 } from "./QueueUtils";
-import {EventName, Item, Sentiment, StateChange, SyncStatus} from "./QueueEvents";
+import {InteractionName, Item, Sentiment, StateChange, SyncStatus} from "./QueueEvents";
 import {PersonAdd, SettingsIcon} from "../etc/Icons";
 
 interface QueueState {
@@ -43,29 +44,29 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
     state = checkForCardHydrate(state)
 
     if (change.interaction) {
-        console.log("interaction" + change.interaction.event)
+        console.log("interaction" + change.interaction.name)
 
         //if back, lets act on the previous item instead of current
-        const item = (change.interaction.event == EventName.ButtonBackPress
+        const item = (change.interaction.name == InteractionName.ButtonBackPress
             ? previous(state.cardItems, change.interaction.item.data.id)
             : getItem(state.cardItems, change.interaction.item.data.id))
 
-        switch (change.interaction.event) {
-            case EventName.ButtonLikePress:
-            case EventName.SwipeLike:
+        switch (change.interaction.name) {
+            case InteractionName.ButtonLikePress:
+            case InteractionName.SwipeLike:
                 item.sentiment = Sentiment.Like
                 break
-            case EventName.ButtonDislikePress:
-            case EventName.SwipeDislike:
+            case InteractionName.ButtonDislikePress:
+            case InteractionName.SwipeDislike:
                 item.sentiment = Sentiment.Dislike
                 break
-            case EventName.SwipeLove:
+            case InteractionName.SwipeLove:
                 item.sentiment = Sentiment.Love
                 break
-            case EventName.SwipeHate:
+            case InteractionName.SwipeHate:
                 item.sentiment = Sentiment.Hate
                 break
-            case EventName.ButtonBackPress:
+            case InteractionName.ButtonBackPress:
                 item.sentiment = Sentiment.Unknown
                 break;
         }
@@ -77,10 +78,10 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
         updateInPlace(state.cardItems, item)
 
         //if we swiped, we can do this right away
-        if (change.interaction.event == EventName.SwipeLike
-            || change.interaction.event == EventName.SwipeDislike
-            || change.interaction.event == EventName.SwipeLove
-            || change.interaction.event == EventName.SwipeHate) {
+        if (change.interaction.name == InteractionName.SwipeLike
+            || change.interaction.name == InteractionName.SwipeDislike
+            || change.interaction.name == InteractionName.SwipeLove
+            || change.interaction.name == InteractionName.SwipeHate) {
 
             //everything but the buttons should advance head
             state.head = nextHead(state.cardItems, state.head)
@@ -204,13 +205,13 @@ const Queue : React.FC<BaseProps> = (props) => {
 
     const api = Dependencies.instance.api
 
-    const buttonStates : Map<EventName, Animated.Value> = new Map([
-        [EventName.ButtonLikePress, useRef(new Animated.Value(1)).current],
-        [EventName.ButtonDislikePress, useRef(new Animated.Value(1)).current],
-        [EventName.ButtonBackPress, useRef(new Animated.Value(1)).current],
+    const buttonStates : Map<InteractionName, Animated.Value> = new Map([
+        [InteractionName.ButtonLikePress, useRef(new Animated.Value(1)).current],
+        [InteractionName.ButtonDislikePress, useRef(new Animated.Value(1)).current],
+        [InteractionName.ButtonBackPress, useRef(new Animated.Value(1)).current],
     ]);
 
-    const buttonAnimate = (event : EventName) => {
+    const buttonAnimate = (event : InteractionName) => {
         const animate = buttonStates.get(event)
         Animated.sequence([
             Animated.timing(animate, {
@@ -237,6 +238,8 @@ const Queue : React.FC<BaseProps> = (props) => {
                     dispatch({ addToCache: moreActive.items})
                 })
         }
+
+        return api.cleanup
     }, [state.cacheItems])
 
     useEffect(() => {
@@ -254,17 +257,17 @@ const Queue : React.FC<BaseProps> = (props) => {
 
     }, [state.cardItems])
 
-    const actionButton = (event : EventName, text : string, status : string, icon : string) => {
+    const actionButton = (name : InteractionName, text : string, status : string, icon : string) => {
 
         const iconEl = (props) => (
             <Icon {...props} name={icon} />
         )
         return <Button style={styles.button} size='giant' appearance='ghost' status={status} accessoryLeft={iconEl}
                        onPress={() => {
-                           buttonAnimate(event)
+                           buttonAnimate(name)
                            dispatch({
                                interaction: {
-                                   event,
+                                   name: name,
                                    item: getHead(state.cardItems, state.head)
                                }
                            })
@@ -299,23 +302,23 @@ const Queue : React.FC<BaseProps> = (props) => {
                 <Animated.View
                     style={{
                         flex: 1,
-                        transform: [{ scale: buttonStates.get(EventName.ButtonDislikePress) }],
+                        transform: [{ scale: buttonStates.get(InteractionName.ButtonDislikePress) }],
                     }}>
-                    {actionButton(EventName.ButtonDislikePress, 'Nope', 'danger', 'close-square')}
+                    {actionButton(InteractionName.ButtonDislikePress, 'Nope', 'danger', 'close-square')}
                 </Animated.View>
                 <Animated.View
                     style={{
                         flex: 1,
-                        transform: [{ scale: buttonStates.get(EventName.ButtonBackPress) }],
+                        transform: [{ scale: buttonStates.get(InteractionName.ButtonBackPress) }],
                     }}>
-                    {actionButton(EventName.ButtonBackPress, 'Rewind', 'warning', 'undo')}
+                    {actionButton(InteractionName.ButtonBackPress, 'Rewind', 'warning', 'undo')}
                 </Animated.View>
                 <Animated.View
                         style={{
                             flex: 1,
-                            transform: [{ scale: buttonStates.get(EventName.ButtonLikePress) }],
+                            transform: [{ scale: buttonStates.get(InteractionName.ButtonLikePress) }],
                         }}>
-                    {actionButton(EventName.ButtonLikePress, 'I\'d Watch' , 'success', 'heart')}
+                    {actionButton(InteractionName.ButtonLikePress, 'I\'d Watch' , 'success', 'heart')}
                 </Animated.View>
             </View>
         </SafeAreaView>

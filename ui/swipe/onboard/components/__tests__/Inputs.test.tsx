@@ -1,24 +1,29 @@
-import {act, fireEvent, render} from '@testing-library/react-native';
+import {fireEvent, render} from '@testing-library/react-native';
 import {expect, jest, test} from '@jest/globals'
 import * as React from 'react'
+import {useReducer} from 'react'
 import EmailInput from "../EmailInput";
 import {ApplicationProvider, IconRegistry} from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
 import {EvaIconsPack} from "@ui-kitten/eva-icons";
 import PasswordInput from "../PasswordInput";
+import {Reducer, reducer, ValidationStatus} from "../../OnboardEvents";
+import {renderHook} from '@testing-library/react-hooks'
 
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 
 test('invalid email gives error and valid removes', async () => {
-    let emailRef : () => string | undefined
-    const emailRefCallback = (verifyCheck: () => string | undefined) => {
-        emailRef = verifyCheck
-    }
-    const { getByPlaceholderText, getByText, queryByPlaceholderText } = render(
+    const { result } = renderHook(() => useReducer<Reducer>(reducer, {
+        email: { validation: { status: ValidationStatus.Input }},
+        password: { validation: { status: ValidationStatus.Input}},
+        verify: { validation: { status: ValidationStatus.Input}}
+    }));
+    const [state, dispatch] = result.current;
+
+    const { getByPlaceholderText, queryByPlaceholderText, queryByText } = render(
         <ApplicationProvider {...eva}  theme={eva.light}>
             <IconRegistry icons={EvaIconsPack} />
-            <EmailInput
-                checkCallback={emailRefCallback}/>
+            <EmailInput state={state.email} dispatch={dispatch} />
         </ApplicationProvider>
     );
 
@@ -26,9 +31,9 @@ test('invalid email gives error and valid removes', async () => {
         getByPlaceholderText('Email'),
         'jimbo'
     );
-    fireEvent(getByPlaceholderText('Email'), 'blur');
+    fireEvent(getByPlaceholderText('Email'), 'blur')
 
-    getByText('Please enter a valid email')
+    expect(queryByText('Please enter a valid email')).toBeDefined()
 
     fireEvent.changeText(
         getByPlaceholderText('Email'),
@@ -38,26 +43,32 @@ test('invalid email gives error and valid removes', async () => {
 
     expect(queryByPlaceholderText('Please enter a valid email')).toBeNull()
 
-    act(() => expect(emailRef()).toEqual("jimbo@jimbo.com"))
+    const [stateFinal] = result.current;
+    expect(stateFinal.email.value).toEqual("jimbo@jimbo.com")
 });
 
 test('invalid password flow checks multiple bad password things', async () => {
-    let passwordRef : () => string | undefined
-    const passwordRefCallback = (verifyCheck: () => string | undefined) => {
-        passwordRef = verifyCheck
-    }
-    const { getByPlaceholderText, getByText, queryByPlaceholderText } = render(
+    const { result } = renderHook(() => useReducer<Reducer>(reducer, {
+        email: { validation: { status: ValidationStatus.Input }},
+        password: { validation: { status: ValidationStatus.Input}},
+        verify: { validation: { status: ValidationStatus.Input}}
+    }));
+    const [state, dispatch] = result.current;
+
+    const { getByPlaceholderText, queryByText, queryByPlaceholderText } = render(
         <ApplicationProvider {...eva}  theme={eva.light}>
             <IconRegistry icons={EvaIconsPack} />
             <PasswordInput
-                verify={true}
-                checkCallback={passwordRefCallback}/>
+                passwordState={state.password}
+                dispatch={dispatch}
+                addVerify={true}
+                verifyState={state.verify} />
         </ApplicationProvider>
     );
 
     //yell that password is missing
     fireEvent(getByPlaceholderText('Password'), 'blur');
-    getByText('Please enter your password')
+    expect(queryByText('Please enter your password')).toBeDefined()
 
     //to short
     fireEvent.changeText(
@@ -66,7 +77,7 @@ test('invalid password flow checks multiple bad password things', async () => {
     );
     fireEvent(getByPlaceholderText('Password'), 'blur');
     expect(queryByPlaceholderText('Please enter your password')).toBeNull() //first error gone
-    getByText('Your password needs to be at least 8 characters')
+    expect(queryByText('Your password needs to be at least 8 characters')).toBeDefined()
 
     //just right but no verify
     fireEvent.changeText(
@@ -77,13 +88,14 @@ test('invalid password flow checks multiple bad password things', async () => {
     expect(queryByPlaceholderText('Your password needs to be at least 8 characters')).toBeNull() //length error gone
 
     //verify should stop us
-    getByText('Please double check the two password fields match')
+    expect(queryByText('Please double check the two password fields match')).toBeDefined()
     fireEvent.changeText(
         getByPlaceholderText('Verify Password'),
         'jimbojones'
     );
     expect(queryByPlaceholderText('Please double check the two password fields match')).toBeNull()
 
-    act(() => expect(passwordRef()).toEqual("jimbojones"))
+    const [stateFinal] = result.current;
+    expect(stateFinal.password.value).toEqual("jimbojones")
 });
 

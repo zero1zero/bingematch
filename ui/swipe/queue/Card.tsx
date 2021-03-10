@@ -8,7 +8,7 @@ import {
     PanResponderGestureState,
     useWindowDimensions
 } from "react-native";
-import {EventName, Item, Sentiment, StateChange} from "./QueueEvents";
+import {InteractionName, Item, Sentiment, StateChange} from "./QueueEvents";
 
 export interface Props {
     item: Item,
@@ -86,11 +86,11 @@ const Card : React.FC<Props> = (props) => {
         return Math.abs(gestureState.dx) >= 1 || Math.abs(gestureState.dy) >= 1
     }
 
-    const triggerSwipe = (action : EventName) => {
+    const triggerSwipe = (action : InteractionName) => {
         props.dispatch({
             setOffscreen: props.item.data.id,
             interaction: {
-                event: action,
+                name: action,
                 item: props.item
             }
         })
@@ -166,7 +166,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start()
-                    setTimeout(() => triggerSwipe(EventName.SwipeLike), 200, props)
+                    setTimeout(() => triggerSwipe(InteractionName.SwipeLike), 200, props)
                     // left
                 } else if (value < -1) {
                     Animated.spring(card, {
@@ -176,7 +176,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(() => triggerSwipe(EventName.SwipeDislike), 200, props)
+                    setTimeout(() => triggerSwipe(InteractionName.SwipeDislike), 200, props)
                     // up
                 } else if (upValue < -1) {
                     Animated.spring(card, {
@@ -186,7 +186,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(() => triggerSwipe(EventName.SwipeLove), 200, props)
+                    setTimeout(() => triggerSwipe(InteractionName.SwipeLove), 200, props)
                     // down
                 } else if (upValue > 1) {
                     Animated.spring(card, {
@@ -196,7 +196,7 @@ const Card : React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(() => triggerSwipe(EventName.SwipeHate), 200, props)
+                    setTimeout(() => triggerSwipe(InteractionName.SwipeHate), 200, props)
                     // the card didn't reach its swipe position
                 } else {
                     Animated.spring(card, {

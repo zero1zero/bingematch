@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useReducer} from "react";
 import {KeyboardAvoidingView, SafeAreaView, View} from "react-native";
 import {Button, StyleService, Text} from "@ui-kitten/components";
 import {ImageOverlay} from "../etc/ImageOverlay";
@@ -7,37 +7,52 @@ import EmailInput from "./components/EmailInput";
 import PasswordInput from "./components/PasswordInput";
 import {BaseProps} from "../etc/BaseProps";
 import Dependencies from "../Dependencies";
+import _ from 'lodash';
+import {reducer, Reducer, ValidationStatus} from "./OnboardEvents";
 
 const SignUp : React.FC<BaseProps> = (props) => {
 
     const api = Dependencies.instance.api
 
-    const emailRef = React.useRef<() => string | undefined>()
-    const emailRefCallback = (verifyCheck: () => string | undefined) => {
-        emailRef.current = verifyCheck
-    }
-
-    const passwordRef = React.useRef<() => string | undefined>()
-    const passwordRefCallback = (verifyCheck: () => string | undefined) => {
-        passwordRef.current = verifyCheck
-    }
+    const [state, dispatch] = useReducer<Reducer>(reducer, {
+        email: { validation: { status: ValidationStatus.Input }},
+        password: { validation: { status: ValidationStatus.Input}},
+        verify: { validation: { status: ValidationStatus.Input}}
+    })
 
     const onSignUpButtonPress = (): void => {
-        const email = emailRef.current()
-        const password = passwordRef.current()
+        dispatch({
+            email: { validation: { status: ValidationStatus.Verify}},
+            password: { validation: { status: ValidationStatus.Verify}},
+            verify: { validation: { status: ValidationStatus.Verify}},
+            submit: true
+        })
+    };
 
-        if (!email || !password) {
+    useEffect(() => {
+        if (!state.submit
+            || _.intersection([ValidationStatus.Input, ValidationStatus.Verify],
+                [state.email.validation.status,
+                    state.password.validation.status,
+                    state.verify.validation.status]).length > 0) {
+            return
+        }
+
+        //ready to submit, abort if not valid
+        if (state.email.validation.status != ValidationStatus.Valid
+            || state.password.validation.status != ValidationStatus.Valid
+            || state.verify.validation.status != ValidationStatus.Valid) {
+            dispatch({ submit: false})
             return
         }
 
         api.signup({
-            email: email,
-            password: password
-
+            email: state.email.value,
+            password: state.password.value
         }).then(() => {
             props.navigation.navigate('Queue');
         })
-    };
+    }, [state])
 
     const onLoginButtonPress = (): void => {
         props.navigation.navigate('Login');
@@ -53,20 +68,23 @@ const SignUp : React.FC<BaseProps> = (props) => {
                         <Text
                             category='h1'
                             status='control'>
-                            Sign Up
+                            BingeMatch
                         </Text>
                         <Text
                             category='s1'
                             status='control'>
-                            Sign in to your account
+                            Create a new account
                         </Text>
                     </View>
                     <View style={styles.formContainer}>
                         <EmailInput
-                            checkCallback={emailRefCallback}/>
+                            state={state.email}
+                            dispatch={dispatch} />
                         <PasswordInput
-                            verify={true}
-                            checkCallback={passwordRefCallback}/>
+                            passwordState={state.password}
+                            dispatch={dispatch}
+                            addVerify={true}
+                            verifyState={state.verify} />
                         <Button
                             style={styles.signUpButton}
                             size='giant'

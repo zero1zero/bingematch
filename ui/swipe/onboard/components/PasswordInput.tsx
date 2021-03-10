@@ -1,71 +1,75 @@
 import {StyleProp, TextStyle, View} from "react-native";
-import React from "react";
+import React, {useEffect} from "react";
 import {Input, StyleService, Text} from "@ui-kitten/components";
 import {EvaStatus} from "@ui-kitten/components/devsupport";
 import {PasswordIcon} from "../../etc/Icons";
-
-const validMsg = ' '
+import {InputState, StateChange, ValidationStatus} from "../OnboardEvents";
 
 interface Props {
     style?: StyleProp<TextStyle>
-    value?: string
-    verify: boolean
+    passwordState: InputState
 
-    checkCallback: ((verifyCheck: () => string | undefined) => void)
+    verifyState?: InputState
+    addVerify?: boolean
+
+    dispatch: React.Dispatch<StateChange>
 }
 const PasswordInput : React.FC<Props> = (props) => {
 
-    const [password, setPassword] = React.useState<string>(props.value)
-    const [passwordMsg, setPasswordMsg] = React.useState<string>(validMsg)
     const [passwordStatus, setPasswordStatus] = React.useState<EvaStatus>('control')
-
-    const [verify, setVerify] = React.useState<string>(props.value)
     const [verifyStatus, setVerifyStatus] = React.useState<string>('control')
 
-    const validate = () : string | undefined => {
-        const valid = props.verify ?
-            passwordCheck() && verifyCheck()
-            : passwordCheck()
+    useEffect(() => {
+        if (props.passwordState.validation.status == ValidationStatus.Verify) {
+            passwordCheck()
+            return
+        }
 
-        return valid ? password : undefined
-    }
+        if (props.verifyState?.validation?.status == ValidationStatus.Verify) {
+            verifyCheck()
+            return
+        }
 
-    props.checkCallback(validate)
+    }, [props.passwordState, props.verifyState])
 
     const verifyCheck = () : boolean => {
-        if (password != verify) {
-            setPasswordMsg('Please double check the two password fields match')
+
+        if (props.passwordState.value != props.verifyState.value) {
             setVerifyStatus('danger')
+            props.dispatch({
+                verify: { validation: { status: ValidationStatus.Invalid }},
+                password: { validation: { message: 'Please double check the two password fields match' }} //message on password field
+            })
             return false
         }
 
-        setPasswordMsg(validMsg)
-        setVerifyStatus('control')
+        setVerifyStatus('success')
+        props.dispatch({
+            verify: { validation: { status: ValidationStatus.Valid }},
+            password: { validation: { message: '' }} //message on password field
+        })
 
         return true
     }
 
     const passwordCheck = () : boolean => {
         //verify or not, we need a value
-        if (!password) {
-            setPasswordMsg('Please enter your password')
+        if (!props.passwordState.value) {
             setPasswordStatus('danger')
+            props.dispatch({ password: { validation: { status: ValidationStatus.Invalid, message: 'Please enter your password' }}})
             return false
         }
 
-        //rest is for verify, i.e. new signups and password edits
-        if (props.verify) {
-            //secure enough
-            if (!password || password.length < 8) {
-                setPasswordMsg('Your password needs to be at least 8 characters')
-                setPasswordStatus('danger')
-                return false
-            }
+        //secure enough
+        if (props.addVerify && props.passwordState.value.length < 8) {
+            setPasswordStatus('danger')
+            props.dispatch({ password: { validation: { status: ValidationStatus.Invalid, message: 'Your password needs to be at least 8 characters' }}})
+            return false
         }
 
-        //we're good
-        setPasswordMsg(validMsg)
-        setPasswordStatus('control')
+        setPasswordStatus('success')
+        props.dispatch({ password: { validation: { status: ValidationStatus.Valid, message: '' }}})
+
         return true
     }
 
@@ -73,7 +77,7 @@ const PasswordInput : React.FC<Props> = (props) => {
         <Input
             size='large'
             style={[props.style, styles]}
-            onBlur={validate}
+            onBlur={() => props.dispatch({ password: { validation: {status: ValidationStatus.Verify }}}) }
             status={passwordStatus}
             autoCapitalize='none'
             secureTextEntry={true}
@@ -82,15 +86,15 @@ const PasswordInput : React.FC<Props> = (props) => {
             textContentType='newPassword'
             accessoryLeft={PasswordIcon}
             textStyle={{fontSize: 20}}
-            value={password}
-            onChangeText={setPassword}
+            value={props.passwordState.value}
+            onChangeText={(value) => props.dispatch({ password: { value }})}
         />
 )
     const passwordTooltip = (
         <Text
-            style={{ textAlign: 'right'}}
+            style={{ textAlign: 'right', height: 20 }}
             status='danger'>
-            {passwordMsg}
+            {props.passwordState.validation.message}
         </Text>
     )
 
@@ -98,7 +102,7 @@ const PasswordInput : React.FC<Props> = (props) => {
         <Input
             size='large'
             textStyle={{fontSize: 20}}
-            onBlur={validate}
+            onBlur={() => props.dispatch({ verify: { validation: {status: ValidationStatus.Verify }}}) }
             status={verifyStatus}
             autoCapitalize='none'
             secureTextEntry={true}
@@ -106,12 +110,12 @@ const PasswordInput : React.FC<Props> = (props) => {
             autoCompleteType='password'
             placeholder='Verify Password'
             textContentType='newPassword'
-            value={verify}
-            onChangeText={setVerify}
+            value={props.verifyState?.value}
+            onChangeText={(value) => props.dispatch({ verify: { value }})}
         />
     )
 
-    return props.verify ? (
+    return props.addVerify ? (
         <View>
             {passwordTooltip}
             {passwordInput}

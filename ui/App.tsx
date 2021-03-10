@@ -33,7 +33,7 @@ export default function App() {
             <IconRegistry icons={EvaIconsPack} />
             <NavigationContainer>
                 <Navigator headerMode='none'
-                           initialRouteName='Splash'
+                           initialRouteName='Login'
                            mode="modal">
                     <Screen name='Splash' component={Splash} />
                     <Screen name='Login' component={Login} />

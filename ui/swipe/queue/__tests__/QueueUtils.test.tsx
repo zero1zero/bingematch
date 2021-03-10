@@ -80,10 +80,11 @@ test('correctly get head item', async () => {
 
     expect(getItem(items, 'ars')).toEqual({
         sentiment: Sentiment.Unknown,
+        synced: SyncStatus.UnSynced,
         onscreen: true,
         data: queue.Item.create({
             id: 'ars'
-        })
+        }),
     })
 })
 
