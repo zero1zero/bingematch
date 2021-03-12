@@ -45,3 +45,7 @@ export const PersonAdd = (style: ImageStyle): IconElement => (
 export const ReportIcon = (style: ImageStyle): IconElement => (
     <Icon {...style} name='flag' fill='#FFF' />
 )
+
+export const ArrowDown = (style: ImageStyle): IconElement => (
+    <Icon {...style} name='arrow-ios-forward' fill='#000' />
+)

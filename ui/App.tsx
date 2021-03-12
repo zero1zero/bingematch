@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import Queue from "./swipe/queue/Queue";
 import * as eva from '@eva-design/eva';
 import {enableScreens} from 'react-native-screens';
@@ -10,6 +10,7 @@ import Login from "./swipe/onboard/Login";
 import SignUp from "./swipe/onboard/SignUp";
 import ForgotPassword from "./swipe/onboard/ForgotPassword";
 import Splash from "./swipe/Splash";
+import {BingeMatch} from "./swipe/theme";
 
 export type RootStackParamList = {
     Splash: undefined
@@ -23,17 +24,23 @@ export type RootStackParamList = {
 
 export default function App() {
 
+    const navRef = useRef()
+
     //for expo setup https://reactnavigation.org/docs/react-native-screens
     enableScreens();
 
     const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
 
+    useEffect(() => {
+
+    }, [])
+
     return (
-        <ApplicationProvider {...eva} theme={eva.light}>
+        <ApplicationProvider {...eva} theme={BingeMatch.values}>
             <IconRegistry icons={EvaIconsPack} />
-            <NavigationContainer>
+            <NavigationContainer ref={navRef}>
                 <Navigator headerMode='none'
-                           initialRouteName='Login'
+                           initialRouteName='Queue'
                            mode="modal">
                     <Screen name='Splash' component={Splash} />
                     <Screen name='Login' component={Login} />

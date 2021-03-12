@@ -19,7 +19,9 @@ import {
     updateInPlace
 } from "./QueueUtils";
 import {InteractionName, Item, Sentiment, StateChange, SyncStatus} from "./QueueEvents";
-import {PersonAdd, SettingsIcon} from "../etc/Icons";
+import QueueHeader from "./Header";
+import QueueActions from "./Actions";
+import {BingeMatch} from "../theme";
 
 interface QueueState {
     cacheItems: queue.IItem[]
@@ -36,8 +38,6 @@ type Reducer = (state : QueueState, change : StateChange) => QueueState
 const reducer = (state : QueueState, change : StateChange) : QueueState => {
 
     if (change.addToCache) {
-        console.log("add to cache")
-
         state.cacheItems = state.cacheItems.concat(change.addToCache)
     }
 
@@ -94,8 +94,6 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
             return state
         }
 
-        console.log("new head: " + next(state.cardItems, state.head).data.movie.title)
-
         state.head = nextHead(state.cardItems, state.head)
     }
 
@@ -105,8 +103,6 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
         if (previousHead(state.cardItems, state.head) != change.regressHead) {
             return state
         }
-
-        console.log("regressing head")
 
         const prev = previous(state.cardItems, state.head)
         prev.synced = SyncStatus.UnSynced
@@ -141,7 +137,7 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
     }
 
     if (state.cardItems) {
-        console.log('====== Queue =======')
+        console.debug('====== Queue =======')
         state.cardItems.map( item => {
             let msg = '⇨ ' + item.data.movie.title + (item.data.id == state.head ? ' - 🎥' : '')
             switch (item.synced) {
@@ -153,9 +149,9 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
                     break;
 
             }
-            console.log(msg)
+            console.debug(msg)
         })
-        console.log('====== /Queue =======')
+        console.debug('====== /Queue =======')
     }
 
     return Object.assign({}, state)
@@ -204,28 +200,6 @@ const checkForCardHydrate = (state : QueueState) : QueueState => {
 const Queue : React.FC<BaseProps> = (props) => {
 
     const api = Dependencies.instance.api
-
-    const buttonStates : Map<InteractionName, Animated.Value> = new Map([
-        [InteractionName.ButtonLikePress, useRef(new Animated.Value(1)).current],
-        [InteractionName.ButtonDislikePress, useRef(new Animated.Value(1)).current],
-        [InteractionName.ButtonBackPress, useRef(new Animated.Value(1)).current],
-    ]);
-
-    const buttonAnimate = (event : InteractionName) => {
-        const animate = buttonStates.get(event)
-        Animated.sequence([
-            Animated.timing(animate, {
-                toValue: 1.4,
-                duration: 150,
-                useNativeDriver: true,
-            }),
-            Animated.spring(animate, {
-                toValue: 1,
-                useNativeDriver: true,
-            }),
-        ]).start();
-    }
-
     const [state, dispatch] = useReducer<Reducer>(reducer, {
         cardItems: [], cacheItems: [], head: undefined
     })
@@ -238,8 +212,6 @@ const Queue : React.FC<BaseProps> = (props) => {
                     dispatch({ addToCache: moreActive.items})
                 })
         }
-
-        return api.cleanup
     }, [state.cacheItems])
 
     useEffect(() => {
@@ -257,114 +229,30 @@ const Queue : React.FC<BaseProps> = (props) => {
 
     }, [state.cardItems])
 
-    const actionButton = (name : InteractionName, text : string, status : string, icon : string) => {
 
-        const iconEl = (props) => (
-            <Icon {...props} name={icon} />
-        )
-        return <Button style={styles.button} size='giant' appearance='ghost' status={status} accessoryLeft={iconEl}
-                       onPress={() => {
-                           buttonAnimate(name)
-                           dispatch({
-                               interaction: {
-                                   name: name,
-                                   item: getHead(state.cardItems, state.head)
-                               }
-                           })
-                       }}>{text}</Button>
-    }
-
-    const profileAction = () => (
-        <TopNavigationAction icon={() => <SettingsIcon {...styles.settingsIcon} />}
-            onPress={ () => props.navigation.navigate('Login') }
-        />
-    )
-
-    const addAction = () => (
-        <TopNavigationAction icon={() => <PersonAdd {...styles.addIcon} />}
-                             onPress={ () => props.navigation.navigate('Login') }
-        />
-    )
+    //cleanup when closed
+    useEffect(() => {
+        return api.cleanup
+    }, [])
 
     return (
         <SafeAreaView style={styles.home}>
-            <TopNavigation style={styles.top}
-                           title={evaProps => <Text {...evaProps} style={styles.topTitle}>BingeMatch</Text>}
-                           alignment='center'
-                           accessoryRight={profileAction}
-                           accessoryLeft={addAction}
-            />
+            <QueueHeader navigation={props.navigation} route={props.route} />
             <Deck
                 items={state.cardItems}
                 dispatch={dispatch}
             />
-            <View style={styles.actions}>
-                <Animated.View
-                    style={{
-                        flex: 1,
-                        transform: [{ scale: buttonStates.get(InteractionName.ButtonDislikePress) }],
-                    }}>
-                    {actionButton(InteractionName.ButtonDislikePress, 'Nope', 'danger', 'close-square')}
-                </Animated.View>
-                <Animated.View
-                    style={{
-                        flex: 1,
-                        transform: [{ scale: buttonStates.get(InteractionName.ButtonBackPress) }],
-                    }}>
-                    {actionButton(InteractionName.ButtonBackPress, 'Rewind', 'warning', 'undo')}
-                </Animated.View>
-                <Animated.View
-                        style={{
-                            flex: 1,
-                            transform: [{ scale: buttonStates.get(InteractionName.ButtonLikePress) }],
-                        }}>
-                    {actionButton(InteractionName.ButtonLikePress, 'I\'d Watch' , 'success', 'heart')}
-                </Animated.View>
-            </View>
+            <QueueActions
+                head={getHead(state.cardItems, state.head)}
+                dispatch={dispatch} />
         </SafeAreaView>
 );
 }
 
-//https://coolors.co/353535-3c6e71-ffffff-d9d9d9-284b63
-const bg = '#284b63'
-
 const styles = StyleSheet.create({
     home: {
         flex: 1,
-        backgroundColor: bg
-    },
-
-    top: {
-        backgroundColor: bg,
-        paddingVertical: 0,
-        marginBottom: 9,
-        minHeight: 35,
-    },
-    topTitle: {
-        color: 'white',
-        fontSize: 25
-    },
-
-    settingsIcon: {
-        alignSelf: 'flex-end',
-        backgroundColor: '#FFF',
-        width: 35,
-        height: 35,
-    },
-
-    addIcon: {
-        alignSelf: 'flex-start',
-        width: 35,
-        height: 35,
-    },
-    actions: {
-        flexDirection: "row",
-        justifyContent: 'space-around',
-        alignItems: "center"
-    },
-    button: {
-        flex: 1,
-        flexDirection: "column",
+        backgroundColor: BingeMatch.bg
     },
 });
 
