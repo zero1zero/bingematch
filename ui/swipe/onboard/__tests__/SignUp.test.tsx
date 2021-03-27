@@ -2,9 +2,6 @@ import {fireEvent, render} from '@testing-library/react-native';
 import {jest, test} from '@jest/globals'
 import * as React from 'react'
 import {RootStackParamList} from "../../../App";
-import {ApplicationProvider, IconRegistry} from "@ui-kitten/components";
-import * as eva from "@eva-design/eva";
-import {EvaIconsPack} from "@ui-kitten/eva-icons";
 import SignUp from "../SignUp";
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
@@ -37,15 +34,12 @@ test('given new SignUp, we can register a new user', async () => {
 
     const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
     const { queryByText, getByPlaceholderText, getByText, findByText, toJSON } = render(
-        <ApplicationProvider {...eva}  theme={eva.light}>
-            <IconRegistry icons={EvaIconsPack} />
-            <NavigationContainer>
-                <Navigator headerMode='none'>
-                    <Screen name='SignUp' component={SignUp} />
-                    <Screen name='Queue' component={Queue} />
-                </Navigator>
-            </NavigationContainer>
-        </ApplicationProvider>
+        <NavigationContainer>
+            <Navigator headerMode='none'>
+                <Screen name='SignUp' component={SignUp} />
+                <Screen name='Queue' component={Queue} />
+            </Navigator>
+        </NavigationContainer>
     );
 
     fireEvent.changeText(

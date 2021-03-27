@@ -1,47 +1,47 @@
-import React, {useEffect, useReducer} from "react";
-import {KeyboardAvoidingView, SafeAreaView, View} from "react-native";
-import {Button, StyleService, Text} from "@ui-kitten/components";
+import React, {useEffect, useLayoutEffect, useReducer} from "react";
+import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {ImageOverlay} from "../etc/ImageOverlay";
 import Social from "./components/Social";
-import EmailInput from "./components/EmailInput";
-import PasswordInput from "./components/PasswordInput";
 import {BaseProps} from "../etc/BaseProps";
 import Dependencies from "../Dependencies";
-import _ from 'lodash';
-import {reducer, Reducer, ValidationStatus} from "./OnboardEvents";
+import {defaultReducer, isReadyToValidate, isValid, UserEvents, userReduder, verify} from "./UserReducer";
+import {Button} from "../components/Button";
+import {BingeMatch} from "../theme";
+import {PasswordInput} from "./components/PasswordInput";
+import {VerifyInput} from "./components/VerifyPassword";
+import {EmailInput} from "./components/EmailInput";
 
 const SignUp : React.FC<BaseProps> = (props) => {
 
     const api = Dependencies.instance.api
 
-    const [state, dispatch] = useReducer<Reducer>(reducer, {
-        email: { validation: { status: ValidationStatus.Input }},
-        password: { validation: { status: ValidationStatus.Input}},
-        verify: { validation: { status: ValidationStatus.Input}}
-    })
+    useLayoutEffect(() => {
+        props.navigation.setOptions({
+            headerShown: false
+        });
+    }, [props.navigation]);
+
+    const [state, dispatch] = useReducer<UserEvents>(userReduder, defaultReducer)
 
     const onSignUpButtonPress = (): void => {
         dispatch({
-            email: { validation: { status: ValidationStatus.Verify}},
-            password: { validation: { status: ValidationStatus.Verify}},
-            verify: { validation: { status: ValidationStatus.Verify}},
+            email: verify,
+            password: verify,
+            verify: verify,
             submit: true
         })
     };
 
     useEffect(() => {
         if (!state.submit
-            || _.intersection([ValidationStatus.Input, ValidationStatus.Verify],
-                [state.email.validation.status,
-                    state.password.validation.status,
-                    state.verify.validation.status]).length > 0) {
+            || !isReadyToValidate(state.email.validation, state.password.validation, state.verify.validation)) {
             return
         }
 
         //ready to submit, abort if not valid
-        if (state.email.validation.status != ValidationStatus.Valid
-            || state.password.validation.status != ValidationStatus.Valid
-            || state.verify.validation.status != ValidationStatus.Valid) {
+        if (!isValid(state.email.validation,
+                         state.password.validation,
+                         state.verify.validation)) {
             dispatch({ submit: false})
             return
         }
@@ -65,50 +65,49 @@ const SignUp : React.FC<BaseProps> = (props) => {
                 source={require('../assets/super.png')}>
                 <SafeAreaView style={styles.container}>
                     <View style={styles.headerContainer}>
-                        <Text
-                            category='h1'
-                            status='control'>
+                        <Text style={BingeMatch.h1}>
                             BingeMatch
                         </Text>
-                        <Text
-                            category='s1'
-                            status='control'>
+                        <Text style={BingeMatch.h2}>
                             Create a new account
                         </Text>
                     </View>
                     <View style={styles.formContainer}>
-                        <EmailInput
-                            state={state.email}
-                            dispatch={dispatch} />
-                        <PasswordInput
-                            passwordState={state.password}
-                            dispatch={dispatch}
-                            addVerify={true}
-                            verifyState={state.verify} />
+                        <View>
+                            <EmailInput
+                                style={{marginBottom: 10}}
+                                message={state.email.validation.message}
+                                value={state.email.value}
+                                dispatch={dispatch} />
+                            <PasswordInput
+                                style={{marginBottom: 6}}
+                                message={state.password.validation.message}
+                                value={state.password.value}
+                                dispatch={dispatch} />
+                            <VerifyInput
+                                value={state.verify.value}
+                                dispatch={dispatch} />
+                        </View>
                         <Button
                             style={styles.signUpButton}
-                            size='giant'
                             onPress={onSignUpButtonPress}>
-                            SIGN UP
+                            <Text style={BingeMatch.buttonText}>SIGN UP</Text>
                         </Button>
 
                         <Social text={"Or Sign Up Using Social Media"}/>
                     </View>
                     <Button
                         style={styles.loginButton}
-                        appearance='ghost'
-                        status='control'
                         onPress={onLoginButtonPress}>
-                        Already have account? Sign In
+                        <Text style={styles.loginButtonText}>Already have account? Sign In</Text>
                     </Button>
-
                 </SafeAreaView>
             </ImageOverlay>
         </KeyboardAvoidingView>
     )
 }
 
-const styles = StyleService.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
@@ -124,10 +123,16 @@ const styles = StyleService.create({
     signUpButton: {
         marginTop: 32,
         marginHorizontal: 16,
+        width: '100%',
+        backgroundColor: 'white'
     },
     loginButton: {
         marginVertical: 12,
     },
+
+    loginButtonText: {
+        color: 'white'
+    }
 });
 
 export default SignUp

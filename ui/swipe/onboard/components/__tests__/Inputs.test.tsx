@@ -3,17 +3,14 @@ import {expect, jest, test} from '@jest/globals'
 import * as React from 'react'
 import {useReducer} from 'react'
 import EmailInput from "../EmailInput";
-import {ApplicationProvider, IconRegistry} from "@ui-kitten/components";
-import * as eva from "@eva-design/eva";
-import {EvaIconsPack} from "@ui-kitten/eva-icons";
 import PasswordInput from "../PasswordInput";
-import {Reducer, reducer, ValidationStatus} from "../../OnboardEvents";
+import {UserEvents, userReduder, ValidationStatus} from "../../UserReducer";
 import {renderHook} from '@testing-library/react-hooks'
 
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 
 test('invalid email gives error and valid removes', async () => {
-    const { result } = renderHook(() => useReducer<Reducer>(reducer, {
+    const { result } = renderHook(() => useReducer<UserEvents>(userReduder, {
         email: { validation: { status: ValidationStatus.Input }},
         password: { validation: { status: ValidationStatus.Input}},
         verify: { validation: { status: ValidationStatus.Input}}
@@ -21,10 +18,7 @@ test('invalid email gives error and valid removes', async () => {
     const [state, dispatch] = result.current;
 
     const { getByPlaceholderText, queryByPlaceholderText, queryByText } = render(
-        <ApplicationProvider {...eva}  theme={eva.light}>
-            <IconRegistry icons={EvaIconsPack} />
-            <EmailInput state={state.email} dispatch={dispatch} />
-        </ApplicationProvider>
+        <EmailInput state={state.email} dispatch={dispatch} />
     );
 
     fireEvent.changeText(
@@ -48,7 +42,7 @@ test('invalid email gives error and valid removes', async () => {
 });
 
 test('invalid password flow checks multiple bad password things', async () => {
-    const { result } = renderHook(() => useReducer<Reducer>(reducer, {
+    const { result } = renderHook(() => useReducer<UserEvents>(userReduder, {
         email: { validation: { status: ValidationStatus.Input }},
         password: { validation: { status: ValidationStatus.Input}},
         verify: { validation: { status: ValidationStatus.Input}}
@@ -56,14 +50,11 @@ test('invalid password flow checks multiple bad password things', async () => {
     const [state, dispatch] = result.current;
 
     const { getByPlaceholderText, queryByText, queryByPlaceholderText } = render(
-        <ApplicationProvider {...eva}  theme={eva.light}>
-            <IconRegistry icons={EvaIconsPack} />
-            <PasswordInput
-                passwordState={state.password}
-                dispatch={dispatch}
-                addVerify={true}
-                verifyState={state.verify} />
-        </ApplicationProvider>
+        <PasswordInput
+            passwordState={state.password}
+            dispatch={dispatch}
+            addVerify={true}
+            verifyState={state.verify} />
     );
 
     //yell that password is missing

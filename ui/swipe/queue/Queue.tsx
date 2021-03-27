@@ -1,8 +1,7 @@
-import React, {useEffect, useReducer, useRef} from 'react';
+import React, {useEffect, useLayoutEffect, useReducer} from 'react';
 
-import {Animated, SafeAreaView, StyleSheet, View} from "react-native";
+import {SafeAreaView, StyleSheet, Text} from "react-native";
 import {queue} from "../model/compiled";
-import {Button, Icon, Text, TopNavigation, TopNavigationAction} from '@ui-kitten/components';
 import {BaseProps} from "../etc/BaseProps";
 import Dependencies from "../Dependencies";
 import Deck from "./Deck";
@@ -11,7 +10,6 @@ import {
     countAfterHeadInclusive,
     getHead,
     getItem,
-    next,
     nextHead,
     previous,
     previousHead,
@@ -19,9 +17,10 @@ import {
     updateInPlace
 } from "./QueueUtils";
 import {InteractionName, Item, Sentiment, StateChange, SyncStatus} from "./QueueEvents";
-import QueueHeader from "./Header";
 import QueueActions from "./Actions";
 import {BingeMatch} from "../theme";
+import {BarsIcon, SettingsIcon} from "../etc/Icons";
+import {Button} from "../components/Button";
 
 interface QueueState {
     cacheItems: queue.IItem[]
@@ -204,6 +203,23 @@ const Queue : React.FC<BaseProps> = (props) => {
         cardItems: [], cacheItems: [], head: undefined
     })
 
+    useLayoutEffect(() => {
+        props.navigation.setOptions({
+            headerStyle: BingeMatch.nav.bar,
+            headerTitle: () => (<Text style={BingeMatch.nav.title}>BingeMatch</Text>),
+            headerRight: () => (
+                <Button onPress={() => props.navigation.navigate('Profile')}>
+                    <SettingsIcon style={BingeMatch.nav.icons} size={30} color='white' />
+                </Button>
+            ),
+            headerLeft: () => (
+                // <Button onPress={() => props.navigation.openDrawer()}>
+                    <BarsIcon style={BingeMatch.nav.icons} size={30} color='white' />
+                // </Button>
+            ),
+        });
+    }, [props.navigation]);
+
     useEffect(() => {
         if (state.cacheItems.length < activeCardMax) {
             console.log('loading more cache...')
@@ -229,15 +245,13 @@ const Queue : React.FC<BaseProps> = (props) => {
 
     }, [state.cardItems])
 
-
     //cleanup when closed
-    useEffect(() => {
-        return api.cleanup
-    }, [])
+    // useEffect(() => {
+    //     return api.cleanup
+    // }, [])
 
     return (
         <SafeAreaView style={styles.home}>
-            <QueueHeader navigation={props.navigation} route={props.route} />
             <Deck
                 items={state.cardItems}
                 dispatch={dispatch}
@@ -252,10 +266,10 @@ const Queue : React.FC<BaseProps> = (props) => {
 const styles = StyleSheet.create({
     home: {
         flex: 1,
-        backgroundColor: BingeMatch.bg
+        backgroundColor: BingeMatch.theme.bg
     },
-});
 
+});
 
 export default Queue;
 

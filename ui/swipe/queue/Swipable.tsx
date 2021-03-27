@@ -22,7 +22,7 @@ interface AnimValues {
     easing: EasingFunction
 }
 
-const Card : React.FC<Props> = (props) => {
+const Swipable : React.FC<Props> = (props) => {
     const window = useWindowDimensions();
     const WIDTH_HALF = window.width / 2;
     const HEIGHT_HALF = window.height / 2;
@@ -300,4 +300,4 @@ const Card : React.FC<Props> = (props) => {
     );
 }
 
-export default Card;
+export default Swipable;

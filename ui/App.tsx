@@ -1,16 +1,16 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import Queue from "./swipe/queue/Queue";
-import * as eva from '@eva-design/eva';
 import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
-import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {createStackNavigator} from '@react-navigation/stack';
-import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import Login from "./swipe/onboard/Login";
 import SignUp from "./swipe/onboard/SignUp";
 import ForgotPassword from "./swipe/onboard/ForgotPassword";
 import Splash from "./swipe/Splash";
 import {BingeMatch} from "./swipe/theme";
+import Dependencies from "./swipe/Dependencies";
+import Profile from "./swipe/user/Profile";
+import {AuthContext, AuthState} from "./swipe/api/Auth";
 
 export type RootStackParamList = {
     Splash: undefined
@@ -23,32 +23,59 @@ export type RootStackParamList = {
 };
 
 export default function App() {
-
-    const navRef = useRef()
-
     //for expo setup https://reactnavigation.org/docs/react-native-screens
     enableScreens();
 
-    const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
+    const deps = Dependencies.instance
+
+    const [state, setState] = useState<AuthState>( AuthState.Loading )
+    const authContext = React.useMemo(
+        () => ({
+            login: () => {
+                setState(AuthState.Authenticated)
+            },
+            signOut: () => {
+                setState(AuthState.Unauthenticated)
+            },
+        }),
+        []
+    );
 
     useEffect(() => {
-
+        deps.storage.isLoggedIn()
+            .then(authd => {
+                setState(authd ? AuthState.Authenticated : AuthState.Unauthenticated)
+            })
     }, [])
 
+    if (state == AuthState.Loading) {
+        return <Splash />
+    }
+
+    const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
+
     return (
-        <ApplicationProvider {...eva} theme={BingeMatch.values}>
-            <IconRegistry icons={EvaIconsPack} />
-            <NavigationContainer ref={navRef}>
-                <Navigator headerMode='none'
-                           initialRouteName='Queue'
-                           mode="modal">
-                    <Screen name='Splash' component={Splash} />
-                    <Screen name='Login' component={Login} />
-                    <Screen name='Queue' component={Queue}/>
-                    <Screen name='SignUp' component={SignUp}/>
-                    <Screen name='ForgotPassword' component={ForgotPassword}/>
+        <AuthContext.Provider value={authContext}>
+            <NavigationContainer theme={BingeMatch.navigation}>
+                <Navigator initialRouteName='Queue'>
+
+                    {state == AuthState.Authenticated ?
+                        <>
+                            <Screen name='Queue' component={Queue} />
+                            <Screen name='Profile' component={Profile}/>
+                        </>
+                        :
+                        <>
+                            <Screen name='SignUp' component={SignUp}/>
+                            <Screen name='Login' component={Login} options={{
+                                animationTypeForReplace: 'push'
+                            }} />
+                            <Screen name='ForgotPassword' component={ForgotPassword}/>
+                        </>
+                    }
+
                 </Navigator>
             </NavigationContainer>
-        </ApplicationProvider>
+        </AuthContext.Provider>
     );
 }

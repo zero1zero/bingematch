@@ -19,15 +19,15 @@ export interface StateChange {
     submit?: boolean
 }
 
-export interface OnboardState {
+export interface UserState {
     email: InputState
     password: InputState
     verify: InputState
     submit?: boolean
 }
 
-export type Reducer = (state : OnboardState, change : StateChange) => OnboardState
-export const reducer = (state : OnboardState, change : StateChange) : OnboardState => {
+export type Reducer = (state : UserState, change : StateChange) => UserState
+export const reducer = (state : UserState, change : StateChange) : UserState => {
 
     if (change.email) {
         state.email = _.merge({}, state.email, change.email)

@@ -11,6 +11,7 @@ module.exports = {
     + "|@react-navigation"
     + "|react-native-gesture-handler"
     + "|react-native-async-storage"
+    + "|expo-linear-gradient"
     + "|expo-constants"
 
     //from https://docs.expo.io/guides/testing-with-jest/

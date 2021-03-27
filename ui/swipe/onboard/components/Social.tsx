@@ -1,7 +1,7 @@
-import {StyleSheet, View} from "react-native";
-import {Button, Text} from "@ui-kitten/components";
+import {StyleSheet, Text, View} from "react-native";
 import React from "react";
 import {FacebookIcon, GoogleIcon, TwitterIcon} from "../../etc/Icons";
+import {Button} from "../../components/Button";
 
 interface Props {
     text: string
@@ -10,30 +10,19 @@ interface Props {
 const Social : React.FC<Props> = (props) => {
     return (
         <View style={styles.socialAuthContainer}>
-            <Text
-                style={styles.socialAuthHintText}
-                status='control'>
+            <Text style={styles.socialAuthHintText}>
                 {props.text}
             </Text>
             <View style={styles.socialAuthButtonsContainer}>
-                <Button
-                    appearance='ghost'
-                    status='control'
-                    size='giant'
-                    accessoryLeft={GoogleIcon}
-                />
-                <Button
-                    appearance='ghost'
-                    status='control'
-                    size='giant'
-                    accessoryLeft={FacebookIcon}
-                />
-                <Button
-                    appearance='ghost'
-                    status='control'
-                    size='giant'
-                    accessoryLeft={TwitterIcon}
-                />
+                <Button onPress={() => {}}>
+                    <GoogleIcon color='#fff' size={25} />
+                </Button>
+                <Button onPress={() => {}}>
+                    <FacebookIcon color='#fff' size={25} />
+                </Button>
+                <Button onPress={() => {}}>
+                    <TwitterIcon color='#fff' size={25} />
+                </Button>
             </View>
         </View>
     )
@@ -51,6 +40,7 @@ const styles = StyleSheet.create({
     socialAuthHintText: {
         alignSelf: 'center',
         marginBottom: 16,
+        color: '#fff'
     },
 
 })

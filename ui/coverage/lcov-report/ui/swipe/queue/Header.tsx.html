@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui/swipe/deck/Cards.tsx</title>
+    <title>Code coverage report for ui/swipe/queue/Header.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui/swipe/deck</a> Cards.tsx</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui/swipe/queue</a> Header.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">66.67% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/15</span>
+                <span class='fraction'>2/3</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">66.67% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/15</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -131,6 +131,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,37 +141,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -188,76 +161,103 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, {ReactNode, useEffect, useState} from "react";
-import Swipable from "./Swipable";
-import {queue} from "../model/compiled";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {SafeAreaView, StyleSheet, View} from "react-native";
+import React from "react";
+import {PersonAdd, SettingsIcon} from "../etc/Icons";
+import {BaseProps} from "../etc/BaseProps";
+import {BingeMatch} from "../theme";
 &nbsp;
-export interface Props {
-    showableCards,
-    items : queue.IItem[],
-    renderItem : (item : queue.IItem, index : number) =&gt; ReactNode,
-    onSwipe,
-    onSwipeUp,
-    onSwipeDown,
-    onSwipeRight,
-    onSwipeLeft,
-    onMoveStart,
-    onDataEnd,
+&nbsp;
+const QueueHeader : React.FC&lt;BaseProps&gt; = <span class="fstat-no" title="function not covered" >(p</span>rops) =&gt; {
+    // const profileAction = () =&gt; (
+    //     &lt;TopNavigationAction icon={() =&gt; &lt;SettingsIcon {...styles.settingsIcon} /&gt;}
+    //                          onPress={ () =&gt; props.navigation.navigate('Login') }
+    //     /&gt;
+    // )
+    //
+    // const addAction = () =&gt; (
+    //     &lt;View icon={() =&gt; &lt;PersonAdd {...styles.addIcon} /&gt;}
+    //                          onPress={ () =&gt; props.navigation.navigate('Login') }
+    //     /&gt;
+    // )
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return (</span>
+        &lt;View style={styles.top}&gt;
+            {/*&lt;TopNavigation*/}
+            {/*    style={styles.topNavigation}*/}
+            {/*    title={evaProps =&gt; {*/}
+            {/*        return (*/}
+            {/*            &lt;Text {...evaProps} style={styles.topTitle}&gt;BingeMatch&lt;/Text&gt;*/}
+            {/*        )*/}
+            {/*    }}*/}
+            {/*    alignment='center'*/}
+            {/*    accessoryRight={profileAction}*/}
+            {/*    accessoryLeft={addAction}*/}
+            {/*/&gt;*/}
+        &lt;/View&gt;
+    )
 }
-const Cards : React.FC&lt;Props&gt; = (props) =&gt; {
 &nbsp;
-    let offset = 0;
+const styles = StyleSheet.create({
+    top: {
+        flex: 2,
+        backgroundColor: BingeMatch.theme.bg,
+    },
+    topNavigation: {
+        flex: 1,
+        backgroundColor: BingeMatch.theme.bg,
+        minHeight: 0
+    },
+    topTitle: {
+        color: 'white',
+        fontSize: 25
+    },
 &nbsp;
-    const [currentCardIdx, setCurrentCardIdx] = useState(0);
+    settingsIcon: {
+        alignSelf: 'flex-end',
+        backgroundColor: '#FFF',
+        width: 35,
+        height: 35,
+    },
 &nbsp;
-    useEffect(() =&gt; {
-        setCurrentCardIdx(0);
-    }, []);
+    addIcon: {
+        alignSelf: 'flex-start',
+        width: 35,
+        height: 35,
+    },
+})
 &nbsp;
-    return (
-        &lt;&gt;
-            {props.items
-                .slice(0, props.showableCards)
-                .reverse()
-                .map(<span class="fstat-no" title="function not covered" >(i</span>tem, index) =&gt; {
-                    // initializing the index according to the showing cards number
-<span class="cstat-no" title="statement not covered" >                    index =</span>
-                        props.items.length &gt;= props.showableCards
-                            ? props.showableCards - index - 1
-                            : props.items.length - index - 1;
-<span class="cstat-no" title="statement not covered" >                    return (</span>
-                        &lt;Swipable
-                            onSwipe={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >                                props.items.shift();</span>
-<span class="cstat-no" title="statement not covered" >                                offset++;</span>
-<span class="cstat-no" title="statement not covered" >                                setCurrentCardIdx(currentCardIdx + 1);</span>
-<span class="cstat-no" title="statement not covered" >                                if (props.onSwipe) {</span>
-<span class="cstat-no" title="statement not covered" >                                    props.onSwipe();</span>
-                                }
-<span class="cstat-no" title="statement not covered" >                                if (props.onDataEnd &amp;&amp; props.items.length === 0) {</span>
-<span class="cstat-no" title="statement not covered" >                                    props.onDataEnd();</span>
-                                }
-                            }}
-                            onSwipeUp={props.onSwipeUp}
-                            onSwipeDown={props.onSwipeDown}
-                            onSwipeRight={props.onSwipeRight}
-                            onSwipeLeft={props.onSwipeLeft}
-                            onMoveStart={props.onMoveStart}
-                            renderItem={props.renderItem}
-                            item={item}
-                            index={index + offset}
-                            key={index + offset}
-                        /&gt;
-                    );
-                })}
-        &lt;/&gt;
-    );
-};
-&nbsp;
-export default Cards;
+export default QueueHeader
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -265,7 +265,7 @@ export default Cards;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Mar 02 2021 23:41:50 GMT-0800 (Pacific Standard Time)
+                at Sat Mar 13 2021 08:34:16 GMT-0800 (Pacific Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

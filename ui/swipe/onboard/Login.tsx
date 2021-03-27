@@ -1,26 +1,33 @@
-import React, {useEffect, useReducer} from 'react';
-import {KeyboardAvoidingView, SafeAreaView, StyleSheet, View} from 'react-native';
-import {Button, Text} from '@ui-kitten/components';
+import React, {useEffect, useLayoutEffect, useReducer} from 'react';
+import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {ImageOverlay} from '../etc/ImageOverlay';
 import Social from "./components/Social";
-import EmailInput from "./components/EmailInput";
-import PasswordInput from "./components/PasswordInput";
 import {BaseProps} from "../etc/BaseProps";
 import Dependencies from "../Dependencies";
-import {reducer, Reducer, ValidationStatus} from "./OnboardEvents";
-import _ from 'lodash';
+import {isReadyToValidate, isValid, UserEvents, userReduder, ValidationStatus} from "./UserReducer";
+import {Button} from "../components/Button";
+import {BingeMatch} from "../theme";
+import {PasswordInput} from "./components/PasswordInput";
+import {EmailInput} from "./components/EmailInput";
+import {AuthContext} from "../api/Auth";
 
 const Login : React.FC<BaseProps> = (props) => {
 
     const api = Dependencies.instance.api
 
-        const [state, dispatch] = useReducer<Reducer>(reducer, {
+    useLayoutEffect(() => {
+        props.navigation.setOptions({
+            headerShown: false
+        });
+    }, [props.navigation]);
+
+        const [state, dispatch] = useReducer<UserEvents>(userReduder, {
             email: { validation: { status: ValidationStatus.Input }},
             password: { validation: { status: ValidationStatus.Input}},
-            verify: { validation: { status: ValidationStatus.Input}}
         })
 
     const onLoginButtonPress = () : void => {
+
             dispatch({
                 email: { validation: { status: ValidationStatus.Verify}},
                 password: { validation: { status: ValidationStatus.Verify}},
@@ -28,16 +35,16 @@ const Login : React.FC<BaseProps> = (props) => {
             })
     };
 
+    const { login } = React.useContext(AuthContext);
+
     useEffect(() => {
         if (!state.submit
-            || _.intersection([ValidationStatus.Input, ValidationStatus.Verify],
-                [state.email.validation.status, state.password.validation.status]).length > 0) {
+            || !isReadyToValidate(state.email.validation, state.password.validation)) {
             return
         }
 
         //ready to submit, abort if not valid
-        if (state.email.validation.status != ValidationStatus.Valid
-            || state.password.validation.status != ValidationStatus.Valid) {
+        if (!isValid(state.email.validation, state.password.validation)) {
             dispatch({ submit: false})
             return
         }
@@ -46,7 +53,7 @@ const Login : React.FC<BaseProps> = (props) => {
             email: state.email.value,
             password: state.password.value
         }).then(() => {
-            props.navigation.navigate('Queue');
+            login()
         })
     }, [state.submit, state.email, state.password])
 
@@ -66,41 +73,34 @@ const Login : React.FC<BaseProps> = (props) => {
                 <SafeAreaView
                     style={styles.container}>
                     <View style={styles.headerContainer}>
-                        <Text
-                            category='h1'
-                            status='control'>
+                        <Text style={BingeMatch.h1}>
                             BingeMatch
                         </Text>
-                        <Text
-                            style={styles.loginLabel}
-                            category='s1'
-                            status='control'>
-                            Sign in to your account
+                        <Text style={BingeMatch.h2}>
+                            Login
                         </Text>
                     </View>
                     <View style={styles.formContainer}>
                         <EmailInput
-                            state={state.email}
+                            message={state.email.validation.message}
+                            value={state.email.value}
                             dispatch={dispatch} />
                         <PasswordInput
-                            passwordState={state.password}
+                            message={state.password.validation.message}
+                            value={state.password.value}
                             dispatch={dispatch} />
 
                         <View style={styles.forgotPasswordContainer}>
                             <Button
                                 style={styles.forgotPasswordButton}
-                                appearance='ghost'
-                                status='control'
                                 onPress={onForgotPasswordButtonPress}>
-                                Forgot your password?
+                                <Text>Forgot your password?</Text>
                             </Button>
                         </View>
                         <Button
                             style={styles.loginButton}
-                            size='giant'
-                            testID='login'
                             onPress={onLoginButtonPress}>
-                            SIGN IN
+                            <Text style={BingeMatch.buttonText}>Sign In</Text>
                         </Button>
 
                         <Social text={"Or Login Using Social Media"}/>
@@ -108,10 +108,8 @@ const Login : React.FC<BaseProps> = (props) => {
                     </View>
                     <Button
                         style={styles.signUpButton}
-                        appearance='ghost'
-                        status='control'
                         onPress={onSignUpButtonPress}>
-                        Don't have an account? Sign Up
+                        <Text style={styles.signUpButtonText}>Don't have an account? Sign Up</Text>
                     </Button>
                 </SafeAreaView>
             </ImageOverlay>
@@ -139,8 +137,10 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     loginButton: {
-        marginTop: 30,
+        marginTop: 10,
         marginHorizontal: 16,
+        width: '100%',
+        backgroundColor: 'white'
     },
     forgotPasswordContainer: {
         flexDirection: 'row',
@@ -152,6 +152,10 @@ const styles = StyleSheet.create({
     signUpButton: {
         marginVertical: 12,
     },
+
+    signUpButtonText: {
+        color: 'white'
+    }
 });
 
 

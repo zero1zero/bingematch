@@ -1,51 +1,89 @@
-import {ImageStyle} from "react-native";
-import {Icon, IconElement} from "@ui-kitten/components";
 import React from "react";
+import {FontAwesomeIcon, FontAwesomeIconStyle} from '@fortawesome/react-native-fontawesome'
 
-export const FacebookIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='facebook'/>
+import {
+    faBackward,
+    faBars,
+    faEnvelope,
+    faHeart,
+    faHeartBroken,
+    faLock,
+    faTimes,
+    faUserCog
+} from '@fortawesome/free-solid-svg-icons'
+import {faFacebook, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons"
+import {IconProp, Transform} from "@fortawesome/fontawesome-svg-core";
+
+interface Props {
+    size?: number;
+    color?: string;
+    secondaryColor?: string;
+    secondaryOpacity?: number;
+    mask?: IconProp;
+    transform?: string | Transform;
+    style?: FontAwesomeIconStyle;
+}
+
+export const FacebookIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faFacebook} />
 );
 
-export const GoogleIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='google'/>
+export const GoogleIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faGoogle} />
 );
 
-export const TwitterIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='twitter'/>
+export const TwitterIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faTwitter} />
 );
 
-export const EmailIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='email'/>
+export const EmailIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faEnvelope} />
 );
 
-export const PasswordIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='lock'/>
+export const PasswordIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faLock} />
 );
 
-export const PersonIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='person'/>
+export const PlusIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon='plus'/>
 );
 
-export const PlusIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='plus'/>
+export const FlagIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon='flag' />
 );
 
-export const FlagIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='flag' fill='#FFF' />
+export const SettingsIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faUserCog} />
 );
 
-export const SettingsIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='settings' fill='#FFF' />
+export const PersonAdd = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon='bars' />
 );
 
-export const PersonAdd = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='person-add' fill='#FFF'  />
-);
-
-export const ReportIcon = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='flag' fill='#FFF' />
+export const ReportIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon='flag' />
 )
 
-export const ArrowDown = (style: ImageStyle): IconElement => (
-    <Icon {...style} name='arrow-ios-forward' fill='#000' />
+export const KeyIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon='flag' />
 )
+
+export const BackIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faBackward} />
+);
+
+export const HeartIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faHeart} />
+);
+
+export const XIcon= (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faTimes} />
+);
+
+export const HeartBrokenIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faHeartBroken} />
+);
+
+export const BarsIcon = (props : Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faBars} />
+);

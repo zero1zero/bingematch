@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
@@ -104,10 +104,8 @@
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -132,12 +130,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,18 +153,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, {useEffect, useRef} from 'react';
 import Queue from "./swipe/queue/Queue";
-import * as eva from '@eva-design/eva';
 import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
-import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {createStackNavigator} from '@react-navigation/stack';
-import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import Login from "./swipe/onboard/Login";
 import SignUp from "./swipe/onboard/SignUp";
 import ForgotPassword from "./swipe/onboard/ForgotPassword";
 import Splash from "./swipe/Splash";
+import {BingeMatch} from "./swipe/theme";
 &nbsp;
 export type RootStackParamList = {
     Splash: undefined
@@ -176,26 +176,29 @@ export type RootStackParamList = {
 &nbsp;
 export default function <span class="fstat-no" title="function not covered" >App(</span>) {
 &nbsp;
+    const navRef = <span class="cstat-no" title="statement not covered" >useRef()</span>
+&nbsp;
     //for expo setup https://reactnavigation.org/docs/react-native-screens
 <span class="cstat-no" title="statement not covered" >    enableScreens();</span>
 &nbsp;
     const { Navigator, Screen } = <span class="cstat-no" title="statement not covered" >createStackNavigator&lt;RootStackParamList&gt;();</span>
 &nbsp;
+<span class="cstat-no" title="statement not covered" >    useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+&nbsp;
+    }, [])
+&nbsp;
 <span class="cstat-no" title="statement not covered" >    return (</span>
-        &lt;ApplicationProvider {...eva} theme={eva.light}&gt;
-            &lt;IconRegistry icons={EvaIconsPack} /&gt;
-            &lt;NavigationContainer&gt;
-                &lt;Navigator headerMode='none'
-                           initialRouteName='Login'
-                           mode="modal"&gt;
-                    &lt;Screen name='Splash' component={Splash} /&gt;
-                    &lt;Screen name='Login' component={Login} /&gt;
-                    &lt;Screen name='Queue' component={Queue}/&gt;
-                    &lt;Screen name='SignUp' component={SignUp}/&gt;
-                    &lt;Screen name='ForgotPassword' component={ForgotPassword}/&gt;
-                &lt;/Navigator&gt;
-            &lt;/NavigationContainer&gt;
-        &lt;/ApplicationProvider&gt;
+        &lt;NavigationContainer ref={navRef}&gt;
+            &lt;Navigator headerMode='none'
+                       initialRouteName='Queue'
+                       mode="modal"&gt;
+                &lt;Screen name='Splash' component={Splash} /&gt;
+                &lt;Screen name='Login' component={Login} /&gt;
+                &lt;Screen name='Queue' component={Queue}/&gt;
+                &lt;Screen name='SignUp' component={SignUp}/&gt;
+                &lt;Screen name='ForgotPassword' component={ForgotPassword}/&gt;
+            &lt;/Navigator&gt;
+        &lt;/NavigationContainer&gt;
     );
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -205,7 +208,7 @@ export default function <span class="fstat-no" title="function not covered" >App
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Mar 09 2021 23:18:40 GMT-0800 (Pacific Standard Time)
+                at Sat Mar 13 2021 08:34:16 GMT-0800 (Pacific Standard Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

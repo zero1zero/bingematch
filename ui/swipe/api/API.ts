@@ -80,6 +80,14 @@ export default class API {
             })
     }
 
+    userUpdate = async (user: user.IUpdate) : Promise<void> => {
+        this.storage.getUser()
+            .then(id => {
+                this.put('/user/' + id, user)
+            })
+
+    }
+
     popular = async () : Promise<queue.AllItems> => {
         return this.get('/queue/')
             .then(r => r.data)
@@ -139,6 +147,8 @@ export default class API {
                 if (token) {
                     headers['Authorization'] = 'Bearer ' + token
                 }
+
+                console.log(apiUrl + url)
 
                 return this.axios({
                     url: apiUrl + url,

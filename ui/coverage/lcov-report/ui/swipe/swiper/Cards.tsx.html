@@ -192,7 +192,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, {ReactNode, useEffect, useState} from "react";
-import Card from "./Card";
+import Swipable from "./Swipable";
 import {queue} from "../model/compiled";
 &nbsp;
 export interface Props {
@@ -229,7 +229,7 @@ const Cards : React.FC&lt;Props&gt; = <span class="cstat-no" title="statement no
                             ? props.showableCards - index - 1
                             : props.items.length - index - 1;
 <span class="cstat-no" title="statement not covered" >                    return (</span>
-                        &lt;Card
+                        &lt;Swipable
                             onSwipe={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >                                props.items.shift();</span>
 <span class="cstat-no" title="statement not covered" >                                offset++;</span>
@@ -278,4 +278,3 @@ export default Cards;
         <script src="../../../block-navigation.js"></script>
     </body>
 </html>
-    

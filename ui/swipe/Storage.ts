@@ -1,13 +1,13 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import jwt_decode from "jwt-decode";
 
 const tokenKey = 'token'
 
 export default class Storage {
 
-    isLoggedIn = async () : Promise<Boolean> => {
+    isLoggedIn = async () : Promise<boolean> => {
         return this.get(tokenKey)
-            .then(() => tokenKey != null)
+            .then((token) => token != null)
     }
 
     clearToken = async () => {
@@ -19,7 +19,7 @@ export default class Storage {
     }
 
     getToken = async () : Promise<string | void> => {
-        return await this.get(tokenKey)
+        return this.get(tokenKey)
             .then(token => {
                 if (!token) {
                     return
@@ -48,17 +48,17 @@ export default class Storage {
     private set = async (key : string, value : any) => {
         const jsonValue = JSON.stringify(value)
 
-        await AsyncStorage.setItem(key, jsonValue)
+        await SecureStore.setItemAsync(key, jsonValue)
     }
 
 
     private get = async (key : string) : Promise<string> => {
-        const jsonValue = await AsyncStorage.getItem(key)
+        const jsonValue = await SecureStore.getItemAsync(key)
 
         return jsonValue != null ? JSON.parse(jsonValue) : null;
     }
 
     remove = async (key : string) => {
-        await AsyncStorage.removeItem(key)
+        return SecureStore.deleteItemAsync(key)
     }
 }

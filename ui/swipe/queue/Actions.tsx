@@ -1,9 +1,9 @@
 import {InteractionName, Item, StateChange} from "./QueueEvents";
-import {Button, Icon} from "@ui-kitten/components";
-import {getHead} from "./QueueUtils";
 import React, {useRef} from "react";
-import {BaseProps} from "../etc/BaseProps";
-import {Animated, SafeAreaView, StyleSheet, View} from "react-native";
+import {Animated, StyleSheet, Text, View} from "react-native";
+import {BingeMatch} from "../theme";
+import {BackIcon, HeartIcon, XIcon} from "../etc/Icons";
+import {Button} from "../components/Button";
 
 interface Props {
     head: Item
@@ -32,29 +32,16 @@ const QueueActions : React.FC<Props> = (props) => {
             }),
         ]).start();
     }
-    const actionButton = (name : InteractionName, text : string, status : string, icon : string) => {
 
-        //todo i dont like this
-        const iconEl = (props) => (
-            <Icon {...props} name={icon} />
-        )
+    const press = (name : InteractionName) => {
 
-        return (
-            <Button style={styles.button}
-                    size='giant'
-                    appearance='ghost'
-                    status={status}
-                    accessoryLeft={iconEl}
-                    onPress={() => {
-                        buttonAnimate(name)
-                        props.dispatch({
-                            interaction: {
-                                name: name,
-                                item: props.head
-                            }
-                        })
-                    }}>{text}</Button>
-        )
+        buttonAnimate(name)
+        props.dispatch({
+            interaction: {
+                name: name,
+                item: props.head
+            }
+        })
     }
 
     return (
@@ -64,21 +51,35 @@ const QueueActions : React.FC<Props> = (props) => {
                     ...styles.buttonHolder,
                     transform: [{ scale: buttonStates.get(InteractionName.ButtonDislikePress) }],
                 }}>
-                {actionButton(InteractionName.ButtonDislikePress, 'Nope', 'danger', 'close-square')}
+                <Button style={styles.button}
+                        // iconSource={() => <XIcon size={30}  color={BingeMatch.actions.nope}/>}
+                        // labelStyle={{...styles.buttonText, color: BingeMatch.actions.nope}}
+                        onPress={() => press(InteractionName.ButtonDislikePress)}>
+                    <XIcon size={30} color={BingeMatch.theme.actions.nope}/>
+                    <Text style={{...styles.buttonText, color: BingeMatch.theme.actions.nope}}>Nope</Text>
+                </Button>
             </Animated.View>
             <Animated.View
                 style={{
                     ...styles.buttonHolder,
                     transform: [{ scale: buttonStates.get(InteractionName.ButtonBackPress) }],
                 }}>
-                {actionButton(InteractionName.ButtonBackPress, 'Rewind', 'warning', 'undo')}
+                <Button style={styles.button}
+                        onPress={() => press(InteractionName.ButtonBackPress)}>
+                    <BackIcon size={30} color={BingeMatch.theme.actions.back}/>
+                    <Text style={{...styles.buttonText, color: BingeMatch.theme.actions.back}}>Rewind</Text>
+                </Button>
             </Animated.View>
             <Animated.View
                 style={{
                     ...styles.buttonHolder,
                     transform: [{ scale: buttonStates.get(InteractionName.ButtonLikePress) }],
                 }}>
-                {actionButton(InteractionName.ButtonLikePress, 'I\'d Watch' , 'success', 'heart')}
+                <Button style={styles.button}
+                        onPress={() => press(InteractionName.ButtonLikePress)}>
+                    <HeartIcon size={30} color={BingeMatch.theme.actions.watch}/>
+                    <Text style={{...styles.buttonText, color: BingeMatch.theme.actions.watch}}>I'd Watch</Text>
+                </Button>
             </Animated.View>
         </View>
     )
@@ -89,16 +90,24 @@ const styles = StyleSheet.create({
         flex: 3,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        alignItems: "center"
+        alignItems: "center",
     },
     buttonHolder: {
         flex: 1,
     },
     button: {
-        flex: 1,
-        flexDirection: "column",
-        paddingBottom: 0
+        flexDirection: 'column',
+        alignItems: 'center',
+
+        ...BingeMatch.shadow
     },
+    buttonText: {
+        fontSize: 18,
+        color: '#000',
+        fontWeight: '800',
+
+        ...BingeMatch.shadow
+    }
 });
 
 export default QueueActions

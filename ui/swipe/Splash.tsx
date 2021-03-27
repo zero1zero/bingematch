@@ -1,20 +1,7 @@
-import React, {useEffect} from "react";
-import {BaseProps} from "./etc/BaseProps";
+import React from "react";
 import {ImageOverlay} from "./etc/ImageOverlay";
-import Dependencies from "./Dependencies";
-import {Spinner} from "@ui-kitten/components";
 
-const Splash : React.FC<BaseProps> = (props) => {
-
-    const storage = Dependencies.instance.storage
-
-    useEffect(() => {
-        storage.isLoggedIn()
-            .then(li => li ? 'Queue' : 'SignUp')
-            .then(route => {
-                props.navigation.navigate(route);
-            })
-    }, [])
+const Splash : React.FC = (props) => {
 
     return (
         <ImageOverlay
@@ -25,8 +12,8 @@ const Splash : React.FC<BaseProps> = (props) => {
             }}
             source={require('./assets/bp.jpg')}>
 
-                <Spinner
-                    status='basic'/>
+                {/*<Spinner*/}
+                {/*    status='basic'/>*/}
         </ImageOverlay>
     )
 }

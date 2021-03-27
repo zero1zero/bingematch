@@ -1,10 +1,9 @@
-import {Dimensions, ImageBackground, StyleSheet, useWindowDimensions, View, Image} from "react-native";
-import {Button, Icon, Text} from "@ui-kitten/components";
+import {Image, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import React from "react";
 import {Item, StateChange} from "./QueueEvents";
-import Card from "./Card";
-import {ArrowDown, ReportIcon} from "../etc/Icons";
-import { LinearGradient } from 'expo-linear-gradient';
+import Swipable from "./Swipable";
+import {useHeaderHeight} from '@react-navigation/stack';
+import {BingeMatch} from "../theme";
 
 interface Props {
     items: Item[]
@@ -21,11 +20,14 @@ const sizes = [92,
 
 const Deck : React.FC<Props> = (props) => {
 
-    const window = Dimensions.get("window")
-    const cardHeight = window.height * .80
-    const cardWidth = window.width * .90
+    const headerHeight = useHeaderHeight();
 
-    const closeToRes = (img) => Math.abs(img - cardHeight * .8)
+    const window = useWindowDimensions()
+    const cardWidth = window.width * .86
+    const cardHeight = window.height * .77
+    const imageHeight = (cardWidth / .66)
+
+    const closeToRes = (img) => Math.abs(img - (imageHeight * .8))
 
     const posterWidth = () : number => {
         const [size] = sizes
@@ -35,20 +37,21 @@ const Deck : React.FC<Props> = (props) => {
         return size
     }
 
+    props.items.forEach((i) => {
+        console.log(i.data.id)
+    })
+
     const toCard = (item : Item) => (
-        <Card
+        <Swipable
             item={item}
             key={item.data.id}
             dispatch={props.dispatch}>
-            <View style={{...styles.card, width: cardWidth, height: cardHeight}}>
-                <ImageBackground style={styles.image} source={{uri: `https://image.tmdb.org/t/p/w${posterWidth()}/${item.data.movie.posterPath}`}}>
-                {/*<ReportIcon {...styles.reportIcon} />*/}
-                    <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} />
-                    <View style={{width: "100%"}}>
-                    </View>
-                </ImageBackground>
+            <View style={{...styles.card, width: cardWidth}}>
+                {/*<HeartIcon {...styles.reportIcon} /> <Text>Liked by Ruoxi, Ajay and Jesi</Text>*/}
+                <Image style={styles.image} width={cardWidth} height={imageHeight} source={{uri: `https://image.tmdb.org/t/p/w${posterWidth()}/${item.data.movie.posterPath}`}}>
+                </Image>
                 <View style={styles.details}>
-                    <Text category='h6' numberOfLines={2}>{item.data.movie.title}</Text>
+                    <Text numberOfLines={2} style={styles.detailsTitle}>{item.data.movie.title}</Text>
                     <Text style={styles.detailsText} numberOfLines={4}>{item.data.movie.overview}</Text>
 
                     <View style={styles.detailsGenres}>
@@ -81,7 +84,7 @@ const Deck : React.FC<Props> = (props) => {
                     </View>
                 </View>
             </View>
-        </Card>
+        </Swipable>
     )
 
     return (
@@ -98,18 +101,10 @@ export default Deck
 
 const styles = StyleSheet.create({
     deck: {
-        flex: 40,
-        // backgroundColor: '#fff',
-        paddingTop: 7,
+        flex: 60,
+        marginTop: 7,
 
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
-        elevation: 6,
+        ...BingeMatch.shadow
     },
     card: {
         position: "absolute",
@@ -119,7 +114,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF",
     },
     image: {
-        flex: 8,//aspect ratio should be .666 for images
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         overflow: 'hidden'
@@ -128,15 +122,24 @@ const styles = StyleSheet.create({
         flex: 2,
         padding: 8,
     },
+    detailsTitle: {
+        fontSize: 18,
+        fontWeight: '700'
+    },
     detailsText: {
         fontSize: 13,
     },
     detailsGenres: {
-        alignSelf: 'flex-start',
-        flexDirection: 'row'
+        alignSelf: 'flex-end',
+        flexDirection: 'row',
+        marginVertical: 4,
     },
     detailsGenresName: {
-
+        color: '#fff',
+        fontSize: 12,
+        marginRight: 4,
+        backgroundColor: BingeMatch.theme.genres,
+        padding: 4,
     },
     detailsLastLine: {
         flex: 1,
