@@ -1,15 +1,12 @@
-import {fireEvent, render} from '@testing-library/react-native';
+import {fireEvent, render, waitFor, waitForElementToBeRemoved} from '@testing-library/react-native';
+import * as SecureStore from 'expo-secure-store';
 import {jest, test} from '@jest/globals'
 import * as React from 'react'
-import {RootStackParamList} from "../../../App";
-import SignUp from "../SignUp";
+import App, {RootStackParamList} from "../../../App";
 import {createStackNavigator} from "@react-navigation/stack";
-import {NavigationContainer} from "@react-navigation/native";
 import API from "../../api/API";
 import Storage from '../../Storage'
-import Queue from "../../queue/Queue";
 import {user} from "../../model/compiled";
-
 
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 
@@ -17,30 +14,27 @@ const storage = new Storage()
 const api = new API(storage)
 
 let login : user.ILogin = {
-    email: 'test.signup@test.com',
+    email: 'test.SignUp.test.tsx@test.com',
     password: 'horse battery staple login'
 }
 
-beforeAll(async () => {
-    await api.refreshForTest(login)
+afterEach(async () => {
+    await api.deleteUserWithLogin(login)
 })
 
-afterAll(async () => {
-    await api.deleteCurrentUser()
-    await api.cleanup()
+beforeEach(async () => {
+    await api.deleteUserWithLogin(login)
+        .then(() => api.cleanup())
 })
 
-test('given new SignUp, we can register a new user', async () => {
+test('given a new user I can signup and will be logged in', async () => {
 
     const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
     const { queryByText, getByPlaceholderText, getByText, findByText, toJSON } = render(
-        <NavigationContainer>
-            <Navigator headerMode='none'>
-                <Screen name='SignUp' component={SignUp} />
-                <Screen name='Queue' component={Queue} />
-            </Navigator>
-        </NavigationContainer>
+        <App />
     );
+
+    await waitFor(() => getByText('BingeMatch'));
 
     fireEvent.changeText(
         getByPlaceholderText('Email'),
@@ -53,11 +47,24 @@ test('given new SignUp, we can register a new user', async () => {
     );
 
     fireEvent.changeText(
-        getByPlaceholderText('Verify Password'),
+        getByPlaceholderText('Verify'),
         login.password
     );
 
     fireEvent.press(getByText('SIGN UP'))
 
-    expect(queryByText('Nope')).toBeDefined()
+    await waitForElementToBeRemoved(() => getByPlaceholderText('Email'))
+
+    expect(getByText('Nope')).not.toBeNull()
+
+    //insurance test is working
+    expect(queryByText('whatever')).toBeNull()
 });
+
+//throwing this in here just because
+test("expo storage works in test mode", async () => {
+    await SecureStore.setItemAsync("tester", "foo")
+
+    expect(await SecureStore.getItemAsync("tester")).toEqual("foo")
+
+})

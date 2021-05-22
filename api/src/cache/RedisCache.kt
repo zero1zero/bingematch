@@ -5,36 +5,9 @@ import io.lettuce.core.api.StatefulRedisConnection
 import io.lettuce.core.api.sync.RedisCommands
 import io.lettuce.core.codec.ByteArrayCodec
 import io.lettuce.core.codec.RedisCodec
-import movie.Movie
+import show.Show
 import java.nio.ByteBuffer
 import java.util.*
-
-
-class MovieCodec : RedisCodec<String, Optional<Movie.Detail>> {
-    override fun decodeKey(bytes: ByteBuffer): String {
-        println("decode: $bytes")
-        return String(bytes.array(), Charsets.UTF_8)
-    }
-
-    override fun encodeValue(value: Optional<Movie.Detail>): ByteBuffer {
-        println("encode: $value")
-        return ByteBuffer.wrap(value.get().toByteArray())
-    }
-
-    override fun encodeKey(key: String): ByteBuffer {
-        println("key: $key")
-        return ByteBuffer.wrap(key.toByteArray())
-    }
-
-    override fun decodeValue(bytes: ByteBuffer?): Optional<Movie.Detail> {
-        println("decode: $bytes")
-        if (bytes == null) {
-            return Optional.empty()
-        }
-
-        return Optional.of(Movie.Detail.parseFrom(bytes))
-    }
-}
 
 class RedisCache : Cache {
 
@@ -42,14 +15,14 @@ class RedisCache : Cache {
     val connection : StatefulRedisConnection<ByteArray, ByteArray> = client.connect(ByteArrayCodec())
     val syncCommands : RedisCommands<ByteArray, ByteArray> = connection.sync()
 
-    override fun getMovie(id: Int): Optional<Movie.Detail> {
-        val movie = syncCommands.get("movie:$id".toByteArray()) ?: return Optional.empty()
+    override fun getShow(id: String): Optional<Show.Detail> {
+        val movie = syncCommands.get("show:$id".toByteArray()) ?: return Optional.empty()
 
-        return Optional.of(Movie.Detail.parseFrom(movie))
+        return Optional.of(Show.Detail.parseFrom(movie))
     }
 
-    override fun setMovie(movie: Movie.Detail) {
-        syncCommands.set("movie:${movie.id}".toByteArray(), movie.toByteArray())
+    override fun setShow(show: Show.Detail) {
+        syncCommands.set("show:${show.id}".toByteArray(), show.toByteArray())
     }
 
     override fun close() {

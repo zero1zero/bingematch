@@ -1,4 +1,5 @@
 import catalog.MetadataSource
+import catalog.TMDB
 import org.junit.Test
 
 internal class MetadataSourceTest {
@@ -10,9 +11,16 @@ internal class MetadataSourceTest {
     }
 
     @Test
-    fun tmdb() {
-        val tmdb = MetadataSource.TMDB()
+    fun moviePopular() {
+        val tmdb = TMDB()
 
-        println(tmdb.getPopular())
+        println(tmdb.getPopularMovies())
+    }
+
+    @Test
+    fun tv() {
+        val tmdb = TMDB()
+
+        println(tmdb.getPopularTV())
     }
 }

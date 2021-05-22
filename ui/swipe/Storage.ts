@@ -10,11 +10,11 @@ export default class Storage {
             .then((token) => token != null)
     }
 
-    clearToken = async () => {
+    clearToken = async () : Promise<void> => {
         return this.remove(tokenKey)
     }
 
-    setToken = async (token: string) => {
+    setToken = async (token: string) : Promise<void> => {
         return this.set(tokenKey, token);
     }
 
@@ -35,22 +35,20 @@ export default class Storage {
     }
 
     getUser = async () : Promise<string | void> => {
-        return await this.getToken()
-            .then(token => {
-                if (!token) {
-                    return
-                }
+        let token = await this.getToken()
 
-                return this.getUserFromToken(token)
-            })
+        if (!token) {
+            return
+        }
+
+        return this.getUserFromToken(token)
     }
 
-    private set = async (key : string, value : any) => {
+    private set = async (key : string, value : any) : Promise<void> => {
         const jsonValue = JSON.stringify(value)
 
-        await SecureStore.setItemAsync(key, jsonValue)
+        return SecureStore.setItemAsync(key, jsonValue)
     }
-
 
     private get = async (key : string) : Promise<string> => {
         const jsonValue = await SecureStore.getItemAsync(key)

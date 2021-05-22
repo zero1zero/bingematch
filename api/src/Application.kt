@@ -19,14 +19,15 @@ import io.ktor.http.*
 import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import movie.Movie
 import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
 import org.junit.platform.launcher.core.LauncherFactory
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener
 import queue.Queue
 import routing.queue
+import routing.show
 import routing.user
+import show.Show
 import test.RedisCacheTest
 import user.User
 import java.io.PrintWriter
@@ -123,7 +124,7 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
                 val messages : List<Class<out Message>> = setOf(
                     User::class,
                     Queue::class,
-                    Movie::class
+                    Show::class
                 ).stream().flatMap {
                     it.java.declaredClasses.asList().stream()
                 }.map { it as Class<out Message> }
@@ -140,6 +141,7 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
         //all users stuff
         user(deps.userStore())
         queue(deps.queues())
+        show(deps.catalog())
     }
 }
 

@@ -1,8 +1,8 @@
 package cache
 
 import com.google.common.cache.CacheBuilder
-import movie.Movie
 import org.junit.Test
+import show.Show
 import java.util.*
 import kotlin.test.assertEquals
 
@@ -11,14 +11,14 @@ class InMemoryCache : Cache {
 
     val cache = CacheBuilder.newBuilder().build<Any, Any>()
 
-    override fun getMovie(id: Int): Optional<Movie.Detail> {
-        val movie : Movie.Detail? = cache.getIfPresent(id) as Movie.Detail?
+    override fun getShow(id: String): Optional<Show.Detail> {
+        val show : Show.Detail? = cache.getIfPresent(id) as Show.Detail?
 
-        return Optional.ofNullable(movie)
+        return Optional.ofNullable(show)
     }
 
-    override fun setMovie(movie: Movie.Detail) {
-        cache.put(movie.id, movie)
+    override fun setShow(show: Show.Detail) {
+        cache.put(show.id, show)
     }
 
     override fun close() {}
@@ -29,12 +29,12 @@ internal class InMemoryCacheTest {
     @Test
     fun mem() {
         val inMem = InMemoryCache()
-        val movie = Movie.Detail.newBuilder()
-            .setId(1234)
+        val show = Show.Detail.newBuilder()
+            .setId("test-id")
             .build()
 
-        inMem.setMovie(movie)
+        inMem.setShow(show)
 
-        assertEquals(movie, inMem.getMovie(movie.id).get())
+        assertEquals(show, inMem.getShow(show.id).get())
     }
 }

@@ -1,8 +1,8 @@
 import React from "react";
 import {SafeAreaView, Text} from "react-native";
-import {BaseProps} from "../etc/BaseProps";
+import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 
-const ForgotPassword : React.FC<BaseProps> = (props) => {
+export const ForgotPassword : React.FC<BaseNavigationProps> = (props) => {
 
     return (
         <SafeAreaView>
@@ -11,5 +11,3 @@ const ForgotPassword : React.FC<BaseProps> = (props) => {
         </SafeAreaView>
     )
 }
-
-export default ForgotPassword

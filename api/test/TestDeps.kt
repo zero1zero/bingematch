@@ -1,31 +1,22 @@
 import cache.Cache
-import cache.RedisCache
+import cache.InMemoryCache
 import catalog.Catalog
 import catalog.MetadataSource
 import etc.PasswordUtil
 import queue.Queues
-import show.Show
 import store.AWSUtil
 import store.UserStore
 
-interface Dependencies {
-
-    fun userStore() : UserStore
-    fun queues() : Queues
-    fun cache() : Cache
-    fun catalog() : Catalog
-
-}
-
-open class ProdDeps : Dependencies {
-
+class TestDeps : Dependencies {
     private val passwordUtil = PasswordUtil()
     private val awsUtil = AWSUtil()
     private val metadata = MetadataSource()
-    private val cache : Cache = RedisCache()
+    private val storage = UserStore(passwordUtil, awsUtil.ddb)
+
+    //test overrides
+    private val cache = InMemoryCache()
     private val catalog = Catalog(metadata, cache)
     private val queues = Queues(catalog)
-    private val storage = UserStore(passwordUtil, awsUtil.ddb)
 
     override fun userStore(): UserStore {
         return storage
@@ -35,11 +26,11 @@ open class ProdDeps : Dependencies {
         return queues
     }
 
-    override fun catalog(): Catalog {
-        return catalog
-    }
-
     override fun cache(): Cache {
         return cache
+    }
+
+    override fun catalog(): Catalog {
+        return catalog
     }
 }

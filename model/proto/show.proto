@@ -1,0 +1,162 @@
+syntax = "proto3";
+
+package show;
+option java_outer_classname = "Show";
+
+//limited set of data to display in the queue
+message ThinDetail {
+    string id = 1;
+    string title = 2;
+    string overview = 3;
+    repeated Genre genres = 4;
+    string posterPath = 5;
+}
+
+message Detail {
+    string id = 1;
+    string title = 2; //shared
+    string overview = 3;
+    repeated Genre genres = 4;
+
+    string posterPath = 7;
+    string backdropPath = 8;
+
+    Votes votes = 9;
+
+    int32 popularity = 10;
+
+    string tagline = 11;
+    repeated string spokenLanguage = 12;
+
+    repeated Video videos = 13;
+    repeated Image posters = 14;
+
+    repeated int32 recommendations = 15;
+    repeated int32 similar = 16;
+
+    repeated Watch watch = 17;
+
+    TV tv = 18;
+    Movie movie = 19;
+    Type type = 20;
+
+    string date = 21; //shared
+
+    repeated Cast cast = 22;
+    repeated Crew crew = 23;
+
+    enum Type {
+        TV = 0;
+        Movie = 1;
+    }
+}
+
+message TV {
+
+    Status status = 1;
+
+    int32 seasons = 2;
+
+    enum Status {
+        Rumored = 0;
+        Planned = 1;
+        InProduction = 2;
+        PostProduction = 3;
+        ReturningSeries = 4;
+        Canceled = 5;
+        Ended = 6;
+    }
+}
+
+message Movie {
+    string imdbId = 1;
+    string originalLanguage = 2;
+    string originalTitle = 3;
+
+    Status status = 4;
+
+    int32 budget = 5;
+
+    int32 runtime = 6;
+
+    enum Status {
+        Rumored = 0;
+        Planned = 1;
+        InProduction = 2;
+        PostProduction = 3;
+        Released = 4;
+        Canceled = 5;
+    }
+}
+
+message Genre {
+    int32 id = 1;
+    string name = 2;
+}
+
+message Votes {
+    double average = 1;
+    int32 count = 2;
+}
+
+message Video {
+    string id = 1;
+    string language = 2;
+    string country = 3;
+
+    string key = 4;
+    string name = 5;
+    string site = 6;
+    int32 size = 7;
+    Type type = 8;
+
+    enum Type {
+        Trailer = 0;
+        Teaser = 1;
+        Clip = 2;
+        Featurette = 3;
+        BehindtheScenes = 4;
+        Bloopers = 5;
+
+        OpeningCredits = 6;
+    }
+}
+
+message Image {
+    string filePath = 1;
+    double aspectRatio = 2;
+    int32 height = 3;
+    int32 width = 4;
+    Votes votes = 5;
+
+    string language = 7;
+}
+
+message Watch {
+    string language = 1;
+    string link = 2;
+
+    repeated Provider rent = 3;
+    repeated Provider buy = 4;
+
+    message Provider {
+        int32 id = 1;
+        int32 priority = 2;
+        string logoPath = 3;
+        string name = 4;
+    }
+}
+
+message Cast {
+    int32 id = 1;
+    string name = 2;
+    string character = 3;
+    string profilePath = 4;
+}
+
+message Crew {
+    int32 id = 1;
+    string name = 2;
+    string job = 3;
+    string profilePath = 4;
+}

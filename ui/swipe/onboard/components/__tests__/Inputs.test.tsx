@@ -2,10 +2,11 @@ import {fireEvent, render} from '@testing-library/react-native';
 import {expect, jest, test} from '@jest/globals'
 import * as React from 'react'
 import {useReducer} from 'react'
-import EmailInput from "../EmailInput";
-import PasswordInput from "../PasswordInput";
+import {EmailInput} from "../EmailInput";
+import {PasswordInput} from "../PasswordInput";
 import {UserEvents, userReduder, ValidationStatus} from "../../UserReducer";
 import {renderHook} from '@testing-library/react-hooks'
+import {VerifyInput} from "../VerifyPassword";
 
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 
@@ -18,7 +19,9 @@ test('invalid email gives error and valid removes', async () => {
     const [state, dispatch] = result.current;
 
     const { getByPlaceholderText, queryByPlaceholderText, queryByText } = render(
-        <EmailInput state={state.email} dispatch={dispatch} />
+        <EmailInput
+            value={""}
+            dispatch={dispatch} />
     );
 
     fireEvent.changeText(
@@ -50,12 +53,17 @@ test('invalid password flow checks multiple bad password things', async () => {
     const [state, dispatch] = result.current;
 
     const { getByPlaceholderText, queryByText, queryByPlaceholderText } = render(
-        <PasswordInput
-            passwordState={state.password}
-            dispatch={dispatch}
-            addVerify={true}
-            verifyState={state.verify} />
-    );
+        <>
+            <PasswordInput
+                value={""}
+                dispatch={dispatch}
+            />
+            <VerifyInput
+                value={""}
+                dispatch={dispatch}
+            />
+        </>
+);
 
     //yell that password is missing
     fireEvent(getByPlaceholderText('Password'), 'blur');
@@ -81,7 +89,7 @@ test('invalid password flow checks multiple bad password things', async () => {
     //verify should stop us
     expect(queryByText('Please double check the two password fields match')).toBeDefined()
     fireEvent.changeText(
-        getByPlaceholderText('Verify Password'),
+        getByPlaceholderText('Verify'),
         'jimbojones'
     );
     expect(queryByPlaceholderText('Please double check the two password fields match')).toBeNull()

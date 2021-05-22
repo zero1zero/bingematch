@@ -2,7 +2,7 @@ import React, {useEffect, useLayoutEffect, useReducer} from "react";
 import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {ImageOverlay} from "../etc/ImageOverlay";
 import Social from "./components/Social";
-import {BaseProps} from "../etc/BaseProps";
+import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
 import {defaultReducer, isReadyToValidate, isValid, UserEvents, userReduder, verify} from "./UserReducer";
 import {Button} from "../components/Button";
@@ -10,8 +10,9 @@ import {BingeMatch} from "../theme";
 import {PasswordInput} from "./components/PasswordInput";
 import {VerifyInput} from "./components/VerifyPassword";
 import {EmailInput} from "./components/EmailInput";
+import {AuthContext} from "../api/Auth";
 
-const SignUp : React.FC<BaseProps> = (props) => {
+export const SignUp : React.FC<BaseNavigationProps> = (props) => {
 
     const api = Dependencies.instance.api
 
@@ -32,6 +33,8 @@ const SignUp : React.FC<BaseProps> = (props) => {
         })
     };
 
+    const { login } = React.useContext(AuthContext);
+
     useEffect(() => {
         if (!state.submit
             || !isReadyToValidate(state.email.validation, state.password.validation, state.verify.validation)) {
@@ -50,6 +53,7 @@ const SignUp : React.FC<BaseProps> = (props) => {
             email: state.email.value,
             password: state.password.value
         }).then(() => {
+            login()
             props.navigation.navigate('Queue');
         })
     }, [state])
@@ -135,4 +139,3 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SignUp

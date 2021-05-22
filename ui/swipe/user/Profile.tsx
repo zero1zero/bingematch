@@ -1,6 +1,6 @@
 import React, {useEffect, useLayoutEffect, useReducer} from 'react';
 import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {BaseProps} from "../etc/BaseProps";
+import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
 import {reducer, Reducer, ValidationStatus} from "./ProfileEvents";
 import {BingeMatch} from "../theme";
@@ -10,8 +10,9 @@ import {EmailInput} from "../onboard/components/EmailInput";
 import {PasswordInput} from "../onboard/components/PasswordInput";
 import {isReadyToValidate, isValid} from "../onboard/UserReducer";
 import {VerifyInput} from "../onboard/components/VerifyPassword";
+import {BackIcon, BarsIcon} from "../etc/Icons";
 
-const Profile : React.FC<BaseProps> = (props) => {
+export const Profile : React.FC<BaseNavigationProps> = (props) => {
 
     const api = Dependencies.instance.api
     const storage = Dependencies.instance.storage
@@ -116,6 +117,3 @@ const styles = StyleSheet.create({
         width: '90%',
     },
 });
-
-
-export default Profile;

@@ -7,9 +7,4 @@ export default class Dependencies {
 
     storage = new Storage()
     api = new API(this.storage)
-
-
-    private constructor() {
-        console.log('only once')
-    }
 }

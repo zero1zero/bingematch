@@ -2,57 +2,67 @@ task auth {
 
   doLast {
     print('aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 990223444407.dkr.ecr.us-west-2.amazonaws.com')
-    //exec {
-      //broken
+    exec {
       //commandLine "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 990223444407.dkr.ecr.us-west-2.amazonaws.com".split(' ')
-    //}
+
+      commandLine "bash", "-c", "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 990223444407.dkr.ecr.us-west-2.amazonaws.com"
+    }
   }
 }
 
 task deployApi {
+  dependsOn ':model:build'
+  dependsOn ':api:test'
+  dependsOn ':api:shadowJar'
+
   dependsOn ':auth'
 
-  def ver = project.hasProperty('version') ? project.getProperty('version') : "local-" + new Random().nextInt(10)
+  String ver = project.getProperty('version') != 'unspecified' ? project.getProperty('version') : "local-" + new Date().getTime()
+
+  String registry = "990223444407.dkr.ecr.us-west-2.amazonaws.com"
+  String tag = "${registry}/bingematch-api:${ver}"
 
   doLast {
-    exec {
-      commandLine "docker build -f api/Dockerfile -t bingewatch-api:${ver} api".split(' ')
-    }
-    exec {
-      commandLine "docker tag bingematch-api:${ver} 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:${ver}".split(' ')
-    }
-    exec {
-      commandLine "docker push 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:${ver}".split(' ')
-    }
 
-    def deployment = new File( 'deploy/api-deployment.yaml' )
-    def contents = deployment.getText( 'UTF-8' ).replaceAll("bingematch-api:.*'", "bingematch-api:${ver}'")   
-    deployment.write(contents, 'UTF-8')
+    println("Deploying version ${ver}")
 
     exec {
-      commandLine "kubectl apply -f deploy/api-deployment.yaml".split(' ')
+      commandLine "bash", "-c", "docker build -t ${tag} api"
+    }
+    exec {
+      commandLine "bash", "-c", "docker push ${tag}"
+    }
+
+    def contents = new File('deploy/api-deployment.yaml').getText('UTF-8')
+            .replaceAll("VERSION", "${ver}")
+
+    def tmpDeploy = new File("/tmp/api-deployment-${ver}.yaml")
+    tmpDeploy.write(contents, 'UTF-8')
+
+    exec {
+      commandLine "bash", "-c", "kubectl apply -f ${tmpDeploy.absolutePath}"
     }
   }
 }
 
-task deployUi {
-  dependsOn ':auth'
-
-  doLast {
-    exec {
-      commandLine "docker build -t bingewatch-ui .".split(' ')
-    }
-    exec {
-      commandLine "docker tag bingematch-ui:latest 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-ui:latest".split(' ')
-    }
-    exec {
-      commandLine "docker push 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-ui:latest".split(' ')
-    }
-  }
-}
+//task deployUi {
+//  dependsOn ':auth'
+//
+//  doLast {
+//    exec {
+//      commandLine "docker build -t bingewatch-ui .".split(' ')
+//    }
+//    exec {
+//      commandLine "docker tag bingematch-ui:latest 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-ui:latest".split(' ')
+//    }
+//    exec {
+//      commandLine "docker push 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-ui:latest".split(' ')
+//    }
+//  }
+//}
 
 task deploy {
-  dependsOn ':ui:docker'
+  //dependsOn deployUi
   dependsOn deployApi
 
   doLast {

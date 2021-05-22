@@ -10,6 +10,6 @@ internal class RedisCacheTest {
     fun connect() {
         val redisCache = RedisCache()
 
-        assertTrue(redisCache.getMovie(123123083).isEmpty)
+        assertTrue(redisCache.getShow("lakjasdlkfjasdkfj").isEmpty)
     }
 }

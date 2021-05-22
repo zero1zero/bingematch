@@ -1,4 +1,4 @@
-import {queue, user} from "../model/compiled";
+import {queue, show, user} from "../model/compiled";
 import Storage from '../Storage'
 
 import getEnvVars from '../../environment';
@@ -18,33 +18,21 @@ export default class API {
         this.storage = storage
     }
 
-    cleanup = () => {
-        this.cancelSource.cancel("Manually aborted by application")
+    cleanup = async () => {
+        await this.cancelSource.cancel("Manually aborted by application")
     }
 
     signup = async (signup: user.IRegister) : Promise<user.DetailAndToken> => {
-        return this.post('/user/', signup)
-            .then(r => r.data)
-            .then(json => user.DetailAndToken.fromObject(json))
-            .then(dat =>
-                this.storage.setToken(dat.token)
-                    .then(() => dat)
-            )
-    }
+        let response = await this.post('/user/', signup)
 
-    deleteCurrentUser = async () : Promise<void> => {
-        this.storage.getUser()
-            .then(id => {
-                if (!id) {
-                    return
-                }
-                return this.deleteUser(id)
-            })
-            .then(() => this.storage.clearToken())
+        let dat = user.DetailAndToken.fromObject(response.data)
+        await this.storage.setToken(dat.token)
+
+        return dat
     }
 
     refreshForTest = async (login : user.ILogin) : Promise<void> => {
-        await this.login(login)
+        this.login(login)
             .then(token => {
                 console.debug("Cleaning up stale user for testing...")
                 //oops, we still have this user around
@@ -72,12 +60,12 @@ export default class API {
     }
 
     login = async (login: user.ILogin) : Promise<string> => {
-        return this.post('/user/login/', login)
-            .then(r => r.data)
-            .then(token => {
-                return this.storage.setToken(token)
-                    .then(() => token)
-            })
+        let response = await this.post('/user/login/', login)
+
+        let token = response.data
+        await this.storage.setToken(token)
+
+        return token
     }
 
     userUpdate = async (user: user.IUpdate) : Promise<void> => {
@@ -85,13 +73,18 @@ export default class API {
             .then(id => {
                 this.put('/user/' + id, user)
             })
-
     }
 
-    popular = async () : Promise<queue.AllItems> => {
+    getQueue = async () : Promise<queue.QueuedItems> => {
         return this.get('/queue/')
             .then(r => r.data)
-            .then(json => queue.AllItems.fromObject(json))
+            .then(json => queue.QueuedItems.fromObject(json))
+    }
+
+    getShow = async (id : string) : Promise<show.Detail> => {
+        return this.get(`/show/${id}`)
+            .then(r => r.data)
+            .then(json => show.Detail.fromObject(json))
     }
 
     /*
@@ -148,8 +141,6 @@ export default class API {
                     headers['Authorization'] = 'Bearer ' + token
                 }
 
-                console.log(apiUrl + url)
-
                 return this.axios({
                     url: apiUrl + url,
                     method: 'post',
@@ -181,4 +172,35 @@ export default class API {
                 });
             })
     }
+
+
+    /*
+     * For testing
+     */
+
+    deleteUserWithLogin = async (login : user.ILogin) : Promise<void> => {
+        let token = this.login(login)
+            .then(async (token) => {
+                const id = this.storage.getUserFromToken(token)
+
+                await this.deleteUser(id)
+                await this.storage.clearToken()
+            })
+            .catch(e => {
+                //nothing
+            })
+    }
+
+    deleteCurrentUser = async () : Promise<void> => {
+        let id = await this.storage.getUser()
+
+        if (!id) {
+            console.log("No current user to delete... test probably failed")
+            return
+        }
+
+        await this.deleteUser(id)
+        await this.storage.clearToken()
+    }
+
 }

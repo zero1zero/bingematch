@@ -22,7 +22,7 @@ interface AnimValues {
     easing: EasingFunction
 }
 
-const Swipable : React.FC<Props> = (props) => {
+export const Swipable : React.FC<Props> = (props) => {
     const window = useWindowDimensions();
     const WIDTH_HALF = window.width / 2;
     const HEIGHT_HALF = window.height / 2;
@@ -104,6 +104,8 @@ const Swipable : React.FC<Props> = (props) => {
             onMoveShouldSetPanResponder: (evt, gestureState) => true,
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
             onPanResponderGrant: (evt, gestureState) => {
+                console.log('Start of touch');
+
                 // whenever the touch starts it will scale the card
                 Animated.spring(scale, {
                     toValue: animValues.get(Sentiment.Like).scale,
@@ -299,5 +301,3 @@ const Swipable : React.FC<Props> = (props) => {
         </Animated.View>
     );
 }
-
-export default Swipable;

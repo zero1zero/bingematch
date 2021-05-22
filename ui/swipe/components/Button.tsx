@@ -1,5 +1,5 @@
 import React from "react";
-import {TextStyle, TouchableOpacity, ViewStyle} from "react-native";
+import {Pressable, TextStyle, TouchableOpacity, ViewStyle} from "react-native";
 import {BingeMatch} from "../theme";
 
 interface Props {
@@ -10,11 +10,11 @@ interface Props {
 export const Button : React.FC<Props> = (props) => {
 
     return (
-        <TouchableOpacity
+        <Pressable
             style={{...style, ...props.style}}
             onPress={props.onPress}>
             {props.children}
-        </TouchableOpacity>
+        </Pressable>
     )
 }
 

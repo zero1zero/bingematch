@@ -1,9 +1,19 @@
-import {Image, StyleSheet, Text, useWindowDimensions, View} from "react-native";
+import {
+    Image,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    useWindowDimensions,
+    View
+} from "react-native";
 import React from "react";
 import {Item, StateChange} from "./QueueEvents";
-import Swipable from "./Swipable";
-import {useHeaderHeight} from '@react-navigation/stack';
 import {BingeMatch} from "../theme";
+import {Swipable} from "./Swipable";
+import {BaseNavigationProps} from "../etc/BaseNavigationProps";
+import {useNavigation} from "@react-navigation/native";
 
 interface Props {
     items: Item[]
@@ -18,9 +28,9 @@ const sizes = [92,
     500,
     780]
 
-const Deck : React.FC<Props> = (props) => {
+export const Deck : React.FC<Props> = (props) => {
 
-    const headerHeight = useHeaderHeight();
+    const navigation = useNavigation();
 
     const window = useWindowDimensions()
     const cardWidth = window.width * .86
@@ -37,28 +47,35 @@ const Deck : React.FC<Props> = (props) => {
         return size
     }
 
-    props.items.forEach((i) => {
-        console.log(i.data.id)
-    })
+    const onImagePress = (item: Item) => {
+        navigation.navigate('Detail', {
+            id : item.data.show.id
+        })
+    }
 
     const toCard = (item : Item) => (
         <Swipable
             item={item}
-            key={item.data.id}
+            key={`card-${item.data.id}`}
             dispatch={props.dispatch}>
-            <View style={{...styles.card, width: cardWidth}}>
+            <View style={{...styles.card, width: cardWidth, height: cardHeight}}>
                 {/*<HeartIcon {...styles.reportIcon} /> <Text>Liked by Ruoxi, Ajay and Jesi</Text>*/}
-                <Image style={styles.image} width={cardWidth} height={imageHeight} source={{uri: `https://image.tmdb.org/t/p/w${posterWidth()}/${item.data.movie.posterPath}`}}>
-                </Image>
+                <Pressable onPress={() => onImagePress(item)}>
+                    <Image style={styles.image} width={cardWidth} height={imageHeight} source={{uri: `https://image.tmdb.org/t/p/w${posterWidth()}/${item.data.show.posterPath}`}}>
+                    </Image>
+                </Pressable>
                 <View style={styles.details}>
-                    <Text numberOfLines={2} style={styles.detailsTitle}>{item.data.movie.title}</Text>
-                    <Text style={styles.detailsText} numberOfLines={4}>{item.data.movie.overview}</Text>
+                    <Text numberOfLines={2} style={styles.detailsTitle}>{item.data.show.title}</Text>
+                    <Text style={styles.detailsText} numberOfLines={4}>{item.data.show.overview}</Text>
 
                     <View style={styles.detailsGenres}>
-                        {item.data.movie.genres
+                        {item.data.show.genres
                             .filter(genre => genre.name != null)
                             .map(genre => (
-                                <Text style={styles.detailsGenresName}>{genre.name}</Text>
+                                <Text style={styles.detailsGenresName}
+                                      key={`genre-${genre.id}`}>
+                                    {genre.name}
+                                </Text>
                             ))}
                     </View>
 
@@ -66,7 +83,6 @@ const Deck : React.FC<Props> = (props) => {
                         <View style={styles.detailsLastLineRating}>
                             <Image style={styles.detailsLastLineRatingIcon} source={require('../assets/rt_tomato.png')}/>
                             <Text style={styles.detailsLastLineRatingPerc}>69%</Text>
-
 
                             <Image style={{...styles.detailsLastLineRatingIcon, marginLeft: 12}} source={require('../assets/rt_user.png')}/>
                             <Text style={styles.detailsLastLineRatingPerc}>89%</Text>
@@ -96,8 +112,6 @@ const Deck : React.FC<Props> = (props) => {
         </View>
     )
 }
-
-export default Deck
 
 const styles = StyleSheet.create({
     deck: {
@@ -137,9 +151,12 @@ const styles = StyleSheet.create({
     detailsGenresName: {
         color: '#fff',
         fontSize: 12,
+        marginVertical: 2,
         marginRight: 4,
         backgroundColor: BingeMatch.theme.genres,
         padding: 4,
+        borderRadius: 5,
+        overflow: 'hidden',
     },
     detailsLastLine: {
         flex: 1,

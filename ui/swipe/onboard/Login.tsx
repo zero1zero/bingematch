@@ -2,7 +2,7 @@ import React, {useEffect, useLayoutEffect, useReducer} from 'react';
 import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {ImageOverlay} from '../etc/ImageOverlay';
 import Social from "./components/Social";
-import {BaseProps} from "../etc/BaseProps";
+import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
 import {isReadyToValidate, isValid, UserEvents, userReduder, ValidationStatus} from "./UserReducer";
 import {Button} from "../components/Button";
@@ -11,7 +11,7 @@ import {PasswordInput} from "./components/PasswordInput";
 import {EmailInput} from "./components/EmailInput";
 import {AuthContext} from "../api/Auth";
 
-const Login : React.FC<BaseProps> = (props) => {
+export const Login : React.FC<BaseNavigationProps> = (props) => {
 
     const api = Dependencies.instance.api
 
@@ -54,6 +54,7 @@ const Login : React.FC<BaseProps> = (props) => {
             password: state.password.value
         }).then(() => {
             login()
+            props.navigation.navigate('Queue');
         })
     }, [state.submit, state.email, state.password])
 
@@ -77,7 +78,7 @@ const Login : React.FC<BaseProps> = (props) => {
                             BingeMatch
                         </Text>
                         <Text style={BingeMatch.h2}>
-                            Login
+                            Login to your account
                         </Text>
                     </View>
                     <View style={styles.formContainer}>
@@ -100,7 +101,7 @@ const Login : React.FC<BaseProps> = (props) => {
                         <Button
                             style={styles.loginButton}
                             onPress={onLoginButtonPress}>
-                            <Text style={BingeMatch.buttonText}>Sign In</Text>
+                            <Text style={BingeMatch.buttonText}>Login</Text>
                         </Button>
 
                         <Social text={"Or Login Using Social Media"}/>
@@ -159,4 +160,3 @@ const styles = StyleSheet.create({
 });
 
 
-export default Login;

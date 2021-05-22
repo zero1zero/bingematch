@@ -5,65 +5,7 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.jackson.responseObject
 
 
-class MetadataSource {
-
-    val tmdb = TMDB()
-
-    /**
-     * The Movie DB
-     * https://www.themoviedb.org/documentation/api
-     * https://www.themoviedb.org/documentation/api/discover
-     * https://developers.themoviedb.org/3/getting-started/introduction
-     *
-     * most popular
-     * /discover/movie?sort_by=popularity.desc
-     *
-     * https://api.themoviedb.org/3/movie/550?api_key=ba647fb82147021ea5fd00ccf6ebb571
-     */
-    class TMDB {
-
-        val key = "ba647fb82147021ea5fd00ccf6ebb571"
-        val baseURL = "https://api.themoviedb.org/3"
-
-        fun getMovie(tmdbId : Int) : JsonNode {
-            val (request, response, result) = Fuel.get(
-                "$baseURL/movie/$tmdbId", listOf(
-                    "api_key" to key,
-                    "language" to "en",
-                    "append_to_response" to "videos,images,recommendations,similar,watch/providers"
-                ))
-                .responseObject<JsonNode>()
-
-            return result.get()
-        }
-
-        fun getPopular() : JsonNode {
-            val (request, response, result) = Fuel.get(
-                "$baseURL/discover/movie", listOf(
-                    "api_key" to key,
-                    "language" to "en",
-                    "sort_by" to "popularity.desc",
-                    "include_adult" to "false",
-                    "include_video" to "true"
-                ))
-                .responseObject<JsonNode>()
-
-            return result.get()
-        }
-
-        fun getTrending() : JsonNode {
-            val (request, response, result) = Fuel.get(
-                "$baseURL/trending/all/week", listOf(
-                    "api_key" to key,
-                    "language" to "en",
-                    "sort_by" to "popularity.desc",
-                    "include_adult" to "false",
-                    "include_video" to "true"))
-                .responseObject<JsonNode>()
-
-            return result.get()
-        }
-    }
+class MetadataSource(val tmdb : TMDB = TMDB()) {
 
     /**
      * Entertainment Data Hub

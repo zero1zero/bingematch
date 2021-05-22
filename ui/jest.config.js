@@ -13,6 +13,8 @@ module.exports = {
     + "|react-native-async-storage"
     + "|expo-linear-gradient"
     + "|expo-constants"
+    + "|expo-secure-store"
+    + "|@fortawesome"
 
     //from https://docs.expo.io/guides/testing-with-jest/
     + "|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*"

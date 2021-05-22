@@ -1,2 +1,2 @@
 rootProject.name = 'bingematch'
-include 'model', 'api'
+include 'model', 'api', 'ui'

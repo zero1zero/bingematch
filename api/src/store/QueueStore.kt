@@ -2,88 +2,67 @@ package store
 
 import com.google.common.base.Joiner
 import queue.Queue
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable
+import software.amazon.awssdk.enhanced.dynamodb.Key
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue
-import software.amazon.awssdk.services.dynamodb.model.BatchWriteItemRequest
-import software.amazon.awssdk.services.dynamodb.model.QueryRequest
-import software.amazon.awssdk.services.dynamodb.model.QueryResponse
-import software.amazon.awssdk.services.dynamodb.model.WriteRequest
+import kotlin.streams.toList
 
+class QueueStore(ddb : DynamoDbClient) {
 
-class QueueStore(private val ddb : DynamoDbClient) {
+    @DynamoDbBean
+    data class DbQueueItem (
+        @get:DynamoDbPartitionKey var id : String? = null,
+        @get:DynamoDbSecondaryPartitionKey(indexNames = ["user-state-index"]) var userState: String? = null,
+        var show : String? = null
+    )
 
-    private val table = "queue"
+    private val client : DynamoDbEnhancedClient = DynamoDbEnhancedClient.builder()
+        .dynamoDbClient(ddb)
+        .build()
+
+    var dbQueueTable : DynamoDbTable<DbQueueItem> = client.table(
+        "queue", TableSchema.fromBean(DbQueueItem::class.java)
+    )
 
     fun addToQueue(userId : String, items: List<Queue.Item>) {
-        val allOperations = items.map { item ->
-            val attrs = mapOf(
-                "id" to AttributeValue.builder()
-                    .s(item.id)
-                    .build(),
-                "userState" to AttributeValue.builder()
-                    .s(Joiner.on("-").join(userId, item.state.number))
-                    .build(),
-                "tmdbId" to AttributeValue.builder()
-                    .n(item.tmdbid.toString())
-                    .build(),
-            )
-
-            WriteRequest.builder()
-                .putRequest { builder -> builder.item(attrs)}
-                .build()
-        }.toList()
-
-        val batch = BatchWriteItemRequest.builder()
-            .requestItems(mutableMapOf(table to allOperations))
-            .build()
-
-        ddb.batchWriteItem(batch)
+        items.forEach { item ->
+            dbQueueTable.putItem(DbQueueItem(
+                item.id,
+                Joiner.on("-").join(userId, item.state.number),
+                item.show.id
+            ))
+        }
     }
 
-    fun getUserQueue(userId : String, state : Queue.Item.State) : List<Queue.Item> {
-        val attrs = mapOf(
-            ":userState" to AttributeValue.builder()
-                .s(Joiner.on("-").join(userId, state.number))
+    fun getUserQueue(userId : String, state : Queue.Item.State) : List<DbQueueItem> {
+        val stateConcat = Joiner.on("-").join(userId, state.number)
+
+        return dbQueueTable.index("user-state-index").query(
+            QueryEnhancedRequest.builder()
+                .queryConditional(QueryConditional.keyEqualTo(Key.builder()
+                    .partitionValue(stateConcat)
+                    .build()))
                 .build()
-        )
+        ).stream()
+            .flatMap { it.items().stream() }
+            .toList()
 
-        val queryReq = QueryRequest.builder()
-            .tableName(table)
-            .indexName("user-state-index")
-            .keyConditionExpression("userState = :userState")
-            .expressionAttributeValues(attrs)
-            .build()
-
-        val response: QueryResponse = ddb.query(queryReq)
-
-        return response.items()
-            .map { json ->
-                val stateSplit = json["userState"]!!.s().split('-')[1]
-                Queue.Item.newBuilder()
-                    .setTmdbid(json["tmdbId"]!!.n().toInt())
-                    .setState(Queue.Item.State.forNumber(stateSplit.toInt()))
-                    .setId(json["id"]!!.s())
-                    .build()
-            }.toList()
     }
 
     fun deleteQueueItems(ids : List<String>) {
-        val allOperations = ids.map { item ->
-            val attrs = mapOf(
-                "id" to AttributeValue.builder()
-                    .s(item)
+        ids.forEach { id ->
+            dbQueueTable.deleteItem(
+                Key.builder()
+                    .partitionValue(id)
                     .build()
             )
-
-            WriteRequest.builder()
-                .deleteRequest{ builder -> builder.key(attrs)}
-                .build()
-        }.toList()
-
-        val batch = BatchWriteItemRequest.builder()
-            .requestItems(mutableMapOf(table to allOperations))
-            .build()
-
-        ddb.batchWriteItem(batch)
+        }
     }
 }

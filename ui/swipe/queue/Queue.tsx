@@ -2,9 +2,9 @@ import React, {useEffect, useLayoutEffect, useReducer} from 'react';
 
 import {SafeAreaView, StyleSheet, Text} from "react-native";
 import {queue} from "../model/compiled";
-import {BaseProps} from "../etc/BaseProps";
+import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
-import Deck from "./Deck";
+import {Deck} from "./Deck";
 import {
     beforeHeadExclusive,
     countAfterHeadInclusive,
@@ -43,8 +43,6 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
     state = checkForCardHydrate(state)
 
     if (change.interaction) {
-        console.log("interaction" + change.interaction.name)
-
         //if back, lets act on the previous item instead of current
         const item = (change.interaction.name == InteractionName.ButtonBackPress
             ? previous(state.cardItems, change.interaction.item.data.id)
@@ -138,7 +136,7 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
     if (state.cardItems) {
         console.debug('====== Queue =======')
         state.cardItems.map( item => {
-            let msg = '⇨ ' + item.data.movie.title + (item.data.id == state.head ? ' - 🎥' : '')
+            let msg = '⇨ ' + item.data.show.title + (item.data.id == state.head ? ' - 🎥' : '')
             switch (item.synced) {
                 case SyncStatus.Syncing:
                     msg += ' 🔄'
@@ -196,7 +194,7 @@ const checkForCardHydrate = (state : QueueState) : QueueState => {
     return state
 }
 
-const Queue : React.FC<BaseProps> = (props) => {
+const Queue : React.FC<BaseNavigationProps<'Queue'>> = (props) => {
 
     const api = Dependencies.instance.api
     const [state, dispatch] = useReducer<Reducer>(reducer, {
@@ -213,17 +211,16 @@ const Queue : React.FC<BaseProps> = (props) => {
                 </Button>
             ),
             headerLeft: () => (
-                // <Button onPress={() => props.navigation.openDrawer()}>
+                // <Button onPress={() => props.navigation.navigate('Burger')}>
                     <BarsIcon style={BingeMatch.nav.icons} size={30} color='white' />
-                // </Button>
+                 // </Button>
             ),
         });
     }, [props.navigation]);
 
     useEffect(() => {
         if (state.cacheItems.length < activeCardMax) {
-            console.log('loading more cache...')
-            api.popular()
+            api.getQueue()
                 .then(moreActive => {
                     dispatch({ addToCache: moreActive.items})
                 })
@@ -236,7 +233,6 @@ const Queue : React.FC<BaseProps> = (props) => {
             .forEach(item => {
                 dispatch({ setSync: { sync: SyncStatus.Syncing, id: item.data.id }})
                 new Promise<Item>((resolve) => {
-                    console.log("send " + item.data.movie.title)
                     resolve(item)
                 }).then(item => {
                     dispatch({ setSync: { sync: SyncStatus.Synced, id: item.data.id }})
@@ -244,11 +240,6 @@ const Queue : React.FC<BaseProps> = (props) => {
             })
 
     }, [state.cardItems])
-
-    //cleanup when closed
-    // useEffect(() => {
-    //     return api.cleanup
-    // }, [])
 
     return (
         <SafeAreaView style={styles.home}>
@@ -268,7 +259,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: BingeMatch.theme.bg
     },
-
 });
 
 export default Queue;
