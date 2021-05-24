@@ -2,7 +2,7 @@ import React, {useEffect, useLayoutEffect, useReducer} from 'react';
 
 import {SafeAreaView, StyleSheet, Text} from "react-native";
 import {queue} from "../model/compiled";
-import {BaseNavigationProps} from "../etc/BaseNavigationProps";
+import {BaseNavigationProps, DrawerNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
 import {Deck} from "./Deck";
 import {
@@ -19,7 +19,7 @@ import {
 import {InteractionName, Item, Sentiment, StateChange, SyncStatus} from "./QueueEvents";
 import QueueActions from "./Actions";
 import {BingeMatch} from "../theme";
-import {BarsIcon, SettingsIcon} from "../etc/Icons";
+import {BarsIcon, SettingsIcon} from "../components/Icons";
 import {Button} from "../components/Button";
 
 interface QueueState {
@@ -194,7 +194,7 @@ const checkForCardHydrate = (state : QueueState) : QueueState => {
     return state
 }
 
-const Queue : React.FC<BaseNavigationProps<'Queue'>> = (props) => {
+const Queue : React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
 
     const api = Dependencies.instance.api
     const [state, dispatch] = useReducer<Reducer>(reducer, {
@@ -202,18 +202,18 @@ const Queue : React.FC<BaseNavigationProps<'Queue'>> = (props) => {
     })
 
     useLayoutEffect(() => {
-        props.navigation.setOptions({
-            headerStyle: BingeMatch.nav.bar,
-            headerTitle: () => (<Text style={BingeMatch.nav.title}>BingeMatch</Text>),
+        props.navigation.dangerouslyGetParent().setOptions({
+            headerStyle: BingeMatch.theme.nav.bar,
+            headerTitle: () => (<Text style={BingeMatch.theme.nav.title}>BingeMatch</Text>),
             headerRight: () => (
-                <Button onPress={() => props.navigation.navigate('Profile')}>
-                    <SettingsIcon style={BingeMatch.nav.icons} size={30} color='white' />
+                <Button style={styles.buttons} onPress={() => props.navigation.navigate('Profile')}>
+                    <SettingsIcon style={BingeMatch.theme.nav.icons} size={30} />
                 </Button>
             ),
             headerLeft: () => (
-                // <Button onPress={() => props.navigation.navigate('Burger')}>
-                    <BarsIcon style={BingeMatch.nav.icons} size={30} color='white' />
-                 // </Button>
+                <Button style={styles.buttons} onPress={() => props.navigation.toggleDrawer()}>
+                    <BarsIcon style={BingeMatch.theme.nav.icons} size={30} />
+                 </Button>
             ),
         });
     }, [props.navigation]);
@@ -257,8 +257,12 @@ const Queue : React.FC<BaseNavigationProps<'Queue'>> = (props) => {
 const styles = StyleSheet.create({
     home: {
         flex: 1,
-        backgroundColor: BingeMatch.theme.bg
+        backgroundColor: BingeMatch.theme.queue.background
     },
+
+    buttons: {
+        paddingHorizontal: 0
+    }
 });
 
 export default Queue;

@@ -1,6 +1,6 @@
-import React, {useEffect, useLayoutEffect, useReducer} from 'react';
+import React, {useEffect, useLayoutEffect, useReducer, useState} from 'react';
 import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {ImageOverlay} from '../etc/ImageOverlay';
+import {ImageOverlay} from '../components/ImageOverlay';
 import Social from "./components/Social";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
@@ -11,9 +11,11 @@ import {PasswordInput} from "./components/PasswordInput";
 import {EmailInput} from "./components/EmailInput";
 import {AuthContext} from "../api/Auth";
 
-export const Login : React.FC<BaseNavigationProps> = (props) => {
+export const Login : React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
     const api = Dependencies.instance.api
+
+    const [serverMessage, setServerMessage] = useState('')
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -38,6 +40,9 @@ export const Login : React.FC<BaseNavigationProps> = (props) => {
     const { login } = React.useContext(AuthContext);
 
     useEffect(() => {
+
+        setServerMessage('')
+
         if (!state.submit
             || !isReadyToValidate(state.email.validation, state.password.validation)) {
             return
@@ -49,81 +54,79 @@ export const Login : React.FC<BaseNavigationProps> = (props) => {
             return
         }
 
+        dispatch({submit: false})
+
         api.login({
             email: state.email.value,
             password: state.password.value
-        }).then(() => {
-            login()
-            props.navigation.navigate('Queue');
         })
+            .then(() => {
+                login()
+                props.navigation.navigate('Queue');
+            })
+            .catch((e) => {
+                setServerMessage("Sorry, no one with that email and password")
+            })
     }, [state.submit, state.email, state.password])
-
-    const onSignUpButtonPress = (): void => {
-        props.navigation.navigate('SignUp');
-    };
 
     const onForgotPasswordButtonPress = (): void => {
         props.navigation.navigate('ForgotPassword');
     };
 
     return (
-        <KeyboardAvoidingView style={{flex: 1}}>
-            <ImageOverlay
-                style={{ flex: 1}}
-                source={require('../assets/bp.jpg')}>
-                <SafeAreaView
-                    style={styles.container}>
-                    <View style={styles.headerContainer}>
-                        <Text style={BingeMatch.h1}>
-                            BingeMatch
-                        </Text>
-                        <Text style={BingeMatch.h2}>
-                            Login to your account
-                        </Text>
-                    </View>
-                    <View style={styles.formContainer}>
-                        <EmailInput
-                            message={state.email.validation.message}
-                            value={state.email.value}
-                            dispatch={dispatch} />
-                        <PasswordInput
-                            message={state.password.validation.message}
-                            value={state.password.value}
-                            dispatch={dispatch} />
+        <SafeAreaView
+            style={styles.container}>
+            <KeyboardAvoidingView style={{flex: 1}}>
+                <View style={styles.headerContainer}>
+                    <Text style={BingeMatch.h1}>
+                        Login
+                    </Text>
+                    <Text style={BingeMatch.h2}>
+                        Already have an account?
+                    </Text>
+                </View>
+                <View style={styles.formContainer}>
+                    <Text style={BingeMatch.form.message}>
+                        {serverMessage}
+                    </Text >
+                    <EmailInput
+                        message={state.email.validation.message}
+                        value={state.email.value}
+                        dispatch={dispatch} />
+                    <PasswordInput
+                        message={state.password.validation.message}
+                        value={state.password.value}
+                        dispatch={dispatch} />
 
-                        <View style={styles.forgotPasswordContainer}>
-                            <Button
-                                style={styles.forgotPasswordButton}
-                                onPress={onForgotPasswordButtonPress}>
-                                <Text>Forgot your password?</Text>
-                            </Button>
-                        </View>
+                    <View style={styles.forgotPasswordContainer}>
                         <Button
-                            style={styles.loginButton}
-                            onPress={onLoginButtonPress}>
-                            <Text style={BingeMatch.buttonText}>Login</Text>
+                            style={styles.forgotPasswordButton}
+                            onPress={onForgotPasswordButtonPress}>
+                            <Text>Forgot your password?</Text>
                         </Button>
-
-                        <Social text={"Or Login Using Social Media"}/>
-
                     </View>
                     <Button
-                        style={styles.signUpButton}
-                        onPress={onSignUpButtonPress}>
-                        <Text style={styles.signUpButtonText}>Don't have an account? Sign Up</Text>
+                        style={styles.loginButton}
+                        onPress={onLoginButtonPress}>
+                        <Text style={BingeMatch.theme.button.text}>Login</Text>
                     </Button>
-                </SafeAreaView>
-            </ImageOverlay>
-        </KeyboardAvoidingView>
+                </View>
+
+                <Social text={"Or Login Using Social Media"}/>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        borderRadius: 20,
+        marginTop: '50%',
+        backgroundColor: BingeMatch.theme.onboard.loginbg,
         flex: 1,
     },
     headerContainer: {
-        flex: 2,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -138,7 +141,7 @@ const styles = StyleSheet.create({
         marginTop: 16,
     },
     loginButton: {
-        marginTop: 10,
+        marginTop: 30,
         marginHorizontal: 16,
         width: '100%',
         backgroundColor: 'white'
@@ -150,13 +153,6 @@ const styles = StyleSheet.create({
     forgotPasswordButton: {
         paddingHorizontal: 0,
     },
-    signUpButton: {
-        marginVertical: 12,
-    },
-
-    signUpButtonText: {
-        color: 'white'
-    }
 });
 
 

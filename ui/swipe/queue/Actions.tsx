@@ -2,7 +2,7 @@ import {InteractionName, Item, StateChange} from "./QueueEvents";
 import React, {useRef} from "react";
 import {Animated, StyleSheet, Text, View} from "react-native";
 import {BingeMatch} from "../theme";
-import {BackIcon, HeartIcon, XIcon} from "../etc/Icons";
+import {BackIcon, HeartIcon, XIcon} from "../components/Icons";
 import {Button} from "../components/Button";
 
 interface Props {
@@ -52,11 +52,9 @@ const QueueActions : React.FC<Props> = (props) => {
                     transform: [{ scale: buttonStates.get(InteractionName.ButtonDislikePress) }],
                 }}>
                 <Button style={styles.button}
-                        // iconSource={() => <XIcon size={30}  color={BingeMatch.actions.nope}/>}
-                        // labelStyle={{...styles.buttonText, color: BingeMatch.actions.nope}}
                         onPress={() => press(InteractionName.ButtonDislikePress)}>
-                    <XIcon size={30} color={BingeMatch.theme.actions.nope}/>
-                    <Text style={{...styles.buttonText, color: BingeMatch.theme.actions.nope}}>Nope</Text>
+                    <XIcon size={30} style={BingeMatch.theme.actions.nopeIcon}/>
+                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.nope}}>Nope</Text>
                 </Button>
             </Animated.View>
             <Animated.View
@@ -66,8 +64,8 @@ const QueueActions : React.FC<Props> = (props) => {
                 }}>
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonBackPress)}>
-                    <BackIcon size={30} color={BingeMatch.theme.actions.back}/>
-                    <Text style={{...styles.buttonText, color: BingeMatch.theme.actions.back}}>Rewind</Text>
+                    <BackIcon size={30} style={BingeMatch.theme.actions.backIcon}/>
+                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.back}}>Back</Text>
                 </Button>
             </Animated.View>
             <Animated.View
@@ -77,8 +75,8 @@ const QueueActions : React.FC<Props> = (props) => {
                 }}>
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonLikePress)}>
-                    <HeartIcon size={30} color={BingeMatch.theme.actions.watch}/>
-                    <Text style={{...styles.buttonText, color: BingeMatch.theme.actions.watch}}>I'd Watch</Text>
+                    <HeartIcon size={30} style={BingeMatch.theme.actions.watchIcon}/>
+                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.watch}}>I'd Watch</Text>
                 </Button>
             </Animated.View>
         </View>
@@ -98,15 +96,8 @@ const styles = StyleSheet.create({
     button: {
         flexDirection: 'column',
         alignItems: 'center',
-
-        ...BingeMatch.shadow
     },
     buttonText: {
-        fontSize: 18,
-        color: '#000',
-        fontWeight: '800',
-
-        ...BingeMatch.shadow
     }
 });
 

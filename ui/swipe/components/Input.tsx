@@ -6,28 +6,23 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 interface Props extends TextInputProps {
     style? : ViewStyle
-    outline? : ColorValue
     icon? : IconDefinition
 }
 
 export const Input : React.FC<Props> = (props) => {
 
-    const border = props.outline ? props.outline : 'white'
-
     return (
         <View style={styles.container}>
             <FontAwesomeIcon style={styles.icon}
                              size={20}
-                             color='#fff'
                              icon={props.icon} />
             <TextInput
                 {...props}
                 style={{
                     ...props.style,
                     ...styles.input,
-                    borderColor: border
                 }}
-                placeholderTextColor='#ffffffB3'
+                placeholderTextColor={BingeMatch.theme.button.placeholder}
             />
         </View>
     )
@@ -42,20 +37,19 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 15,
         left: 15,
+
+        // @ts-ignore
+        ...BingeMatch.theme.input.icon
     },
 
     input: {
         height: 50,
         paddingLeft: 45,
-        borderRadius: 4,
-        backgroundColor: '#ffffff40',
-        borderColor: '#fff',
-        color: '#fff',
+        borderRadius: 12,
         borderWidth: 1,
         padding: 12,
-        fontSize: 18,
 
-        ...BingeMatch.shadow
+        ...BingeMatch.theme.input.field
     }
 })
 

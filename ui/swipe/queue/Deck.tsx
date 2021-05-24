@@ -68,7 +68,7 @@ export const Deck : React.FC<Props> = (props) => {
                     <Text numberOfLines={2} style={styles.detailsTitle}>{item.data.show.title}</Text>
                     <Text style={styles.detailsText} numberOfLines={4}>{item.data.show.overview}</Text>
 
-                    <View style={styles.detailsGenres}>
+                    <ScrollView style={styles.detailsGenres} horizontal={true}>
                         {item.data.show.genres
                             .filter(genre => genre.name != null)
                             .map(genre => (
@@ -77,7 +77,7 @@ export const Deck : React.FC<Props> = (props) => {
                                     {genre.name}
                                 </Text>
                             ))}
-                    </View>
+                    </ScrollView>
 
                     <View style={styles.detailsLastLine}>
                         <View style={styles.detailsLastLineRating}>
@@ -147,16 +147,17 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         flexDirection: 'row',
         marginVertical: 4,
+        maxHeight: 25
     },
     detailsGenresName: {
-        color: '#fff',
-        fontSize: 12,
+        padding: 4,
         marginVertical: 2,
         marginRight: 4,
-        backgroundColor: BingeMatch.theme.genres,
-        padding: 4,
         borderRadius: 5,
+        alignSelf: 'center',
         overflow: 'hidden',
+
+        ...BingeMatch.theme.queue.genres
     },
     detailsLastLine: {
         flex: 1,

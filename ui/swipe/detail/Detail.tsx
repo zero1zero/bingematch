@@ -3,7 +3,7 @@ import Carousel from 'react-native-snap-carousel';
 import {
     ActivityIndicator,
     Image,
-    ImageBackground,
+    ImageBackground, Pressable,
     SafeAreaView, ScrollView,
     StyleSheet,
     Text,
@@ -50,6 +50,9 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
             }
 
             return <View style={styles.trailer}>
+                <View style={styles.trailerSpinner}>
+                    <ActivityIndicator size="large" />
+                </View>
                 <YoutubeIframe
                     height={230}
                     videoId={trailer[0].key}
@@ -102,7 +105,7 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
                             {detail.cast.map(renderCastItem)}
                         </ScrollView>
 
-                        <ScrollView style={{maxHeight: 100, marginBottom: 14}}>
+                        <ScrollView style={{maxHeight: 110, marginBottom: 14}}>
                             <Text style={styles.overview}>{detail.overview}</Text>
                         </ScrollView>
 
@@ -126,8 +129,15 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
         )
     }
 
+    const close = () => {
+        props.navigation.goBack()
+    }
+
     return (
         <View style={styles.container}>
+            <Pressable style={{flex: 1}} onPress={close}>
+            </Pressable>
+
             <View style={styles.detail}>
                 {showBlock()}
             </View>
@@ -135,14 +145,14 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
     )
 }
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1
     },
 
     detail: {
-        flex: 1,
-        marginTop: 120,
+        flex: 7,
     },
 
     backdrop: {
@@ -169,6 +179,16 @@ const styles = StyleSheet.create({
 
     trailer: {
         marginBottom: 15,
+    },
+
+    trailerSpinner: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute'
     },
 
     castBlock: {

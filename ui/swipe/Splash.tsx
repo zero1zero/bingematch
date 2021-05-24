@@ -1,5 +1,5 @@
 import React from "react";
-import {ImageOverlay} from "./etc/ImageOverlay";
+import {ImageOverlay} from "./components/ImageOverlay";
 
 const Splash : React.FC = (props) => {
 

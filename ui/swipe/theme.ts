@@ -1,94 +1,229 @@
-//https://coolors.co/f94144-f3722c-f8961e-f9844a-f9c74f-90be6d-43aa8b-4d908e-577590-277da1
-import {ImageStyle, StyleSheet, TextStyle, ViewStyle} from "react-native";
+import {ColorValue, ImageStyle, StyleSheet, TextStyle, ViewStyle} from "react-native";
 import {DefaultTheme} from "@react-navigation/native";
+import {FontAwesomeIconStyle} from "@fortawesome/react-native-fontawesome";
 
 export namespace BingeMatch {
-  const colors = {
-    "RedSalsa":"#f94144",
-    "OrangeRed":"#f3722c",
-    "YellowOrangeColorWheel":"#f8961e",
-    "MangoTango":"#f9844a",
-    "MaizeCrayola":"#f9c74f",
-    "Pistachio":"#90be6d",
-    "Zomp":"#43aa8b",
-    "CadetBlue":"#4d908e",
-    "QueenBlue":"#577590",
-    "CGBlue":"#277da1"
-  }
 
-  export const theme = {
-    bg: colors.CGBlue,
-    actions: {
-      nope: colors.RedSalsa,
-      back: colors.MaizeCrayola,
-      watch: colors.Pistachio
-    },
+    //https://coolors.co/74d3ae-678d58-a6c48a-f6e7cb-dd9787
+    export const colors = {
+        error: "#FF6E2B",
+        yellow: "#FFBD26",
+        success: "#8CC62D",
 
-    error: colors.RedSalsa,
-    logout: colors.RedSalsa,
-    save: colors.Pistachio,
+        bg: "#d7efe7",
 
-    genres: colors.QueenBlue
-  }
+        grey: "#5c5c5f"
+    }
 
-  export const buttonText : TextStyle = {
-    fontSize: 16,
-    fontWeight: '500',
-  }
+    interface Theme {
+        button: {
+            background: ColorValue
+            placeholder: ColorValue
+            text: TextStyle
+            border: ColorValue
+        }
 
-  export const shadow : ViewStyle | TextStyle | ImageStyle = {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 3.65,
-    elevation: 5,
-  }
+        input: {
+            field: TextStyle
+            icon: FontAwesomeIconStyle
+        }
 
-  export const nav = StyleSheet.create({
-    bar: {
-      backgroundColor: BingeMatch.theme.bg,
-    },
-    title: {
-      color: 'white',
-      fontSize: 25
-    },
+        actions: {
+            watch: TextStyle
+            watchIcon: FontAwesomeIconStyle
+            nope: TextStyle
+            nopeIcon: FontAwesomeIconStyle
+            back: TextStyle
+            backIcon: FontAwesomeIconStyle
+        }
 
-    icons: {
-      margin: 10,
-    },
-  })
+        error: ColorValue
 
-  export const h1 : TextStyle = {
-    color: '#fff',
-    fontWeight: "800",
-    fontSize: 40
-  }
+        profile: {
+            save: ViewStyle
+            logout: ViewStyle
+        }
 
-  export const h2 : TextStyle = {
-    color: '#fff',
-    fontWeight: "600",
-    fontSize: 20,
-  }
+        queue: {
+            background: ColorValue
+            genres: TextStyle
+        }
 
-  export const form = StyleSheet.create({
-    message: {
-      color: BingeMatch.theme.error,
-      alignSelf: 'flex-end',
-      marginTop: 8,
-      marginBottom: 2
-    },
-  })
+        onboard: {
+            loginbg: ColorValue
+            signup: {
+                bg: ViewStyle
+                text: TextStyle
+            }
+            social: {
+                icon: FontAwesomeIconStyle,
+                title: TextStyle
+            }
+        }
 
-  export const navigation = {
-    ...DefaultTheme,
+        nav: {
+            bar: ViewStyle
+            title: TextStyle
+            back: TextStyle
+            icons: FontAwesomeIconStyle
+        }
+    }
 
-    colors: {
-      ...DefaultTheme.colors,
-      primary: '#fff',
-    },
-  };
+    export const theme: Theme = {
+        button: {
+            background: 'transparent',
+            placeholder: colors.grey,
+            text: {
+                color: 'black',
+                fontSize: 20,
+                fontWeight: '400',
+            },
+            border: colors.grey
+        },
+
+        input: {
+            field: {
+                borderColor: colors.grey,
+
+                color: 'black',
+                fontSize: 18,
+            },
+            icon: {
+                color: colors.grey
+            }
+        },
+
+        actions: {
+            nope: {
+                fontSize: 18,
+                fontWeight: '800',
+
+                color: colors.error,
+            },
+            nopeIcon: {
+                color: colors.error,
+            },
+            back: {
+                fontSize: 18,
+                fontWeight: '800',
+
+                color: colors.yellow
+            },
+            backIcon: {
+                color: colors.yellow
+            },
+            watch: {
+                fontSize: 18,
+                fontWeight: '800',
+
+                color: colors.success
+            },
+            watchIcon: {
+                color: colors.success
+            }
+        },
+
+        error: colors.error,
+
+        queue: {
+            background: colors.bg,
+            genres: {
+                color: '#fff',
+                fontSize: 12,
+                backgroundColor: colors.grey,
+            },
+        },
+
+        profile: {
+            save: {
+                backgroundColor: colors.success,
+            },
+            logout: {
+                backgroundColor: colors.error,
+            }
+        },
+
+        onboard: {
+            loginbg: colors.bg,
+            signup: {
+                bg: {
+                    backgroundColor: colors.bg
+                },
+                text: {
+                    color: colors.grey
+                }
+            },
+            social: {
+                icon: {
+                    color: colors.grey
+                },
+                title: {
+                    fontSize: 18,
+                    color: colors.grey
+                }
+            }
+        },
+
+        nav: {
+            bar: {
+                backgroundColor: colors.bg,
+            },
+            title: {
+                color: colors.grey,
+                fontSize: 25
+            },
+
+            back: {
+                color: colors.grey,
+            },
+
+            icons: {
+                color: colors.grey,
+                margin: 10,
+            },
+        }
+    }
+
+    export const shadow: ViewStyle | TextStyle | ImageStyle = {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 3.65,
+        elevation: 5,
+    }
+
+    export const h1: TextStyle = {
+        color: colors.grey,
+        fontWeight: "800",
+        fontSize: 30,
+    }
+
+    export const h2: TextStyle = {
+        color: colors.grey,
+        fontWeight: "600",
+        fontSize: 17,
+    }
+
+    export const form = StyleSheet.create({
+        message: {
+            fontSize: 17,
+            color: BingeMatch.theme.error,
+            alignSelf: 'flex-end',
+            marginTop: 8,
+            marginBottom: 2
+        },
+    })
+
+    export const navigation = {
+        ...DefaultTheme,
+
+        colors: {
+            ...DefaultTheme.colors,
+            primary: '#fff',
+        },
+    };
 }
 

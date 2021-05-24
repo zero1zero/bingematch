@@ -10,17 +10,19 @@ import {EmailInput} from "../onboard/components/EmailInput";
 import {PasswordInput} from "../onboard/components/PasswordInput";
 import {isReadyToValidate, isValid} from "../onboard/UserReducer";
 import {VerifyInput} from "../onboard/components/VerifyPassword";
-import {BackIcon, BarsIcon} from "../etc/Icons";
+import {BackIcon, BarsIcon} from "../components/Icons";
 
-export const Profile : React.FC<BaseNavigationProps> = (props) => {
+export const Profile : React.FC<BaseNavigationProps<'Profile'>> = (props) => {
 
     const api = Dependencies.instance.api
     const storage = Dependencies.instance.storage
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
-            headerStyle: BingeMatch.nav.bar,
-            headerTitle: () => (<Text style={BingeMatch.nav.title}>Profile</Text>),
+            headerStyle: BingeMatch.theme.nav.bar,
+            headerTitle: () => (<Text style={BingeMatch.theme.nav.title}>Profile</Text>),
+            headerBackTitleStyle: BingeMatch.theme.nav.back,
+            headerTintColor: BingeMatch.colors.grey
         });
     }, [props.navigation]);
 
@@ -76,6 +78,7 @@ export const Profile : React.FC<BaseNavigationProps> = (props) => {
                             dispatch={dispatch} />
                         <PasswordInput
                             message={state.password.validation.message}
+                            style={{marginBottom: 12}}
                             value={state.password.value}
                             dispatch={dispatch} />
                         <VerifyInput
@@ -84,13 +87,13 @@ export const Profile : React.FC<BaseNavigationProps> = (props) => {
                         <Button
                             style={styles.saveButton}
                             onPress={onSavePress}>
-                            <Text style={BingeMatch.buttonText}>Update</Text>
+                            <Text style={BingeMatch.theme.button.text}>Update</Text>
                         </Button>
                     </View>
                     <Button
                         onPress={onLogoutPress}
                         style={styles.logoutButton}>
-                        <Text style={BingeMatch.buttonText}>Logout</Text>
+                        <Text style={BingeMatch.theme.button.text}>Logout</Text>
                     </Button>
                 </SafeAreaView>
         </KeyboardAvoidingView>
@@ -100,20 +103,22 @@ export const Profile : React.FC<BaseNavigationProps> = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: BingeMatch.theme.bg,
+        backgroundColor: BingeMatch.theme.queue.background,
     },
     formContainer: {
         flex: 3,
         paddingHorizontal: 16,
     },
     saveButton: {
-        backgroundColor: BingeMatch.theme.save,
         marginTop: 10,
         marginHorizontal: 16,
         width: '100%',
+
+        ...BingeMatch.theme.profile.save
     },
     logoutButton: {
-        backgroundColor: BingeMatch.theme.logout,
         width: '90%',
+
+        ...BingeMatch.theme.profile.logout
     },
 });

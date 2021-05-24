@@ -51,7 +51,7 @@ test('given a new user I can signup and will be logged in', async () => {
         login.password
     );
 
-    fireEvent.press(getByText('SIGN UP'))
+    fireEvent.press(getByText('Sign Up'))
 
     await waitForElementToBeRemoved(() => getByPlaceholderText('Email'))
 

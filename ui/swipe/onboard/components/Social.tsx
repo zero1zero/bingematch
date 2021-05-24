@@ -1,7 +1,8 @@
 import {StyleSheet, Text, View} from "react-native";
 import React from "react";
-import {FacebookIcon, GoogleIcon, TwitterIcon} from "../../etc/Icons";
+import {FacebookIcon, GoogleIcon, TwitterIcon} from "../../components/Icons";
 import {Button} from "../../components/Button";
+import {BingeMatch} from "../../theme";
 
 interface Props {
     text: string
@@ -15,13 +16,13 @@ const Social : React.FC<Props> = (props) => {
             </Text>
             <View style={styles.socialAuthButtonsContainer}>
                 <Button onPress={() => {}}>
-                    <GoogleIcon color='#fff' size={25} />
+                    <GoogleIcon style={BingeMatch.theme.onboard.social.icon} size={25} />
                 </Button>
                 <Button onPress={() => {}}>
-                    <FacebookIcon color='#fff' size={25} />
+                    <FacebookIcon style={BingeMatch.theme.onboard.social.icon} size={25} />
                 </Button>
                 <Button onPress={() => {}}>
-                    <TwitterIcon color='#fff' size={25} />
+                    <TwitterIcon style={BingeMatch.theme.onboard.social.icon} size={25} />
                 </Button>
             </View>
         </View>
@@ -40,7 +41,8 @@ const styles = StyleSheet.create({
     socialAuthHintText: {
         alignSelf: 'center',
         marginBottom: 16,
-        color: '#fff'
+
+        ...BingeMatch.theme.onboard.social.title
     },
 
 })

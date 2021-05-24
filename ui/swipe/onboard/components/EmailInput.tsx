@@ -9,7 +9,6 @@ import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 interface Props {
     style?: ViewStyle
     value : string
-    outline? : ColorValue
     message? : string
 
     dispatch: React.Dispatch<StateChange>
@@ -33,7 +32,6 @@ export const EmailInput : React.FC<Props> = (props) => {
                 textContentType='emailAddress'
                 keyboardType='email-address'
                 value={props.value}
-                outline={props.outline}
                 onChangeText={(value) => props.dispatch({ email: { value: value }})}
             />
         </>

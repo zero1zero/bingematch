@@ -13,7 +13,7 @@ import {SignUp} from "./swipe/onboard/SignUp";
 import {Login} from "./swipe/onboard/Login";
 import {ForgotPassword} from "./swipe/onboard/ForgotPassword";
 import {Detail} from "./swipe/detail/Detail";
-import {Pressable, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Pressable, StyleSheet, View} from "react-native";
 
 export type RootStackParamList = {
     Splash: undefined
@@ -22,11 +22,12 @@ export type RootStackParamList = {
     ForgotPassword: undefined
 
     Queue: undefined
+    QueueNav: undefined
     Detail: {
         id: string //show id
     }
     Profile: undefined
-    Burger: undefined
+    Drawer: undefined
 };
 
 export default function App() {
@@ -35,7 +36,7 @@ export default function App() {
 
     const deps = Dependencies.instance
 
-    const [state, setState] = useState<AuthState>( AuthState.Loading )
+    const [state, setState] = useState<AuthState>(AuthState.Loading)
     const authContext = React.useMemo(
         () => ({
             login: () => {
@@ -56,19 +57,15 @@ export default function App() {
     }, [])
 
     if (state == AuthState.Loading) {
-        return <Splash />
+        return <Splash/>
     }
 
-    const Stack  = createStackNavigator<RootStackParamList>();
+    const Stack = createStackNavigator<RootStackParamList>();
     const Drawer = createDrawerNavigator<RootStackParamList>();
 
-    const closeDetail = () => {
-        console.log('lakdjs')
-    }
-
     const homeNav = () => (
-        <Stack.Navigator initialRouteName='Queue' mode={'modal'}>
-            <Stack.Screen name='Queue' component={queueNav} options={{headerShown: false}} />
+        <Stack.Navigator initialRouteName='QueueNav' mode={'modal'}>
+            <Stack.Screen name='QueueNav' component={queueNav} options={{headerShown: false}}/>
 
             <Stack.Screen name='Detail' component={Detail} options={{
                 headerShown: false,
@@ -76,38 +73,46 @@ export default function App() {
                     backgroundColor: 'transparent',
                 },
                 cardOverlayEnabled: true,
-                cardOverlay: props => <Pressable style={styles.overlay} onPress={closeDetail} />,
+                cardOverlay: props => <View style={styles.overlay} />,
                 /**
                  * Distance from top to register swipe to dismiss modal gesture. Default (135)
                  * https://reactnavigation.org/docs/en/stack-navigator.html#gestureresponsedistance
                  */
-                gestureResponseDistance: { vertical: 1000 },
-            }} />
-            <Stack.Screen name='Burger' component={burgerNav} />
+                gestureResponseDistance: {vertical: 1000},
+            }}/>
+
         </Stack.Navigator>
     )
 
     const queueNav = () => (
-        <Stack.Navigator initialRouteName='Queue' mode={'card'}>
-            <Stack.Screen name='Queue' component={Queue} />
-            <Stack.Screen name='Profile' component={Profile} />
+        <Stack.Navigator initialRouteName='Queue'>
+            <Stack.Screen name='Queue' component={drawer}/>
+
+            <Stack.Screen name='Profile' component={Profile}/>
         </Stack.Navigator>
     )
 
-    //todo not sure how this will work
-    const burgerNav = () => (
+    const drawer = () => (
         <Drawer.Navigator>
-            <Stack.Screen name='Profile' component={Profile} />
+            <Stack.Screen name='Queue' component={Queue}/>
         </Drawer.Navigator>
     )
 
     const onboardNav = () => (
         <Stack.Navigator initialRouteName={'SignUp'} mode={'modal'}>
-            <Stack.Screen name='SignUp' component={SignUp} />
+            <Stack.Screen name='SignUp' component={SignUp}/>
             <Stack.Screen name='Login' component={Login} options={{
+                animationTypeForReplace: 'push',
+                cardStyle: {
+                    backgroundColor: 'transparent',
+                },
+                cardOverlayEnabled: true,
+                cardOverlay: props => <View style={styles.overlay} />,
+                gestureResponseDistance: {vertical: 1000},
+            }}/>
+            <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{
                 animationTypeForReplace: 'push'
-            }} />
-            <Stack.Screen name='ForgotPassword' component={ForgotPassword} />
+            }}/>
         </Stack.Navigator>
     )
 
