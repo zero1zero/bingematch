@@ -10,15 +10,15 @@ interface Props {
     dispatch: React.Dispatch<StateChange>
 }
 
-const QueueActions : React.FC<Props> = (props) => {
+const QueueActions: React.FC<Props> = (props) => {
 
-    const buttonStates : Map<InteractionName, Animated.Value> = new Map([
+    const buttonStates: Map<InteractionName, Animated.Value> = new Map([
         [InteractionName.ButtonLikePress, useRef(new Animated.Value(1)).current],
         [InteractionName.ButtonDislikePress, useRef(new Animated.Value(1)).current],
         [InteractionName.ButtonBackPress, useRef(new Animated.Value(1)).current],
     ]);
 
-    const buttonAnimate = (event : InteractionName) => {
+    const buttonAnimate = (event: InteractionName) => {
         const animate = buttonStates.get(event)
         Animated.sequence([
             Animated.timing(animate, {
@@ -33,7 +33,7 @@ const QueueActions : React.FC<Props> = (props) => {
         ]).start();
     }
 
-    const press = (name : InteractionName) => {
+    const press = (name: InteractionName) => {
 
         buttonAnimate(name)
         props.dispatch({
@@ -49,7 +49,7 @@ const QueueActions : React.FC<Props> = (props) => {
             <Animated.View
                 style={{
                     ...styles.buttonHolder,
-                    transform: [{ scale: buttonStates.get(InteractionName.ButtonDislikePress) }],
+                    transform: [{scale: buttonStates.get(InteractionName.ButtonDislikePress)}],
                 }}>
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonDislikePress)}>
@@ -60,7 +60,7 @@ const QueueActions : React.FC<Props> = (props) => {
             <Animated.View
                 style={{
                     ...styles.buttonHolder,
-                    transform: [{ scale: buttonStates.get(InteractionName.ButtonBackPress) }],
+                    transform: [{scale: buttonStates.get(InteractionName.ButtonBackPress)}],
                 }}>
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonBackPress)}>
@@ -71,7 +71,7 @@ const QueueActions : React.FC<Props> = (props) => {
             <Animated.View
                 style={{
                     ...styles.buttonHolder,
-                    transform: [{ scale: buttonStates.get(InteractionName.ButtonLikePress) }],
+                    transform: [{scale: buttonStates.get(InteractionName.ButtonLikePress)}],
                 }}>
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonLikePress)}>
@@ -85,20 +85,22 @@ const QueueActions : React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
     actions: {
-        flex: 3,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: "center",
+        height: 63,
+        marginTop: 8,
+        marginBottom: 20
     },
     buttonHolder: {
         flex: 1,
     },
     button: {
+        flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
     },
-    buttonText: {
-    }
+    buttonText: {}
 });
 
 export default QueueActions

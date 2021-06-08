@@ -4,7 +4,7 @@ import Storage from '../Storage'
 import getEnvVars from '../../environment';
 import {AxiosResponse} from "axios";
 
-const { apiUrl } = getEnvVars();
+const {apiUrl} = getEnvVars();
 
 export default class API {
 
@@ -12,7 +12,7 @@ export default class API {
     private cancelToken = this.axios.CancelToken;
     private cancelSource = this.cancelToken.source()
 
-    private storage : Storage
+    private storage: Storage
 
     constructor(storage: Storage) {
         this.storage = storage
@@ -22,7 +22,7 @@ export default class API {
         await this.cancelSource.cancel("Manually aborted by application")
     }
 
-    signup = async (signup: user.IRegister) : Promise<user.DetailAndToken> => {
+    signup = async (signup: user.IRegister): Promise<user.DetailAndToken> => {
         let response = await this.post('/user/', signup)
 
         let dat = user.DetailAndToken.fromObject(response.data)
@@ -31,7 +31,7 @@ export default class API {
         return dat
     }
 
-    refreshForTest = async (login : user.ILogin) : Promise<void> => {
+    refreshForTest = async (login: user.ILogin): Promise<void> => {
         this.login(login)
             .then(token => {
                 console.debug("Cleaning up stale user for testing...")
@@ -54,12 +54,14 @@ export default class API {
             })
     }
 
-    deleteUser = async (id : string) : Promise<void> => {
+    deleteUser = async (id: string): Promise<void> => {
         return this.delete('/user/' + id)
-            .then(() => {return})
+            .then(() => {
+                return
+            })
     }
 
-    login = async (login: user.ILogin) : Promise<string> => {
+    login = async (login: user.ILogin): Promise<string> => {
         let response = await this.post('/user/login/', login)
 
         let token = response.data
@@ -68,20 +70,29 @@ export default class API {
         return token
     }
 
-    userUpdate = async (user: user.IUpdate) : Promise<void> => {
+    userUpdate = async (user: user.IUpdate): Promise<void> => {
         this.storage.getUser()
             .then(id => {
                 this.put('/user/' + id, user)
             })
     }
 
-    getQueue = async () : Promise<queue.QueuedItems> => {
+    getUser = async (): Promise<user.Detail> => {
+        return this.storage.getUser()
+            .then(id => (
+                this.get('/user/' + id)
+                    .then(r => r.data)
+                    .then(json => user.Detail.fromObject(json))
+            ))
+    }
+
+    getQueue = async (): Promise<queue.QueuedItems> => {
         return this.get('/queue/')
             .then(r => r.data)
             .then(json => queue.QueuedItems.fromObject(json))
     }
 
-    getShow = async (id : string) : Promise<show.Detail> => {
+    getShow = async (id: string): Promise<show.Detail> => {
         return this.get(`/show/${id}`)
             .then(r => r.data)
             .then(json => show.Detail.fromObject(json))
@@ -178,7 +189,7 @@ export default class API {
      * For testing
      */
 
-    deleteUserWithLogin = async (login : user.ILogin) : Promise<void> => {
+    deleteUserWithLogin = async (login: user.ILogin): Promise<void> => {
         let token = this.login(login)
             .then(async (token) => {
                 const id = this.storage.getUserFromToken(token)
@@ -191,7 +202,7 @@ export default class API {
             })
     }
 
-    deleteCurrentUser = async () : Promise<void> => {
+    deleteCurrentUser = async (): Promise<void> => {
         let id = await this.storage.getUser()
 
         if (!id) {

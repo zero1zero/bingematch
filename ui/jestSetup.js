@@ -1,5 +1,4 @@
 //https://github.com/expo/expo/issues/5007
-import {SecureStoreOptions} from "expo-secure-store";
 
 jest.mock('expo-secure-store', () => {
     let data = {}

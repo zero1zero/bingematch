@@ -75,7 +75,7 @@ export namespace BingeMatch {
             placeholder: colors.grey,
             text: {
                 color: 'black',
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: '400',
             },
             border: colors.grey
@@ -150,6 +150,7 @@ export namespace BingeMatch {
                     backgroundColor: colors.bg
                 },
                 text: {
+                    fontSize: 16,
                     color: colors.grey
                 }
             },
@@ -158,7 +159,7 @@ export namespace BingeMatch {
                     color: colors.grey
                 },
                 title: {
-                    fontSize: 18,
+                    fontSize: 16,
                     color: colors.grey
                 }
             }

@@ -1,4 +1,3 @@
-
 export default {
     icon:
         "https://github.com/expo/expo/blob/master/templates/expo-template-blank/assets/icon.png?raw=true",
@@ -8,4 +7,5 @@ export default {
         resizeMode: "contain",
         backgroundColor: "#ffffff",
     },
+    orientation: "portrait"
 };

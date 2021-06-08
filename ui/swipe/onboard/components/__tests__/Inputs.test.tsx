@@ -11,17 +11,17 @@ import {VerifyInput} from "../VerifyPassword";
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 
 test('invalid email gives error and valid removes', async () => {
-    const { result } = renderHook(() => useReducer<UserEvents>(userReduder, {
-        email: { validation: { status: ValidationStatus.Input }},
-        password: { validation: { status: ValidationStatus.Input}},
-        verify: { validation: { status: ValidationStatus.Input}}
+    const {result} = renderHook(() => useReducer<UserEvents>(userReduder, {
+        email: {validation: {status: ValidationStatus.Input}},
+        password: {validation: {status: ValidationStatus.Input}},
+        verify: {validation: {status: ValidationStatus.Input}}
     }));
     const [state, dispatch] = result.current;
 
-    const { getByPlaceholderText, queryByPlaceholderText, queryByText } = render(
+    const {getByPlaceholderText, queryByPlaceholderText, queryByText} = render(
         <EmailInput
             value={""}
-            dispatch={dispatch} />
+            dispatch={dispatch}/>
     );
 
     fireEvent.changeText(
@@ -45,14 +45,14 @@ test('invalid email gives error and valid removes', async () => {
 });
 
 test('invalid password flow checks multiple bad password things', async () => {
-    const { result } = renderHook(() => useReducer<UserEvents>(userReduder, {
-        email: { validation: { status: ValidationStatus.Input }},
-        password: { validation: { status: ValidationStatus.Input}},
-        verify: { validation: { status: ValidationStatus.Input}}
+    const {result} = renderHook(() => useReducer<UserEvents>(userReduder, {
+        email: {validation: {status: ValidationStatus.Input}},
+        password: {validation: {status: ValidationStatus.Input}},
+        verify: {validation: {status: ValidationStatus.Input}}
     }));
     const [state, dispatch] = result.current;
 
-    const { getByPlaceholderText, queryByText, queryByPlaceholderText } = render(
+    const {getByPlaceholderText, queryByText, queryByPlaceholderText} = render(
         <>
             <PasswordInput
                 value={""}
@@ -63,7 +63,7 @@ test('invalid password flow checks multiple bad password things', async () => {
                 dispatch={dispatch}
             />
         </>
-);
+    );
 
     //yell that password is missing
     fireEvent(getByPlaceholderText('Password'), 'blur');

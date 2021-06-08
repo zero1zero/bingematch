@@ -1,6 +1,5 @@
 import React, {useEffect, useLayoutEffect, useReducer, useState} from "react";
 import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from "react-native";
-import {ImageOverlay} from "../components/ImageOverlay";
 import Social from "./components/Social";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
@@ -12,7 +11,7 @@ import {VerifyInput} from "./components/VerifyPassword";
 import {EmailInput} from "./components/EmailInput";
 import {AuthContext} from "../api/Auth";
 
-export const SignUp : React.FC<BaseNavigationProps<'Login'>> = (props) => {
+export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
     const api = Dependencies.instance.api
 
@@ -35,7 +34,7 @@ export const SignUp : React.FC<BaseNavigationProps<'Login'>> = (props) => {
         })
     };
 
-    const { login } = React.useContext(AuthContext);
+    const {login} = React.useContext(AuthContext);
 
     useEffect(() => {
         setServerMessage('')
@@ -49,7 +48,7 @@ export const SignUp : React.FC<BaseNavigationProps<'Login'>> = (props) => {
         if (!isValid(state.email.validation,
             state.password.validation,
             state.verify.validation)) {
-            dispatch({ submit: false})
+            dispatch({submit: false})
             return
         }
 
@@ -63,7 +62,7 @@ export const SignUp : React.FC<BaseNavigationProps<'Login'>> = (props) => {
             props.navigation.navigate('Queue');
         })
             .catch((e) => {
-                //todo this isnt all the use cases here but probably the main one
+                //todo this isnt all the use cases here but probably the main one. wire up error cases
                 setServerMessage("An account with that username already exists")
             })
     }, [state])
@@ -73,50 +72,48 @@ export const SignUp : React.FC<BaseNavigationProps<'Login'>> = (props) => {
     };
 
     return (
-            <SafeAreaView style={styles.container}>
-                <KeyboardAvoidingView style={{flex: 1}}>
-                <View style={styles.headerContainer}>
-                    <Text style={BingeMatch.h1}>
-                        BingeMatch
-                    </Text>
-                    <Text style={BingeMatch.h2}>
-                        Create a new account
-                    </Text>
-                </View>
-                <View style={styles.formContainer}>
-                    <Text style={BingeMatch.form.message}>
-                        {serverMessage}
-                    </Text >
-                    <View>
-                        <EmailInput
-                            style={{marginBottom: 10}}
-                            message={state.email.validation.message}
-                            value={state.email.value}
-                            dispatch={dispatch} />
-                        <PasswordInput
-                            style={{marginBottom: 6}}
-                            message={state.password.validation.message}
-                            value={state.password.value}
-                            dispatch={dispatch} />
-                        <VerifyInput
-                            value={state.verify.value}
-                            dispatch={dispatch} />
-                    </View>
-                    <Button
-                        style={styles.signUpButton}
-                        onPress={onSignUpButtonPress}>
-                        <Text style={BingeMatch.theme.button.text}>Sign Up</Text>
-                    </Button>
-
-                    <Social text={"Or Sign Up Using Social Media"}/>
-                </View>
-                <Button
-                    style={styles.loginButton}
-                    onPress={onLoginButtonPress}>
-                    <Text style={styles.loginButtonText}>Already have account? Sign In</Text>
-                </Button>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.headerContainer}>
+                <Text style={BingeMatch.h1}>
+                    BingeMatch
+                </Text>
+                <Text style={BingeMatch.h2}>
+                    Create a new account
+                </Text>
+            </View>
+            <View style={styles.formContainer}>
+                <Text style={BingeMatch.form.message}>
+                    {serverMessage}
+                </Text>
+                <KeyboardAvoidingView>
+                    <EmailInput
+                        style={{marginBottom: 10}}
+                        message={state.email.validation.message}
+                        value={state.email.value}
+                        dispatch={dispatch}/>
+                    <PasswordInput
+                        style={{marginBottom: 6}}
+                        message={state.password.validation.message}
+                        value={state.password.value}
+                        dispatch={dispatch}/>
+                    <VerifyInput
+                        value={state.verify.value}
+                        dispatch={dispatch}/>
                 </KeyboardAvoidingView>
-            </SafeAreaView>
+                <Button
+                    style={styles.signUpButton}
+                    onPress={onSignUpButtonPress}>
+                    <Text style={BingeMatch.theme.button.text}>Sign Up</Text>
+                </Button>
+
+                <Social text={"Or Sign Up Using Social Media"}/>
+            </View>
+            <Button
+                style={styles.loginButton}
+                onPress={onLoginButtonPress}>
+                <Text style={styles.loginButtonText}>Already have account? Sign In</Text>
+            </Button>
+        </SafeAreaView>
     )
 }
 
@@ -127,7 +124,7 @@ const styles = StyleSheet.create({
         ...BingeMatch.theme.onboard.signup.bg
     },
     headerContainer: {
-        flex: 2,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },

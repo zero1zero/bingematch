@@ -2,7 +2,7 @@ import React, {useEffect, useLayoutEffect, useReducer} from 'react';
 
 import {SafeAreaView, StyleSheet, Text} from "react-native";
 import {queue} from "../model/compiled";
-import {BaseNavigationProps, DrawerNavigationProps} from "../etc/BaseNavigationProps";
+import {DrawerNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
 import {Deck} from "./Deck";
 import {
@@ -21,6 +21,7 @@ import QueueActions from "./Actions";
 import {BingeMatch} from "../theme";
 import {BarsIcon, SettingsIcon} from "../components/Icons";
 import {Button} from "../components/Button";
+import { View } from 'react-native';
 
 interface QueueState {
     cacheItems: queue.IItem[]
@@ -33,8 +34,8 @@ const activeCardMax = 6
 const moreActiveAt = 3
 const backBuffer = 2
 
-type Reducer = (state : QueueState, change : StateChange) => QueueState
-const reducer = (state : QueueState, change : StateChange) : QueueState => {
+type Reducer = (state: QueueState, change: StateChange) => QueueState
+const reducer = (state: QueueState, change: StateChange): QueueState => {
 
     if (change.addToCache) {
         state.cacheItems = state.cacheItems.concat(change.addToCache)
@@ -135,7 +136,7 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
 
     if (state.cardItems) {
         console.debug('====== Queue =======')
-        state.cardItems.map( item => {
+        state.cardItems.map(item => {
             let msg = '⇨ ' + item.data.show.title + (item.data.id == state.head ? ' - 🎥' : '')
             switch (item.synced) {
                 case SyncStatus.Syncing:
@@ -154,7 +155,7 @@ const reducer = (state : QueueState, change : StateChange) : QueueState => {
     return Object.assign({}, state)
 }
 
-const checkForCardHydrate = (state : QueueState) : QueueState => {
+const checkForCardHydrate = (state: QueueState): QueueState => {
 
     //only try if we have cache items
     if (state.cacheItems.length == 0) {
@@ -170,14 +171,16 @@ const checkForCardHydrate = (state : QueueState) : QueueState => {
         const remainingCache = state.cacheItems.slice(cardsToPullFromCache)
         const forCards = state.cacheItems.slice(0, cardsToPullFromCache)
 
-        const loaded : Item[] = state.cardItems
+        const loaded: Item[] = state.cardItems
             .concat(forCards
-                .map(raw => { return {
-                        onscreen: true,
-                        data: raw,
-                        sentiment: Sentiment.Unknown,
-                        synced: SyncStatus.UnSynced
-                    }}
+                .map(raw => {
+                        return {
+                            onscreen: true,
+                            data: raw,
+                            sentiment: Sentiment.Unknown,
+                            synced: SyncStatus.UnSynced
+                        }
+                    }
                 ))
 
         if (!state.head) {
@@ -194,7 +197,7 @@ const checkForCardHydrate = (state : QueueState) : QueueState => {
     return state
 }
 
-const Queue : React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
+const Queue: React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
 
     const api = Dependencies.instance.api
     const [state, dispatch] = useReducer<Reducer>(reducer, {
@@ -207,13 +210,13 @@ const Queue : React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
             headerTitle: () => (<Text style={BingeMatch.theme.nav.title}>BingeMatch</Text>),
             headerRight: () => (
                 <Button style={styles.buttons} onPress={() => props.navigation.navigate('Profile')}>
-                    <SettingsIcon style={BingeMatch.theme.nav.icons} size={30} />
+                    <SettingsIcon style={BingeMatch.theme.nav.icons} size={30}/>
                 </Button>
             ),
             headerLeft: () => (
                 <Button style={styles.buttons} onPress={() => props.navigation.toggleDrawer()}>
-                    <BarsIcon style={BingeMatch.theme.nav.icons} size={30} />
-                 </Button>
+                    <BarsIcon style={BingeMatch.theme.nav.icons} size={30}/>
+                </Button>
             ),
         });
     }, [props.navigation]);
@@ -222,7 +225,7 @@ const Queue : React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
         if (state.cacheItems.length < activeCardMax) {
             api.getQueue()
                 .then(moreActive => {
-                    dispatch({ addToCache: moreActive.items})
+                    dispatch({addToCache: moreActive.items})
                 })
         }
     }, [state.cacheItems])
@@ -231,33 +234,33 @@ const Queue : React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
         beforeHeadExclusive(state.cardItems, state.head)
             .filter(item => item.synced == SyncStatus.UnSynced)
             .forEach(item => {
-                dispatch({ setSync: { sync: SyncStatus.Syncing, id: item.data.id }})
+                dispatch({setSync: {sync: SyncStatus.Syncing, id: item.data.id}})
                 new Promise<Item>((resolve) => {
                     resolve(item)
                 }).then(item => {
-                    dispatch({ setSync: { sync: SyncStatus.Synced, id: item.data.id }})
+                    dispatch({setSync: {sync: SyncStatus.Synced, id: item.data.id}})
                 })
             })
 
     }, [state.cardItems])
 
     return (
-        <SafeAreaView style={styles.home}>
+        <View style={styles.home}>
             <Deck
                 items={state.cardItems}
                 dispatch={dispatch}
             />
             <QueueActions
                 head={getHead(state.cardItems, state.head)}
-                dispatch={dispatch} />
-        </SafeAreaView>
-);
+                dispatch={dispatch}/>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
     home: {
         flex: 1,
-        backgroundColor: BingeMatch.theme.queue.background
+        backgroundColor: BingeMatch.theme.queue.background,
     },
 
     buttons: {

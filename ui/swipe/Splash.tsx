@@ -1,7 +1,7 @@
 import React from "react";
 import {ImageOverlay} from "./components/ImageOverlay";
 
-const Splash : React.FC = (props) => {
+const Splash: React.FC = (props) => {
 
     return (
         <ImageOverlay
@@ -12,8 +12,8 @@ const Splash : React.FC = (props) => {
             }}
             source={require('./assets/bp.jpg')}>
 
-                {/*<Spinner*/}
-                {/*    status='basic'/>*/}
+            {/*<Spinner*/}
+            {/*    status='basic'/>*/}
         </ImageOverlay>
     )
 }

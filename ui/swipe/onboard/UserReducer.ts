@@ -3,10 +3,12 @@ import _ from 'lodash';
 export enum ValidationStatus {
     Input, Verify, Valid, Invalid
 }
+
 export interface Validation {
     status?: ValidationStatus
     message?: string
 }
+
 export interface InputState {
     validation?: Validation
     value?: string
@@ -28,8 +30,8 @@ export interface OnboardState {
 
 const emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
 
-export type UserEvents = (state : OnboardState, change : StateChange) => OnboardState
-export const userReduder = (state : OnboardState, change : StateChange) : OnboardState => {
+export type UserEvents = (state: OnboardState, change: StateChange) => OnboardState
+export const userReduder = (state: OnboardState, change: StateChange): OnboardState => {
     state = _.merge({}, state, change)
 
     if (state.email && shouldValidate(state.email.validation.status)) {
@@ -51,12 +53,12 @@ export const userReduder = (state : OnboardState, change : StateChange) : Onboar
     return state
 }
 
-const shouldValidate = (status : ValidationStatus) => {
+export const shouldValidate = (status: ValidationStatus) => {
     return status == ValidationStatus.Verify || status == ValidationStatus.Invalid
 }
 
-const valid = { validation: { status: ValidationStatus.Valid, message: '' } }
-const invalid = (message) : InputState => {
+const valid = {validation: {status: ValidationStatus.Valid, message: ''}}
+const invalid = (message): InputState => {
     return {
         validation: {
             status: ValidationStatus.Invalid,
@@ -65,8 +67,8 @@ const invalid = (message) : InputState => {
     }
 }
 
-export const isReadyToValidate = (...validations:Validation[]) => {
-    return validations.filter( validation => {
+export const isReadyToValidate = (...validations: Validation[]) => {
+    return validations.filter(validation => {
         return validation.status == ValidationStatus.Input
             || validation.status == ValidationStatus.Verify
     }).length == 0
@@ -76,9 +78,9 @@ export const isValid = (...validations: Validation[]) => {
     return validations.filter(validation => validation.status == ValidationStatus.Valid).length == validations.length
 }
 
-export const verify = { validation: { status: ValidationStatus.Verify} }
+export const verify = {validation: {status: ValidationStatus.Verify}}
 
-const emailCheck = (state : InputState) : InputState => {
+export const emailCheck = (state: InputState): InputState => {
     if (!state.value || !emailRegex.test(state.value)) {
         return invalid('Please enter a valid email')
     }
@@ -86,7 +88,7 @@ const emailCheck = (state : InputState) : InputState => {
     return valid
 }
 
-const passwordCheck = (state: InputState) : InputState => {
+export const passwordCheck = (state: InputState): InputState => {
 
     //verify or not, we need a value
     if (!state.value) {
@@ -102,7 +104,7 @@ const passwordCheck = (state: InputState) : InputState => {
     return valid
 }
 
-const verifyCheck = (state : OnboardState) : StateChange => {
+export const verifyCheck = (state: OnboardState): StateChange => {
 
     if (state.password.value != state.verify.value) {
         return {
@@ -118,7 +120,7 @@ const verifyCheck = (state : OnboardState) : StateChange => {
 }
 
 export const defaultReducer = {
-    email: { validation: { status: ValidationStatus.Input }},
-    password: { validation: { status: ValidationStatus.Input}},
-    verify: { validation: { status: ValidationStatus.Input}}
+    email: {validation: {status: ValidationStatus.Input}},
+    password: {validation: {status: ValidationStatus.Input}},
+    verify: {validation: {status: ValidationStatus.Input}}
 }

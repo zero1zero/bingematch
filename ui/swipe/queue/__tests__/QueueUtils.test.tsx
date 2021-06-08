@@ -12,7 +12,7 @@ import {
 } from "../QueueUtils";
 import {Item, Sentiment, SyncStatus} from "../QueueEvents";
 
-const items : Item[] = [
+const items: Item[] = [
     'hello', //synced
     'my', //synced
     'name', //syncing
@@ -36,7 +36,7 @@ const items : Item[] = [
 
 test('all items after the index inclusive of head', async () => {
     expect.assertions(1)
-    expect(afterHeadInclusive(items, 'a').map(item=>item.data.id)).toEqual(['a', 'good', 'test'])
+    expect(afterHeadInclusive(items, 'a').map(item => item.data.id)).toEqual(['a', 'good', 'test'])
 })
 
 test('get the next head id', async () => {
@@ -66,7 +66,7 @@ test('correctly count items after head', async () => {
 test('get everything we\'ve swiped', async () => {
     expect.assertions(1)
 
-    expect(beforeHeadExclusive(items, 'name').map(item=>item.data.id)).toEqual(['hello', 'my'])
+    expect(beforeHeadExclusive(items, 'name').map(item => item.data.id)).toEqual(['hello', 'my'])
 })
 
 test('before and after head lookups match', async () => {
@@ -91,13 +91,13 @@ test('correctly get head item', async () => {
 test('remove all the synced items not including the back buffer', async () => {
     expect.assertions(1)
 
-    expect(removeFinishedAfterBacks(items, 'ars', 2).map(item=>item.data.id))
-        .toEqual(['name', 'is', 'zack', 'this','ars', 'a', 'good', 'test'])
+    expect(removeFinishedAfterBacks(items, 'ars', 2).map(item => item.data.id))
+        .toEqual(['name', 'is', 'zack', 'this', 'ars', 'a', 'good', 'test'])
 })
 
 test('dont remove items in back buffer', async () => {
     expect.assertions(1)
 
-    expect(removeFinishedAfterBacks(items, 'is', 2).map(item=>item.data.id))
-        .toEqual(['my', 'name', 'is', 'zack', 'this','ars', 'a', 'good', 'test'])
+    expect(removeFinishedAfterBacks(items, 'is', 2).map(item => item.data.id))
+        .toEqual(['my', 'name', 'is', 'zack', 'this', 'ars', 'a', 'good', 'test'])
 })

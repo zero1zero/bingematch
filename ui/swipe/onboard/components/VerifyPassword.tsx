@@ -6,25 +6,25 @@ import {faLock} from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
     style?: StyleProp<TextStyle>
-    value? : string
-    outline? : ColorValue
+    value?: string
 
     dispatch: React.Dispatch<StateChange>
 }
-export const VerifyInput : React.FC<Props> = (props) => {
+
+export const VerifyInput: React.FC<Props> = (props) => {
 
     return (
         <Input
             icon={faLock}
-            onBlur={() => props.dispatch({ verify }) }
+            onBlur={() => props.dispatch({verify})}
             autoCapitalize='none'
+            clearTextOnFocus={true}
             secureTextEntry={true}
             autoCompleteType='password'
             placeholder='Verify'
             textContentType='password'
             value={props.value}
-            outline={props.outline}
-            onChangeText={(value) => props.dispatch({ verify: { value }})}
+            onChangeText={(value) => props.dispatch({verify: {value}})}
         />
     )
 }

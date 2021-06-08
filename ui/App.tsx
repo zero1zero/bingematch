@@ -13,7 +13,8 @@ import {SignUp} from "./swipe/onboard/SignUp";
 import {Login} from "./swipe/onboard/Login";
 import {ForgotPassword} from "./swipe/onboard/ForgotPassword";
 import {Detail} from "./swipe/detail/Detail";
-import {Pressable, StyleSheet, View} from "react-native";
+import {StyleSheet, View} from "react-native";
+import {RootSiblingParent} from 'react-native-root-siblings';
 
 export type RootStackParamList = {
     Splash: undefined
@@ -119,7 +120,9 @@ export default function App() {
     return (
         <AuthContext.Provider value={authContext}>
             <NavigationContainer theme={BingeMatch.navigation}>
-                {state != AuthState.Authenticated ? onboardNav() : homeNav()}
+                <RootSiblingParent>
+                    {state != AuthState.Authenticated ? onboardNav() : homeNav()}
+                </RootSiblingParent>
             </NavigationContainer>
         </AuthContext.Provider>
     );

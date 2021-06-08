@@ -13,7 +13,7 @@ jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 const storage = new Storage()
 const api = new API(storage)
 
-let login : user.ILogin = {
+let login: user.ILogin = {
     email: 'test.Login.test.tsx@test.com',
     password: 'horse battery staple login'
 }
@@ -29,9 +29,9 @@ afterAll(async () => {
 
 test('given a login, auth works fine', async () => {
 
-    const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
-    const { getByPlaceholderText, getByText, queryByText, queryAllByPlaceholderText} = render(
-        <App />
+    const {Navigator, Screen} = createStackNavigator<RootStackParamList>();
+    const {getByPlaceholderText, getByText, queryByText, queryAllByPlaceholderText} = render(
+        <App/>
     );
 
     await waitFor(() => getByText('BingeMatch'));

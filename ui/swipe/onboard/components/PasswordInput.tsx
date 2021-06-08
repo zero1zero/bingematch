@@ -7,33 +7,32 @@ import {BingeMatch} from "../../theme";
 
 interface Props {
     style?: ViewStyle
-    value? : string
-    outline? : ColorValue
-    message? : string
+    value?: string
+    message?: string
 
     dispatch: React.Dispatch<StateChange>
 }
 
-export const PasswordInput : React.FC<Props> = (props) => {
+export const PasswordInput: React.FC<Props> = (props) => {
 
     return (
         <>
             <Text style={BingeMatch.form.message}>
                 {props.message}
-            </Text >
+            </Text>
 
             <Input
                 style={props.style}
                 icon={faLock}
-                onBlur={() => props.dispatch({ password: { validation: {status: ValidationStatus.Verify }}}) }
+                onBlur={() => props.dispatch({password: {validation: {status: ValidationStatus.Verify}}})}
+                clearTextOnFocus={true}
                 autoCapitalize='none'
                 secureTextEntry={true}
                 autoCompleteType='password'
                 placeholder='Password'
                 textContentType='newPassword'
                 value={props.value}
-                outline={props.outline}
-                onChangeText={(value) => props.dispatch({ password: { value }})}
+                onChangeText={(value) => props.dispatch({password: {value}})}
             />
         </>
     )

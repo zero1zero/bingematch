@@ -6,11 +6,13 @@ import {
     GestureResponderEvent,
     PanResponder,
     PanResponderGestureState,
-    useWindowDimensions
+    useWindowDimensions,
+    ViewStyle
 } from "react-native";
 import {InteractionName, Item, Sentiment, StateChange} from "./QueueEvents";
 
 export interface Props {
+    style: ViewStyle
     item: Item,
     dispatch: React.Dispatch<StateChange>,
 }
@@ -22,12 +24,12 @@ interface AnimValues {
     easing: EasingFunction
 }
 
-export const Swipable : React.FC<Props> = (props) => {
+export const Swipable: React.FC<Props> = (props) => {
     const window = useWindowDimensions();
     const WIDTH_HALF = window.width / 2;
     const HEIGHT_HALF = window.height / 2;
 
-    const animValues : Map<Sentiment, AnimValues> = new Map([
+    const animValues: Map<Sentiment, AnimValues> = new Map([
         [Sentiment.Dislike, {
             scale: 1.05,
             xy: {
@@ -82,11 +84,11 @@ export const Swipable : React.FC<Props> = (props) => {
     const left = useRef(new Animated.Value(0)).current;
     const right = useRef(new Animated.Value(0)).current;
 
-    const moved = (evt : GestureResponderEvent, gestureState : PanResponderGestureState) => {
+    const moved = (evt: GestureResponderEvent, gestureState: PanResponderGestureState) => {
         return Math.abs(gestureState.dx) >= 1 || Math.abs(gestureState.dy) >= 1
     }
 
-    const triggerSwipe = (action : InteractionName) => {
+    const triggerSwipe = (action: InteractionName) => {
         props.dispatch({
             setOffscreen: props.item.data.id,
             interaction: {
@@ -202,7 +204,7 @@ export const Swipable : React.FC<Props> = (props) => {
                     // the card didn't reach its swipe position
                 } else {
                     Animated.spring(card, {
-                        toValue: { x: 0, y: 0 },
+                        toValue: {x: 0, y: 0},
                         useNativeDriver: true,
                     }).start();
                 }
@@ -289,11 +291,12 @@ export const Swipable : React.FC<Props> = (props) => {
         <Animated.View
             style={{
                 transform: [
-                    { scale },
-                    { translateX: card.x },
-                    { translateY: card.y },
-                    { rotateZ: rotate },
+                    {scale},
+                    {translateX: card.x},
+                    {translateY: card.y},
+                    {rotateZ: rotate},
                 ],
+                ...props.style
             }}
             {...panResponder.panHandlers}
         >

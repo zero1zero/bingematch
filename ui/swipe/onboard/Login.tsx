@@ -1,6 +1,5 @@
 import React, {useEffect, useLayoutEffect, useReducer, useState} from 'react';
-import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {ImageOverlay} from '../components/ImageOverlay';
+import {ActivityIndicator, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import Social from "./components/Social";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
@@ -11,11 +10,12 @@ import {PasswordInput} from "./components/PasswordInput";
 import {EmailInput} from "./components/EmailInput";
 import {AuthContext} from "../api/Auth";
 
-export const Login : React.FC<BaseNavigationProps<'Login'>> = (props) => {
+export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
     const api = Dependencies.instance.api
 
     const [serverMessage, setServerMessage] = useState('')
+    const [calling, setCalling] = useState(false)
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -23,21 +23,21 @@ export const Login : React.FC<BaseNavigationProps<'Login'>> = (props) => {
         });
     }, [props.navigation]);
 
-        const [state, dispatch] = useReducer<UserEvents>(userReduder, {
-            email: { validation: { status: ValidationStatus.Input }},
-            password: { validation: { status: ValidationStatus.Input}},
+    const [state, dispatch] = useReducer<UserEvents>(userReduder, {
+        email: {validation: {status: ValidationStatus.Input}},
+        password: {validation: {status: ValidationStatus.Input}},
+    })
+
+    const onLoginButtonPress = (): void => {
+
+        dispatch({
+            email: {validation: {status: ValidationStatus.Verify}},
+            password: {validation: {status: ValidationStatus.Verify}},
+            submit: true
         })
-
-    const onLoginButtonPress = () : void => {
-
-            dispatch({
-                email: { validation: { status: ValidationStatus.Verify}},
-                password: { validation: { status: ValidationStatus.Verify}},
-                submit: true
-            })
     };
 
-    const { login } = React.useContext(AuthContext);
+    const {login} = React.useContext(AuthContext);
 
     useEffect(() => {
 
@@ -50,11 +50,13 @@ export const Login : React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
         //ready to submit, abort if not valid
         if (!isValid(state.email.validation, state.password.validation)) {
-            dispatch({ submit: false})
+            dispatch({submit: false})
             return
         }
 
         dispatch({submit: false})
+
+        setCalling(true)
 
         api.login({
             email: state.email.value,
@@ -67,6 +69,9 @@ export const Login : React.FC<BaseNavigationProps<'Login'>> = (props) => {
             .catch((e) => {
                 setServerMessage("Sorry, no one with that email and password")
             })
+            .finally(() => {
+                setCalling(false)
+            })
     }, [state.submit, state.email, state.password])
 
     const onForgotPasswordButtonPress = (): void => {
@@ -76,44 +81,47 @@ export const Login : React.FC<BaseNavigationProps<'Login'>> = (props) => {
     return (
         <SafeAreaView
             style={styles.container}>
-            <KeyboardAvoidingView style={{flex: 1}}>
-                <View style={styles.headerContainer}>
-                    <Text style={BingeMatch.h1}>
-                        Login
-                    </Text>
-                    <Text style={BingeMatch.h2}>
-                        Already have an account?
-                    </Text>
-                </View>
-                <View style={styles.formContainer}>
-                    <Text style={BingeMatch.form.message}>
-                        {serverMessage}
-                    </Text >
+            <View style={styles.headerContainer}>
+                <Text style={BingeMatch.h1}>
+                    Login
+                </Text>
+                <Text style={BingeMatch.h2}>
+                    Already have an account?
+                </Text>
+            </View>
+            <View style={styles.formContainer}>
+                <Text style={BingeMatch.form.message}>
+                    {serverMessage}
+                </Text>
+                <KeyboardAvoidingView>
                     <EmailInput
                         message={state.email.validation.message}
                         value={state.email.value}
-                        dispatch={dispatch} />
+                        dispatch={dispatch}/>
                     <PasswordInput
                         message={state.password.validation.message}
                         value={state.password.value}
-                        dispatch={dispatch} />
+                        dispatch={dispatch}/>
+                </KeyboardAvoidingView>
 
-                    <View style={styles.forgotPasswordContainer}>
-                        <Button
-                            style={styles.forgotPasswordButton}
-                            onPress={onForgotPasswordButtonPress}>
-                            <Text>Forgot your password?</Text>
-                        </Button>
-                    </View>
+                <View style={styles.forgotPasswordContainer}>
                     <Button
-                        style={styles.loginButton}
-                        onPress={onLoginButtonPress}>
-                        <Text style={BingeMatch.theme.button.text}>Login</Text>
+                        style={styles.forgotPasswordButton}
+                        onPress={onForgotPasswordButtonPress}>
+                        <Text>Forgot your password?</Text>
                     </Button>
                 </View>
+                <Button
+                    style={styles.loginButton}
+                    onPress={onLoginButtonPress}>
+                    <Text style={BingeMatch.theme.button.text}>
+                        Login
+                        {calling ? <ActivityIndicator style={{marginRight: 5}} size="small"/> : <></>}
+                    </Text>
+                </Button>
+            </View>
 
-                <Social text={"Or Login Using Social Media"}/>
-            </KeyboardAvoidingView>
+            <Social text={"Or Login Using Social Media"}/>
         </SafeAreaView>
     );
 };

@@ -1,21 +1,21 @@
 import React from "react";
-import {ColorValue, StyleSheet, TextInput, TextInputProps, View, ViewStyle} from "react-native";
+import {StyleSheet, TextInput, TextInputProps, View, ViewStyle} from "react-native";
 import {BingeMatch} from "../theme";
 import {IconDefinition} from "@fortawesome/fontawesome-common-types";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 
 interface Props extends TextInputProps {
-    style? : ViewStyle
-    icon? : IconDefinition
+    style?: ViewStyle
+    icon?: IconDefinition
 }
 
-export const Input : React.FC<Props> = (props) => {
+export const Input: React.FC<Props> = (props) => {
 
     return (
         <View style={styles.container}>
             <FontAwesomeIcon style={styles.icon}
                              size={20}
-                             icon={props.icon} />
+                             icon={props.icon}/>
             <TextInput
                 {...props}
                 style={{
@@ -29,9 +29,7 @@ export const Input : React.FC<Props> = (props) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-
-    },
+    container: {},
 
     icon: {
         position: 'absolute',

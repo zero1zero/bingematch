@@ -1,8 +1,8 @@
  # Run locally
 
- * `minikube start`
+ * `minikube start` (unsure if --vm=true is needed)
  * `minikube addons configure registry-creds`
- * `kubectl port-forward --address 0.0.0.0 service/api 80:8080`
- * `make deployApi` (`make deployApi version=test` if you want to specify version)
+ * `gradle deployApi`
  * `yarn run ios`
+ * `kubectl port-forward --address=0.0.0.0 --namespace=kube-system deployment/ingress-nginx-controller 80:80`
  * `minikube dashboard`

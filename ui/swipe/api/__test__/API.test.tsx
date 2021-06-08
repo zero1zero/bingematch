@@ -7,7 +7,7 @@ import API from "../API";
 const storage = new Storage()
 let api = new API(storage)
 
-let login : user.ILogin = {
+let login: user.ILogin = {
     email: 'test.API.test.tsx@test.com',
     password: 'horse battery staple login'
 }

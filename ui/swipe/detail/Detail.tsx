@@ -1,26 +1,21 @@
 import React, {useEffect, useState} from "react";
-import Carousel from 'react-native-snap-carousel';
 import {
     ActivityIndicator,
     Image,
-    ImageBackground, Pressable,
-    SafeAreaView, ScrollView,
+    ImageBackground,
+    Pressable,
+    ScrollView,
     StyleSheet,
     Text,
     useWindowDimensions,
     View
 } from "react-native";
-import {BingeMatch} from "../theme";
 import Dependencies from "../Dependencies";
 import {show} from "../model/compiled";
-import {RouteProp, useNavigation} from "@react-navigation/native";
-import {ScreenProps} from "react-native-screens";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "../../App";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import YoutubeIframe from "react-native-youtube-iframe";
 
-export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
+export const Detail: React.FC<BaseNavigationProps<'Detail'>> = (props) => {
 
     const api = Dependencies.instance.api
 
@@ -37,12 +32,12 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
 
     const showBlock = () => {
         if (!detail) {
-            return <ActivityIndicator size="large" />
+            return <></>
         }
 
         const trailer = detail.videos
-            .filter( video => video.type == show.Video.Type.Trailer)
-            .filter( video => video.site == 'YouTube')
+            .filter(video => video.type == show.Video.Type.Trailer)
+            .filter(video => video.site == 'YouTube')
 
         const trailerBlock = () => {
             if (trailer.length == 0) {
@@ -51,7 +46,7 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
 
             return <View style={styles.trailer}>
                 <View style={styles.trailerSpinner}>
-                    <ActivityIndicator size="large" />
+                    <ActivityIndicator size="large"/>
                 </View>
                 <YoutubeIframe
                     height={230}
@@ -60,12 +55,12 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
             </View>
         }
 
-        const renderCastItem = (cast : show.Cast) => {
+        const renderCastItem = (cast: show.Cast) => {
             return (
                 <View style={styles.cast} key={`cast-${cast.name}${cast.character}`}>
                     <Image
                         style={styles.castImage}
-                        source={{uri: "https://www.themoviedb.org/t/p/w138_and_h175_face" + cast.profilePath}} />
+                        source={{uri: "https://www.themoviedb.org/t/p/w138_and_h175_face" + cast.profilePath}}/>
                     <Text style={styles.castName} numberOfLines={1}>{cast.name}</Text>
                     <Text style={styles.castCharacter} numberOfLines={1}>{cast.character}</Text>
                 </View>
@@ -86,8 +81,6 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
 
         const date = new Date(detail.date)
 
-        console.log(detail)
-
         return (
             <>
                 <ImageBackground style={styles.backdrop}
@@ -95,9 +88,9 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
                                  blurRadius={4}
                                  imageStyle={{opacity: .6, borderRadius: 20}}
                                  source={{uri: `https://image.tmdb.org/t/p/w500${detail.backdropPath}`}}>
-                    <View style={styles.content}>
-                        <Text style={styles.title}>{detail.title} ({date.getFullYear()})</Text>
-                        <Text style={styles.tagline}>{detail.tagline}</Text>
+                    <Text style={styles.title}>{detail.title} ({date.getFullYear()})</Text>
+                    <Text style={styles.tagline}>{detail.tagline}</Text>
+                    <ScrollView style={styles.content}>
 
                         {trailerBlock()}
 
@@ -105,15 +98,13 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
                             {detail.cast.map(renderCastItem)}
                         </ScrollView>
 
-                        <ScrollView style={{maxHeight: 110, marginBottom: 14}}>
-                            <Text style={styles.overview}>{detail.overview}</Text>
-                        </ScrollView>
+                        <Text style={styles.overview}>{detail.overview}</Text>
 
                         <ScrollView style={{maxHeight: 100, marginBottom: 14}} horizontal={true}>
                             {directorBlock()}
                         </ScrollView>
 
-                        <View>
+                        <View style={{marginBottom: 20}}>
                             <Text style={styles.lengthTitle}>
                                 {detail.type == show.Detail.Type.Movie ? 'Runtime' : 'Seasons'}
                             </Text>
@@ -123,7 +114,7 @@ export const Detail : React.FC<BaseNavigationProps<'Detail'>> = (props) => {
                                 <Text style={styles.length}>{detail.tv.seasons}</Text>
                             }
                         </View>
-                    </View>
+                    </ScrollView>
                 </ImageBackground>
             </>
         )
@@ -156,9 +147,10 @@ const styles = StyleSheet.create({
     },
 
     backdrop: {
-        borderRadius: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         backgroundColor: 'black',
-        height: '100%'
+        height: '100%',
     },
 
     content: {
@@ -169,12 +161,15 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 25,
         marginBottom: 8,
+        paddingTop: 5,
+        paddingHorizontal: 10
     },
 
     tagline: {
         color: 'white',
         fontStyle: 'italic',
         marginBottom: 10,
+        paddingHorizontal: 10
     },
 
     trailer: {
@@ -220,6 +215,7 @@ const styles = StyleSheet.create({
     overview: {
         color: 'white',
         borderRadius: 10,
+        marginBottom: 15
     },
 
     crew: {

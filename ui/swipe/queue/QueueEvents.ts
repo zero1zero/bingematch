@@ -27,12 +27,13 @@ export interface StateChange {
     setOnscreen?: string
     setOffscreen?: string
 
-    setSync?: { sync: SyncStatus, id: string}
+    setSync?: { sync: SyncStatus, id: string }
 }
 
 export enum SyncStatus {
     UnSynced, Syncing, Synced
 }
+
 export interface Item {
     data: queue.IItem
     sentiment: Sentiment

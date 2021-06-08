@@ -1,5 +1,5 @@
 import React from "react";
-import {ColorValue, Text, ViewStyle} from "react-native";
+import {Text, ViewStyle} from "react-native";
 import {StateChange, verify} from "../UserReducer";
 import {BingeMatch} from "../../theme";
 import {Input} from "../../components/Input";
@@ -8,23 +8,24 @@ import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
     style?: ViewStyle
-    value : string
-    message? : string
+    value: string
+    message?: string
 
     dispatch: React.Dispatch<StateChange>
 }
-export const EmailInput : React.FC<Props> = (props) => {
+
+export const EmailInput: React.FC<Props> = (props) => {
 
     return (
         <>
             <Text style={BingeMatch.form.message}>
                 {props.message}
-            </Text >
+            </Text>
 
             <Input
                 style={props.style}
                 icon={faEnvelope}
-                onBlur={() => props.dispatch({ email: verify })}
+                onBlur={() => props.dispatch({email: verify})}
                 autoCapitalize='none'
                 placeholder='Email'
                 autoCorrect={false}
@@ -32,7 +33,7 @@ export const EmailInput : React.FC<Props> = (props) => {
                 textContentType='emailAddress'
                 keyboardType='email-address'
                 value={props.value}
-                onChangeText={(value) => props.dispatch({ email: { value: value }})}
+                onChangeText={(value) => props.dispatch({email: {value: value}})}
             />
         </>
     )

@@ -8,21 +8,24 @@ interface Props {
     text: string
 }
 
-const Social : React.FC<Props> = (props) => {
+const Social: React.FC<Props> = (props) => {
     return (
         <View style={styles.socialAuthContainer}>
             <Text style={styles.socialAuthHintText}>
                 {props.text}
             </Text>
             <View style={styles.socialAuthButtonsContainer}>
-                <Button onPress={() => {}}>
-                    <GoogleIcon style={BingeMatch.theme.onboard.social.icon} size={25} />
+                <Button onPress={() => {
+                }}>
+                    <GoogleIcon style={BingeMatch.theme.onboard.social.icon} size={25}/>
                 </Button>
-                <Button onPress={() => {}}>
-                    <FacebookIcon style={BingeMatch.theme.onboard.social.icon} size={25} />
+                <Button onPress={() => {
+                }}>
+                    <FacebookIcon style={BingeMatch.theme.onboard.social.icon} size={25}/>
                 </Button>
-                <Button onPress={() => {}}>
-                    <TwitterIcon style={BingeMatch.theme.onboard.social.icon} size={25} />
+                <Button onPress={() => {
+                }}>
+                    <TwitterIcon style={BingeMatch.theme.onboard.social.icon} size={25}/>
                 </Button>
             </View>
         </View>

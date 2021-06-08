@@ -9,4 +9,8 @@ export interface AuthFunc {
     signOut: () => void
 }
 
-export const AuthContext = React.createContext<AuthFunc>({login(): void {}, signOut(): void {}});
+export const AuthContext = React.createContext<AuthFunc>({
+    login(): void {
+    }, signOut(): void {
+    }
+});
