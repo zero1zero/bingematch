@@ -10,6 +10,7 @@ import {
     ViewStyle
 } from "react-native";
 import {InteractionName, Item, Sentiment, StateChange} from "./QueueEvents";
+import {useNavigation} from "@react-navigation/native";
 
 export interface Props {
     style: ViewStyle
@@ -98,6 +99,13 @@ export const Swipable: React.FC<Props> = (props) => {
         })
     }
 
+    const navigation = useNavigation();
+    const onImagePress = (item: Item) => {
+        navigation.navigate('Detail', {
+            id: item.data.show.id
+        })
+    }
+
     const panResponder = useRef(
         PanResponder.create({
             // Ask to be the responder:
@@ -106,8 +114,6 @@ export const Swipable: React.FC<Props> = (props) => {
             onMoveShouldSetPanResponder: (evt, gestureState) => true,
             onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
             onPanResponderGrant: (evt, gestureState) => {
-                console.log('Start of touch');
-
                 // whenever the touch starts it will scale the card
                 Animated.spring(scale, {
                     toValue: animValues.get(Sentiment.Like).scale,
@@ -135,6 +141,12 @@ export const Swipable: React.FC<Props> = (props) => {
             },
             onPanResponderTerminationRequest: (evt, gestureState) => true,
             onPanResponderRelease: (evt, gestureState) => {
+
+                //if they are tapping (within a small margin), lets show detail page
+                if (Math.abs(gestureState.dx) <= 5 && Math.abs(gestureState.dy) <= 5) {
+                    onImagePress(props.item)
+                }
+
                 // whenever the touch is released it will get everything back to the starting point
                 Animated.spring(scale, {
                     toValue: 1,

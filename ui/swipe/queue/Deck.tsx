@@ -37,13 +37,6 @@ export const Deck: React.FC<Props> = (props) => {
         return size
     }
 
-    const onImagePress = (item: Item) => {
-        navigation.navigate('Detail', {
-            id: item.data.show.id
-        })
-    }
-
-
     const toCard = (item: Item) => (
         <Swipable
             style={{...styles.card, width: cardWidth}}
@@ -51,7 +44,7 @@ export const Deck: React.FC<Props> = (props) => {
             key={`card-${item.data.id}`}
             dispatch={props.dispatch}>
             {/*<HeartIcon {...styles.reportIcon} /> <Text>Liked by Ruoxi, Ajay and Jesi</Text>*/}
-            <Pressable onPress={() => onImagePress(item)}>
+            <View>
                 <View style={{...styles.image}}>
                     <ImageBackground
                         style={{height: '100%'}}
@@ -64,7 +57,7 @@ export const Deck: React.FC<Props> = (props) => {
                         </Image>
                     </ImageBackground>
                 </View>
-            </Pressable>
+            </View>
             <View style={styles.details}>
                 <Text numberOfLines={2} style={styles.detailsTitle}>{item.data.show.title}</Text>
                 <Text style={styles.detailsText} numberOfLines={4}>{item.data.show.overview}</Text>
