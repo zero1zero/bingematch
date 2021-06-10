@@ -1,4 +1,4 @@
-import {ColorValue, StyleProp, TextStyle} from "react-native";
+import {StyleProp, TextStyle} from "react-native";
 import React from "react";
 import {StateChange, verify} from "../UserReducer";
 import {Input} from "../../components/Input";

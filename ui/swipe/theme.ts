@@ -12,15 +12,13 @@ export namespace BingeMatch {
 
         bg: "#d7efe7",
 
-        grey: "#5c5c5f"
+        grey: "#555558"
     }
 
     interface Theme {
         button: {
-            background: ColorValue
-            placeholder: ColorValue
             text: TextStyle
-            border: ColorValue
+            button: ViewStyle
         }
 
         input: {
@@ -67,18 +65,28 @@ export namespace BingeMatch {
             back: TextStyle
             icons: FontAwesomeIconStyle
         }
+
+        drawer: {
+            text: TextStyle
+        }
+
+        likes: {
+            title: TextStyle
+        }
     }
 
     export const theme: Theme = {
         button: {
-            background: 'transparent',
-            placeholder: colors.grey,
             text: {
-                color: 'black',
+                color: colors.grey,
                 fontSize: 22,
                 fontWeight: '400',
             },
-            border: colors.grey
+            button: {
+                backgroundColor: 'transparent',
+                borderColor: colors.grey,
+                borderWidth: 1
+            }
         },
 
         input: {
@@ -96,27 +104,27 @@ export namespace BingeMatch {
         actions: {
             nope: {
                 fontSize: 18,
-                fontWeight: '800',
+                fontWeight: '700',
 
-                color: colors.error,
+                color: colors.grey
             },
             nopeIcon: {
                 color: colors.error,
             },
             back: {
                 fontSize: 18,
-                fontWeight: '800',
+                fontWeight: '700',
 
-                color: colors.yellow
+                color: colors.grey
             },
             backIcon: {
                 color: colors.yellow
             },
             watch: {
                 fontSize: 18,
-                fontWeight: '800',
+                fontWeight: '700',
 
-                color: colors.success
+                color: colors.grey
             },
             watchIcon: {
                 color: colors.success
@@ -182,6 +190,20 @@ export namespace BingeMatch {
                 color: colors.grey,
                 margin: 10,
             },
+        },
+
+        drawer: {
+            text: {
+                fontSize: 19,
+                fontWeight: '400',
+            }
+        },
+
+        likes: {
+            title: {
+                fontSize: 19,
+                fontWeight: '400',
+            }
         }
     }
 

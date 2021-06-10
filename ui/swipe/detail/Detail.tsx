@@ -21,12 +21,12 @@ export const Detail: React.FC<BaseNavigationProps<'Detail'>> = (props) => {
 
     const window = useWindowDimensions()
 
-    const [detail, setShow] = useState<show.Detail>()
+    const [detail, setDetail] = useState<show.Detail>()
 
     useEffect(() => {
         api.getShow(props.route.params.id)
             .then(show => {
-                setShow(show)
+                setDetail(show)
             })
     }, [])
 
@@ -161,15 +161,15 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 25,
         marginBottom: 8,
-        paddingTop: 5,
-        paddingHorizontal: 10
+        paddingTop: 8,
+        paddingHorizontal: 11
     },
 
     tagline: {
         color: 'white',
         fontStyle: 'italic',
         marginBottom: 10,
-        paddingHorizontal: 10
+        paddingHorizontal: 11
     },
 
     trailer: {

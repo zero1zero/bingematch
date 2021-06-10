@@ -1,6 +1,6 @@
 import React, {useEffect, useLayoutEffect, useReducer} from 'react';
 
-import {SafeAreaView, StyleSheet, Text} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {queue} from "../model/compiled";
 import {DrawerNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
@@ -21,7 +21,6 @@ import QueueActions from "./Actions";
 import {BingeMatch} from "../theme";
 import {BarsIcon, SettingsIcon} from "../components/Icons";
 import {Button} from "../components/Button";
-import { View } from 'react-native';
 
 interface QueueState {
     cacheItems: queue.IItem[]

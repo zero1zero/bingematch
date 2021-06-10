@@ -2,14 +2,20 @@ import React from "react";
 import {FontAwesomeIcon, FontAwesomeIconStyle} from '@fortawesome/react-native-fontawesome'
 
 import {
-    faBackward,
     faBars,
+    faEllipsisV,
     faEnvelope,
+    faEye,
+    faFlag,
     faHeart,
     faHeartBroken,
+    faHistory,
     faLock,
+    faPlus,
+    faThumbsUp,
     faTimes,
-    faUserCog
+    faUserCog,
+    faVideo
 } from '@fortawesome/free-solid-svg-icons'
 import {faFacebook, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons"
 import {IconProp, Transform} from "@fortawesome/fontawesome-svg-core";
@@ -45,11 +51,11 @@ export const PasswordIcon = (props: Props): JSX.Element => (
 );
 
 export const PlusIcon = (props: Props): JSX.Element => (
-    <FontAwesomeIcon {...props} icon='plus'/>
+    <FontAwesomeIcon {...props} icon={faPlus}/>
 );
 
 export const FlagIcon = (props: Props): JSX.Element => (
-    <FontAwesomeIcon {...props} icon='flag'/>
+    <FontAwesomeIcon {...props} icon={faFlag}/>
 );
 
 export const SettingsIcon = (props: Props): JSX.Element => (
@@ -63,14 +69,10 @@ export const PersonAdd = (props: Props): JSX.Element => (
 export const ReportIcon = (props: Props): JSX.Element => (
     <FontAwesomeIcon {...props} icon='flag'/>
 )
-
-export const KeyIcon = (props: Props): JSX.Element => (
-    <FontAwesomeIcon {...props} icon='flag'/>
-)
-
-export const BackIcon = (props: Props): JSX.Element => (
-    <FontAwesomeIcon {...props} icon={faBackward}/>
-);
+//
+// export const BackIcon = (props: Props): JSX.Element => (
+//     <FontAwesomeIcon {...props} icon={faBackward}/>
+// );
 
 export const HeartIcon = (props: Props): JSX.Element => (
     <FontAwesomeIcon {...props} icon={faHeart}/>
@@ -86,4 +88,24 @@ export const HeartBrokenIcon = (props: Props): JSX.Element => (
 
 export const BarsIcon = (props: Props): JSX.Element => (
     <FontAwesomeIcon {...props} icon={faBars}/>
+);
+
+export const MovieIcon = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faVideo}/>
+);
+
+export const EllipsisIcon = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faEllipsisV}/>
+);
+
+export const EyeIcon = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faEye}/>
+);
+
+export const ThumbsUpIcon = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faThumbsUp}/>
+);
+
+export const BackIcon = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faHistory}/>
 );

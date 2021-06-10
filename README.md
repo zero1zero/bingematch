@@ -1,6 +1,7 @@
  # Run locally
 
- * `minikube start` (unsure if --vm=true is needed)
+ * `minikube start --vm=true`
+ * `minikube addons enable ingress`
  * `minikube addons configure registry-creds`
  * `gradle deployApi`
  * `yarn run ios`

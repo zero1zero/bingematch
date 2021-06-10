@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import Queue from "./swipe/queue/Queue";
 import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator, DrawerContent} from '@react-navigation/drawer';
 import Splash from "./swipe/Splash";
 import {BingeMatch} from "./swipe/theme";
 import Dependencies from "./swipe/Dependencies";
@@ -13,8 +13,11 @@ import {SignUp} from "./swipe/onboard/SignUp";
 import {Login} from "./swipe/onboard/Login";
 import {ForgotPassword} from "./swipe/onboard/ForgotPassword";
 import {Detail} from "./swipe/detail/Detail";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, useWindowDimensions, View} from "react-native";
 import {RootSiblingParent} from 'react-native-root-siblings';
+import {CustomDrawerContent} from "./swipe/drawer/CustomDrawerContent";
+import {Likes} from "./swipe/likes/Likes";
+import {LikeAction} from "./swipe/likes/LikeAction";
 
 export type RootStackParamList = {
     Splash: undefined
@@ -22,13 +25,18 @@ export type RootStackParamList = {
     SignUp: undefined
     ForgotPassword: undefined
 
+    Home: undefined
     Queue: undefined
-    QueueNav: undefined
     Detail: {
         id: string //show id
     }
+
+    Likes: undefined
+    LikeAction: {
+        id: string //show id
+    }
+
     Profile: undefined
-    Drawer: undefined
 };
 
 export default function App() {
@@ -36,6 +44,8 @@ export default function App() {
     enableScreens();
 
     const deps = Dependencies.instance
+
+    const window = useWindowDimensions()
 
     const [state, setState] = useState<AuthState>(AuthState.Loading)
     const authContext = React.useMemo(
@@ -64,9 +74,27 @@ export default function App() {
     const Stack = createStackNavigator<RootStackParamList>();
     const Drawer = createDrawerNavigator<RootStackParamList>();
 
+    const cardInterpolator = ({ current: { progress } }) => ({
+        cardStyle: {
+            transform: [{
+                translateY: progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [window.height, 0]
+                }),
+            }],
+        },
+        overlayStyle: {
+            opacity: progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 0.5],
+                extrapolate: 'clamp',
+            }),
+        },
+    })
+
     const homeNav = () => (
-        <Stack.Navigator initialRouteName='QueueNav' mode={'modal'}>
-            <Stack.Screen name='QueueNav' component={queueNav} options={{headerShown: false}}/>
+        <Stack.Navigator initialRouteName='Home' mode={'modal'}>
+            <Stack.Screen name='Home' component={home} options={{headerShown: false}}/>
 
             <Stack.Screen name='Detail' component={Detail} options={{
                 headerShown: false,
@@ -74,18 +102,24 @@ export default function App() {
                     backgroundColor: 'transparent',
                 },
                 cardOverlayEnabled: true,
-                cardOverlay: props => <View style={styles.overlay} />,
-                /**
-                 * Distance from top to register swipe to dismiss modal gesture. Default (135)
-                 * https://reactnavigation.org/docs/en/stack-navigator.html#gestureresponsedistance
-                 */
+                cardStyleInterpolator: cardInterpolator,
                 gestureResponseDistance: {vertical: 1000},
             }}/>
+
+            <Stack.Screen name='LikeAction' component={LikeAction} options={{
+                headerShown: false,
+                cardOverlayEnabled: true,
+                cardStyle: {
+                    backgroundColor: 'transparent',
+                },
+                cardStyleInterpolator: cardInterpolator,
+                gestureResponseDistance: {vertical: 1000},
+            }} />
 
         </Stack.Navigator>
     )
 
-    const queueNav = () => (
+    const home = () => (
         <Stack.Navigator initialRouteName='Queue'>
             <Stack.Screen name='Queue' component={drawer}/>
 
@@ -94,8 +128,11 @@ export default function App() {
     )
 
     const drawer = () => (
-        <Drawer.Navigator>
+        <Drawer.Navigator
+            drawerContent={props => <CustomDrawerContent {...props} />}
+            drawerStyle={{width: '48%'}}>
             <Stack.Screen name='Queue' component={Queue}/>
+            <Stack.Screen name='Likes' component={Likes}/>
         </Drawer.Navigator>
     )
 
@@ -132,5 +169,5 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: 'black',
         opacity: .5
-    }
+    },
 })

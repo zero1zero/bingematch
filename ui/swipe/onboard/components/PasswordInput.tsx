@@ -1,4 +1,4 @@
-import {ColorValue, Text, ViewStyle} from "react-native";
+import {Text, ViewStyle} from "react-native";
 import React from "react";
 import {StateChange, ValidationStatus} from "../UserReducer";
 import {Input} from "../../components/Input";

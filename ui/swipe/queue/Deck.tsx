@@ -1,4 +1,4 @@
-import {Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View} from "react-native";
+import {Image, ImageBackground, ScrollView, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import React from "react";
 import {Item, StateChange} from "./QueueEvents";
 import {BingeMatch} from "../theme";

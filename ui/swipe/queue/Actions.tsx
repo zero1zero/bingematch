@@ -2,7 +2,7 @@ import {InteractionName, Item, StateChange} from "./QueueEvents";
 import React, {useRef} from "react";
 import {Animated, StyleSheet, Text, View} from "react-native";
 import {BingeMatch} from "../theme";
-import {BackIcon, HeartIcon, XIcon} from "../components/Icons";
+import {BackIcon, PlusIcon, XIcon} from "../components/Icons";
 import {Button} from "../components/Button";
 
 interface Props {
@@ -75,7 +75,7 @@ const QueueActions: React.FC<Props> = (props) => {
                 }}>
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonLikePress)}>
-                    <HeartIcon size={30} style={BingeMatch.theme.actions.watchIcon}/>
+                    <PlusIcon size={30} style={BingeMatch.theme.actions.watchIcon}/>
                     <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.watch}}>I'd Watch</Text>
                 </Button>
             </Animated.View>
