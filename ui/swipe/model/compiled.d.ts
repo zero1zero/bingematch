@@ -1,5 +1,4 @@
 import * as $protobuf from "protobufjs";
-
 /** Namespace queue. */
 export namespace queue {
 
@@ -7,7 +6,7 @@ export namespace queue {
     interface IQueuedItems {
 
         /** QueuedItems items */
-        items?: (queue.IQueuedItem[] | null);
+        items?: (queue.IQueuedItem[]|null);
     }
 
     /** Represents a QueuedItems. */
@@ -53,7 +52,7 @@ export namespace queue {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): queue.QueuedItems;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): queue.QueuedItems;
 
         /**
          * Decodes a QueuedItems message from the specified reader or buffer, length delimited.
@@ -62,14 +61,14 @@ export namespace queue {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): queue.QueuedItems;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): queue.QueuedItems;
 
         /**
          * Verifies a QueuedItems message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a QueuedItems message from a plain object. Also converts values to their respective internal types.
@@ -97,10 +96,10 @@ export namespace queue {
     interface IQueuedItem {
 
         /** QueuedItem id */
-        id?: (string | null);
+        id?: (string|null);
 
         /** QueuedItem show */
-        show?: (show.IThinDetail | null);
+        show?: (show.IThinDetail|null);
     }
 
     /** Represents a QueuedItem. */
@@ -116,7 +115,7 @@ export namespace queue {
         public id: string;
 
         /** QueuedItem show. */
-        public show?: (show.IThinDetail | null);
+        public show?: (show.IThinDetail|null);
 
         /**
          * Creates a new QueuedItem instance using the specified properties.
@@ -149,7 +148,7 @@ export namespace queue {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): queue.QueuedItem;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): queue.QueuedItem;
 
         /**
          * Decodes a QueuedItem message from the specified reader or buffer, length delimited.
@@ -158,14 +157,14 @@ export namespace queue {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): queue.QueuedItem;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): queue.QueuedItem;
 
         /**
          * Verifies a QueuedItem message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a QueuedItem message from a plain object. Also converts values to their respective internal types.
@@ -193,13 +192,13 @@ export namespace queue {
     interface IItem {
 
         /** Item id */
-        id?: (string | null);
+        id?: (string|null);
 
         /** Item state */
-        state?: (queue.Item.State | null);
+        state?: (queue.Item.State|null);
 
         /** Item show */
-        show?: (show.IDetail | null);
+        show?: (show.IDetail|null);
     }
 
     /** Represents an Item. */
@@ -218,7 +217,7 @@ export namespace queue {
         public state: queue.Item.State;
 
         /** Item show. */
-        public show?: (show.IDetail | null);
+        public show?: (show.IDetail|null);
 
         /**
          * Creates a new Item instance using the specified properties.
@@ -251,7 +250,7 @@ export namespace queue {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): queue.Item;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): queue.Item;
 
         /**
          * Decodes an Item message from the specified reader or buffer, length delimited.
@@ -260,14 +259,14 @@ export namespace queue {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): queue.Item;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): queue.Item;
 
         /**
          * Verifies an Item message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates an Item message from a plain object. Also converts values to their respective internal types.
@@ -312,19 +311,19 @@ export namespace show {
     interface IThinDetail {
 
         /** ThinDetail id */
-        id?: (string | null);
+        id?: (string|null);
 
         /** ThinDetail title */
-        title?: (string | null);
+        title?: (string|null);
 
         /** ThinDetail overview */
-        overview?: (string | null);
+        overview?: (string|null);
 
         /** ThinDetail genres */
-        genres?: (show.IGenre[] | null);
+        genres?: (show.IGenre[]|null);
 
         /** ThinDetail posterPath */
-        posterPath?: (string | null);
+        posterPath?: (string|null);
     }
 
     /** Represents a ThinDetail. */
@@ -382,7 +381,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.ThinDetail;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.ThinDetail;
 
         /**
          * Decodes a ThinDetail message from the specified reader or buffer, length delimited.
@@ -391,14 +390,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.ThinDetail;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.ThinDetail;
 
         /**
          * Verifies a ThinDetail message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a ThinDetail message from a plain object. Also converts values to their respective internal types.
@@ -426,67 +425,67 @@ export namespace show {
     interface IDetail {
 
         /** Detail id */
-        id?: (string | null);
+        id?: (string|null);
 
         /** Detail title */
-        title?: (string | null);
+        title?: (string|null);
 
         /** Detail overview */
-        overview?: (string | null);
+        overview?: (string|null);
 
         /** Detail genres */
-        genres?: (show.IGenre[] | null);
+        genres?: (show.IGenre[]|null);
 
         /** Detail posterPath */
-        posterPath?: (string | null);
+        posterPath?: (string|null);
 
         /** Detail backdropPath */
-        backdropPath?: (string | null);
+        backdropPath?: (string|null);
 
         /** Detail votes */
-        votes?: (show.IVotes | null);
+        votes?: (show.IVotes|null);
 
         /** Detail popularity */
-        popularity?: (number | null);
+        popularity?: (number|null);
 
         /** Detail tagline */
-        tagline?: (string | null);
+        tagline?: (string|null);
 
         /** Detail spokenLanguage */
-        spokenLanguage?: (string[] | null);
+        spokenLanguage?: (string[]|null);
 
         /** Detail videos */
-        videos?: (show.IVideo[] | null);
+        videos?: (show.IVideo[]|null);
 
         /** Detail posters */
-        posters?: (show.IImage[] | null);
+        posters?: (show.IImage[]|null);
 
         /** Detail recommendations */
-        recommendations?: (number[] | null);
+        recommendations?: (number[]|null);
 
         /** Detail similar */
-        similar?: (number[] | null);
+        similar?: (number[]|null);
 
         /** Detail watch */
-        watch?: (show.IWatch[] | null);
+        watch?: (show.IWatch[]|null);
 
         /** Detail tv */
-        tv?: (show.ITV | null);
+        tv?: (show.ITV|null);
 
         /** Detail movie */
-        movie?: (show.IMovie | null);
+        movie?: (show.IMovie|null);
 
         /** Detail type */
-        type?: (show.Detail.Type | null);
+        type?: (show.Detail.Type|null);
 
         /** Detail date */
-        date?: (string | null);
+        date?: (string|null);
 
         /** Detail cast */
-        cast?: (show.ICast[] | null);
+        cast?: (show.ICast[]|null);
 
         /** Detail crew */
-        crew?: (show.ICrew[] | null);
+        crew?: (show.ICrew[]|null);
     }
 
     /** Represents a Detail. */
@@ -517,7 +516,7 @@ export namespace show {
         public backdropPath: string;
 
         /** Detail votes. */
-        public votes?: (show.IVotes | null);
+        public votes?: (show.IVotes|null);
 
         /** Detail popularity. */
         public popularity: number;
@@ -544,10 +543,10 @@ export namespace show {
         public watch: show.IWatch[];
 
         /** Detail tv. */
-        public tv?: (show.ITV | null);
+        public tv?: (show.ITV|null);
 
         /** Detail movie. */
-        public movie?: (show.IMovie | null);
+        public movie?: (show.IMovie|null);
 
         /** Detail type. */
         public type: show.Detail.Type;
@@ -592,7 +591,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.Detail;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.Detail;
 
         /**
          * Decodes a Detail message from the specified reader or buffer, length delimited.
@@ -601,14 +600,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.Detail;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.Detail;
 
         /**
          * Verifies a Detail message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Detail message from a plain object. Also converts values to their respective internal types.
@@ -645,10 +644,10 @@ export namespace show {
     interface ITV {
 
         /** TV status */
-        status?: (show.TV.Status | null);
+        status?: (show.TV.Status|null);
 
         /** TV seasons */
-        seasons?: (number | null);
+        seasons?: (number|null);
     }
 
     /** Represents a TV. */
@@ -697,7 +696,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.TV;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.TV;
 
         /**
          * Decodes a TV message from the specified reader or buffer, length delimited.
@@ -706,14 +705,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.TV;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.TV;
 
         /**
          * Verifies a TV message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a TV message from a plain object. Also converts values to their respective internal types.
@@ -755,22 +754,22 @@ export namespace show {
     interface IMovie {
 
         /** Movie imdbId */
-        imdbId?: (string | null);
+        imdbId?: (string|null);
 
         /** Movie originalLanguage */
-        originalLanguage?: (string | null);
+        originalLanguage?: (string|null);
 
         /** Movie originalTitle */
-        originalTitle?: (string | null);
+        originalTitle?: (string|null);
 
         /** Movie status */
-        status?: (show.Movie.Status | null);
+        status?: (show.Movie.Status|null);
 
         /** Movie budget */
-        budget?: (number | null);
+        budget?: (number|null);
 
         /** Movie runtime */
-        runtime?: (number | null);
+        runtime?: (number|null);
     }
 
     /** Represents a Movie. */
@@ -831,7 +830,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.Movie;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.Movie;
 
         /**
          * Decodes a Movie message from the specified reader or buffer, length delimited.
@@ -840,14 +839,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.Movie;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.Movie;
 
         /**
          * Verifies a Movie message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Movie message from a plain object. Also converts values to their respective internal types.
@@ -888,10 +887,10 @@ export namespace show {
     interface IGenre {
 
         /** Genre id */
-        id?: (number | null);
+        id?: (number|null);
 
         /** Genre name */
-        name?: (string | null);
+        name?: (string|null);
     }
 
     /** Represents a Genre. */
@@ -940,7 +939,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.Genre;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.Genre;
 
         /**
          * Decodes a Genre message from the specified reader or buffer, length delimited.
@@ -949,14 +948,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.Genre;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.Genre;
 
         /**
          * Verifies a Genre message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Genre message from a plain object. Also converts values to their respective internal types.
@@ -984,10 +983,10 @@ export namespace show {
     interface IVotes {
 
         /** Votes average */
-        average?: (number | null);
+        average?: (number|null);
 
         /** Votes count */
-        count?: (number | null);
+        count?: (number|null);
     }
 
     /** Represents a Votes. */
@@ -1036,7 +1035,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.Votes;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.Votes;
 
         /**
          * Decodes a Votes message from the specified reader or buffer, length delimited.
@@ -1045,14 +1044,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.Votes;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.Votes;
 
         /**
          * Verifies a Votes message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Votes message from a plain object. Also converts values to their respective internal types.
@@ -1080,28 +1079,28 @@ export namespace show {
     interface IVideo {
 
         /** Video id */
-        id?: (string | null);
+        id?: (string|null);
 
         /** Video language */
-        language?: (string | null);
+        language?: (string|null);
 
         /** Video country */
-        country?: (string | null);
+        country?: (string|null);
 
         /** Video key */
-        key?: (string | null);
+        key?: (string|null);
 
         /** Video name */
-        name?: (string | null);
+        name?: (string|null);
 
         /** Video site */
-        site?: (string | null);
+        site?: (string|null);
 
         /** Video size */
-        size?: (number | null);
+        size?: (number|null);
 
         /** Video type */
-        type?: (show.Video.Type | null);
+        type?: (show.Video.Type|null);
     }
 
     /** Represents a Video. */
@@ -1168,7 +1167,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.Video;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.Video;
 
         /**
          * Decodes a Video message from the specified reader or buffer, length delimited.
@@ -1177,14 +1176,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.Video;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.Video;
 
         /**
          * Verifies a Video message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Video message from a plain object. Also converts values to their respective internal types.
@@ -1226,22 +1225,22 @@ export namespace show {
     interface IImage {
 
         /** Image filePath */
-        filePath?: (string | null);
+        filePath?: (string|null);
 
         /** Image aspectRatio */
-        aspectRatio?: (number | null);
+        aspectRatio?: (number|null);
 
         /** Image height */
-        height?: (number | null);
+        height?: (number|null);
 
         /** Image width */
-        width?: (number | null);
+        width?: (number|null);
 
         /** Image votes */
-        votes?: (show.IVotes | null);
+        votes?: (show.IVotes|null);
 
         /** Image language */
-        language?: (string | null);
+        language?: (string|null);
     }
 
     /** Represents an Image. */
@@ -1266,7 +1265,7 @@ export namespace show {
         public width: number;
 
         /** Image votes. */
-        public votes?: (show.IVotes | null);
+        public votes?: (show.IVotes|null);
 
         /** Image language. */
         public language: string;
@@ -1302,7 +1301,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.Image;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.Image;
 
         /**
          * Decodes an Image message from the specified reader or buffer, length delimited.
@@ -1311,14 +1310,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.Image;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.Image;
 
         /**
          * Verifies an Image message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates an Image message from a plain object. Also converts values to their respective internal types.
@@ -1346,16 +1345,16 @@ export namespace show {
     interface IWatch {
 
         /** Watch language */
-        language?: (string | null);
+        language?: (string|null);
 
         /** Watch link */
-        link?: (string | null);
+        link?: (string|null);
 
         /** Watch rent */
-        rent?: (show.Watch.IProvider[] | null);
+        rent?: (show.Watch.IProvider[]|null);
 
         /** Watch buy */
-        buy?: (show.Watch.IProvider[] | null);
+        buy?: (show.Watch.IProvider[]|null);
     }
 
     /** Represents a Watch. */
@@ -1410,7 +1409,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.Watch;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.Watch;
 
         /**
          * Decodes a Watch message from the specified reader or buffer, length delimited.
@@ -1419,14 +1418,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.Watch;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.Watch;
 
         /**
          * Verifies a Watch message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Watch message from a plain object. Also converts values to their respective internal types.
@@ -1456,16 +1455,16 @@ export namespace show {
         interface IProvider {
 
             /** Provider id */
-            id?: (number | null);
+            id?: (number|null);
 
             /** Provider priority */
-            priority?: (number | null);
+            priority?: (number|null);
 
             /** Provider logoPath */
-            logoPath?: (string | null);
+            logoPath?: (string|null);
 
             /** Provider name */
-            name?: (string | null);
+            name?: (string|null);
         }
 
         /** Represents a Provider. */
@@ -1520,7 +1519,7 @@ export namespace show {
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.Watch.Provider;
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.Watch.Provider;
 
             /**
              * Decodes a Provider message from the specified reader or buffer, length delimited.
@@ -1529,14 +1528,14 @@ export namespace show {
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.Watch.Provider;
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.Watch.Provider;
 
             /**
              * Verifies a Provider message.
              * @param message Plain object to verify
              * @returns `null` if valid, otherwise the reason why it is not
              */
-            public static verify(message: { [k: string]: any }): (string | null);
+            public static verify(message: { [k: string]: any }): (string|null);
 
             /**
              * Creates a Provider message from a plain object. Also converts values to their respective internal types.
@@ -1565,16 +1564,16 @@ export namespace show {
     interface ICast {
 
         /** Cast id */
-        id?: (number | null);
+        id?: (number|null);
 
         /** Cast name */
-        name?: (string | null);
+        name?: (string|null);
 
         /** Cast character */
-        character?: (string | null);
+        character?: (string|null);
 
         /** Cast profilePath */
-        profilePath?: (string | null);
+        profilePath?: (string|null);
     }
 
     /** Represents a Cast. */
@@ -1629,7 +1628,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.Cast;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.Cast;
 
         /**
          * Decodes a Cast message from the specified reader or buffer, length delimited.
@@ -1638,14 +1637,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.Cast;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.Cast;
 
         /**
          * Verifies a Cast message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Cast message from a plain object. Also converts values to their respective internal types.
@@ -1673,16 +1672,16 @@ export namespace show {
     interface ICrew {
 
         /** Crew id */
-        id?: (number | null);
+        id?: (number|null);
 
         /** Crew name */
-        name?: (string | null);
+        name?: (string|null);
 
         /** Crew job */
-        job?: (string | null);
+        job?: (string|null);
 
         /** Crew profilePath */
-        profilePath?: (string | null);
+        profilePath?: (string|null);
     }
 
     /** Represents a Crew. */
@@ -1737,7 +1736,7 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): show.Crew;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): show.Crew;
 
         /**
          * Decodes a Crew message from the specified reader or buffer, length delimited.
@@ -1746,14 +1745,14 @@ export namespace show {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): show.Crew;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): show.Crew;
 
         /**
          * Verifies a Crew message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Crew message from a plain object. Also converts values to their respective internal types.
@@ -1785,10 +1784,10 @@ export namespace user {
     interface IDetail {
 
         /** Detail id */
-        id?: (string | null);
+        id?: (string|null);
 
         /** Detail email */
-        email?: (string | null);
+        email?: (string|null);
     }
 
     /** Represents a Detail. */
@@ -1837,7 +1836,7 @@ export namespace user {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): user.Detail;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): user.Detail;
 
         /**
          * Decodes a Detail message from the specified reader or buffer, length delimited.
@@ -1846,14 +1845,14 @@ export namespace user {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): user.Detail;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): user.Detail;
 
         /**
          * Verifies a Detail message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Detail message from a plain object. Also converts values to their respective internal types.
@@ -1881,10 +1880,10 @@ export namespace user {
     interface IRegister {
 
         /** Register email */
-        email?: (string | null);
+        email?: (string|null);
 
         /** Register password */
-        password?: (string | null);
+        password?: (string|null);
     }
 
     /** Represents a Register. */
@@ -1933,7 +1932,7 @@ export namespace user {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): user.Register;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): user.Register;
 
         /**
          * Decodes a Register message from the specified reader or buffer, length delimited.
@@ -1942,14 +1941,14 @@ export namespace user {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): user.Register;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): user.Register;
 
         /**
          * Verifies a Register message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Register message from a plain object. Also converts values to their respective internal types.
@@ -1977,10 +1976,10 @@ export namespace user {
     interface IUpdate {
 
         /** Update email */
-        email?: (string | null);
+        email?: (string|null);
 
         /** Update password */
-        password?: (string | null);
+        password?: (string|null);
     }
 
     /** Represents an Update. */
@@ -2029,7 +2028,7 @@ export namespace user {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): user.Update;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): user.Update;
 
         /**
          * Decodes an Update message from the specified reader or buffer, length delimited.
@@ -2038,14 +2037,14 @@ export namespace user {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): user.Update;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): user.Update;
 
         /**
          * Verifies an Update message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates an Update message from a plain object. Also converts values to their respective internal types.
@@ -2073,10 +2072,10 @@ export namespace user {
     interface ILogin {
 
         /** Login email */
-        email?: (string | null);
+        email?: (string|null);
 
         /** Login password */
-        password?: (string | null);
+        password?: (string|null);
     }
 
     /** Represents a Login. */
@@ -2125,7 +2124,7 @@ export namespace user {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): user.Login;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): user.Login;
 
         /**
          * Decodes a Login message from the specified reader or buffer, length delimited.
@@ -2134,14 +2133,14 @@ export namespace user {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): user.Login;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): user.Login;
 
         /**
          * Verifies a Login message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a Login message from a plain object. Also converts values to their respective internal types.
@@ -2169,10 +2168,10 @@ export namespace user {
     interface IDetailAndToken {
 
         /** DetailAndToken token */
-        token?: (string | null);
+        token?: (string|null);
 
         /** DetailAndToken detail */
-        detail?: (user.IDetail | null);
+        detail?: (user.IDetail|null);
     }
 
     /** Represents a DetailAndToken. */
@@ -2188,7 +2187,7 @@ export namespace user {
         public token: string;
 
         /** DetailAndToken detail. */
-        public detail?: (user.IDetail | null);
+        public detail?: (user.IDetail|null);
 
         /**
          * Creates a new DetailAndToken instance using the specified properties.
@@ -2221,7 +2220,7 @@ export namespace user {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader | Uint8Array), length?: number): user.DetailAndToken;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): user.DetailAndToken;
 
         /**
          * Decodes a DetailAndToken message from the specified reader or buffer, length delimited.
@@ -2230,14 +2229,14 @@ export namespace user {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader | Uint8Array)): user.DetailAndToken;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): user.DetailAndToken;
 
         /**
          * Verifies a DetailAndToken message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
-        public static verify(message: { [k: string]: any }): (string | null);
+        public static verify(message: { [k: string]: any }): (string|null);
 
         /**
          * Creates a DetailAndToken message from a plain object. Also converts values to their respective internal types.

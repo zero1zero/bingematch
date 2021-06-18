@@ -129,6 +129,7 @@ export default function App() {
 
     const drawer = () => (
         <Drawer.Navigator
+            drawerType={'slide'}
             drawerContent={props => <CustomDrawerContent {...props} />}
             drawerStyle={{width: '48%'}}>
             <Stack.Screen name='Queue' component={Queue}/>

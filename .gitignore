@@ -19,3 +19,5 @@ api/out
 model/out
 
 ui/coverage
+
+script.exp

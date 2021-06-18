@@ -1,0 +1,120 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-storage
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /postgres/
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: beta.kubernetes.io/os
+              operator: In
+              values:
+                - linux
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-storage-claim
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: zack
+  POSTGRES_USER: zack
+  POSTGRES_PASSWORD: bzGa8m6ekUYsRRUWpy
+  PGDATA: /var/lib/postgresql/data/pgdata
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      #      affinity:
+      #        podAntiAffinity:
+      #          requiredDuringSchedulingIgnoredDuringExecution:
+      #            - labelSelector:
+      #                matchExpressions:
+      #                  - key: app
+      #                    operator: In
+      #                    values:
+      #                      - api
+      #              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: postgres
+          image: postgres:13.3-alpine
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1Gi"
+            limits:
+              cpu: "100m"
+              memory: "1Gi"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+              readOnly: false
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-storage-claim
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+  selector:
+    app: postgres

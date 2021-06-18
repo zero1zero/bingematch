@@ -16,7 +16,7 @@ export const queue = $root.queue = (() => {
      */
     const queue = {};
 
-    queue.QueuedItems = (function () {
+    queue.QueuedItems = (function() {
 
         /**
          * Properties of a QueuedItems.
@@ -110,14 +110,14 @@ export const queue = $root.queue = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        if (!(message.items && message.items.length))
-                            message.items = [];
-                        message.items.push($root.queue.QueuedItem.decode(reader, reader.uint32()));
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    if (!(message.items && message.items.length))
+                        message.items = [];
+                    message.items.push($root.queue.QueuedItem.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -224,7 +224,7 @@ export const queue = $root.queue = (() => {
         return QueuedItems;
     })();
 
-    queue.QueuedItem = (function () {
+    queue.QueuedItem = (function() {
 
         /**
          * Properties of a QueuedItem.
@@ -327,15 +327,15 @@ export const queue = $root.queue = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.string();
-                        break;
-                    case 2:
-                        message.show = $root.show.ThinDetail.decode(reader, reader.uint32());
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.show = $root.show.ThinDetail.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -439,7 +439,7 @@ export const queue = $root.queue = (() => {
         return QueuedItem;
     })();
 
-    queue.Item = (function () {
+    queue.Item = (function() {
 
         /**
          * Properties of an Item.
@@ -553,18 +553,18 @@ export const queue = $root.queue = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.string();
-                        break;
-                    case 3:
-                        message.state = reader.int32();
-                        break;
-                    case 4:
-                        message.show = $root.show.Detail.decode(reader, reader.uint32());
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 3:
+                    message.state = reader.int32();
+                    break;
+                case 4:
+                    message.show = $root.show.Detail.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -602,15 +602,15 @@ export const queue = $root.queue = (() => {
                     return "id: string expected";
             if (message.state != null && message.hasOwnProperty("state"))
                 switch (message.state) {
-                    default:
-                        return "state: enum value expected";
-                    case 0:
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                        break;
+                default:
+                    return "state: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    break;
                 }
             if (message.show != null && message.hasOwnProperty("show")) {
                 let error = $root.show.Detail.verify(message.show);
@@ -635,30 +635,30 @@ export const queue = $root.queue = (() => {
             if (object.id != null)
                 message.id = String(object.id);
             switch (object.state) {
-                case "Queued":
-                case 0:
-                    message.state = 0;
-                    break;
-                case "Like":
-                case 1:
-                    message.state = 1;
-                    break;
-                case "Dislike":
-                case 2:
-                    message.state = 2;
-                    break;
-                case "Love":
-                case 3:
-                    message.state = 3;
-                    break;
-                case "Hate":
-                case 4:
-                    message.state = 4;
-                    break;
-                case "Skipped":
-                case 5:
-                    message.state = 5;
-                    break;
+            case "Queued":
+            case 0:
+                message.state = 0;
+                break;
+            case "Like":
+            case 1:
+                message.state = 1;
+                break;
+            case "Dislike":
+            case 2:
+                message.state = 2;
+                break;
+            case "Love":
+            case 3:
+                message.state = 3;
+                break;
+            case "Hate":
+            case 4:
+                message.state = 4;
+                break;
+            case "Skipped":
+            case 5:
+                message.state = 5;
+                break;
             }
             if (object.show != null) {
                 if (typeof object.show !== "object")
@@ -717,7 +717,7 @@ export const queue = $root.queue = (() => {
          * @property {number} Hate=4 Hate value
          * @property {number} Skipped=5 Skipped value
          */
-        Item.State = (function () {
+        Item.State = (function() {
             const valuesById = {}, values = Object.create(valuesById);
             values[valuesById[0] = "Queued"] = 0;
             values[valuesById[1] = "Like"] = 1;
@@ -743,7 +743,7 @@ export const show = $root.show = (() => {
      */
     const show = {};
 
-    show.ThinDetail = (function () {
+    show.ThinDetail = (function() {
 
         /**
          * Properties of a ThinDetail.
@@ -881,26 +881,26 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.string();
-                        break;
-                    case 2:
-                        message.title = reader.string();
-                        break;
-                    case 3:
-                        message.overview = reader.string();
-                        break;
-                    case 4:
-                        if (!(message.genres && message.genres.length))
-                            message.genres = [];
-                        message.genres.push($root.show.Genre.decode(reader, reader.uint32()));
-                        break;
-                    case 5:
-                        message.posterPath = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.title = reader.string();
+                    break;
+                case 3:
+                    message.overview = reader.string();
+                    break;
+                case 4:
+                    if (!(message.genres && message.genres.length))
+                        message.genres = [];
+                    message.genres.push($root.show.Genre.decode(reader, reader.uint32()));
+                    break;
+                case 5:
+                    message.posterPath = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -1041,7 +1041,7 @@ export const show = $root.show = (() => {
         return ThinDetail;
     })();
 
-    show.Detail = (function () {
+    show.Detail = (function() {
 
         /**
          * Properties of a Detail.
@@ -1377,100 +1377,100 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.string();
-                        break;
-                    case 2:
-                        message.title = reader.string();
-                        break;
-                    case 3:
-                        message.overview = reader.string();
-                        break;
-                    case 4:
-                        if (!(message.genres && message.genres.length))
-                            message.genres = [];
-                        message.genres.push($root.show.Genre.decode(reader, reader.uint32()));
-                        break;
-                    case 7:
-                        message.posterPath = reader.string();
-                        break;
-                    case 8:
-                        message.backdropPath = reader.string();
-                        break;
-                    case 9:
-                        message.votes = $root.show.Votes.decode(reader, reader.uint32());
-                        break;
-                    case 10:
-                        message.popularity = reader.int32();
-                        break;
-                    case 11:
-                        message.tagline = reader.string();
-                        break;
-                    case 12:
-                        if (!(message.spokenLanguage && message.spokenLanguage.length))
-                            message.spokenLanguage = [];
-                        message.spokenLanguage.push(reader.string());
-                        break;
-                    case 13:
-                        if (!(message.videos && message.videos.length))
-                            message.videos = [];
-                        message.videos.push($root.show.Video.decode(reader, reader.uint32()));
-                        break;
-                    case 14:
-                        if (!(message.posters && message.posters.length))
-                            message.posters = [];
-                        message.posters.push($root.show.Image.decode(reader, reader.uint32()));
-                        break;
-                    case 15:
-                        if (!(message.recommendations && message.recommendations.length))
-                            message.recommendations = [];
-                        if ((tag & 7) === 2) {
-                            let end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2)
-                                message.recommendations.push(reader.int32());
-                        } else
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.title = reader.string();
+                    break;
+                case 3:
+                    message.overview = reader.string();
+                    break;
+                case 4:
+                    if (!(message.genres && message.genres.length))
+                        message.genres = [];
+                    message.genres.push($root.show.Genre.decode(reader, reader.uint32()));
+                    break;
+                case 7:
+                    message.posterPath = reader.string();
+                    break;
+                case 8:
+                    message.backdropPath = reader.string();
+                    break;
+                case 9:
+                    message.votes = $root.show.Votes.decode(reader, reader.uint32());
+                    break;
+                case 10:
+                    message.popularity = reader.int32();
+                    break;
+                case 11:
+                    message.tagline = reader.string();
+                    break;
+                case 12:
+                    if (!(message.spokenLanguage && message.spokenLanguage.length))
+                        message.spokenLanguage = [];
+                    message.spokenLanguage.push(reader.string());
+                    break;
+                case 13:
+                    if (!(message.videos && message.videos.length))
+                        message.videos = [];
+                    message.videos.push($root.show.Video.decode(reader, reader.uint32()));
+                    break;
+                case 14:
+                    if (!(message.posters && message.posters.length))
+                        message.posters = [];
+                    message.posters.push($root.show.Image.decode(reader, reader.uint32()));
+                    break;
+                case 15:
+                    if (!(message.recommendations && message.recommendations.length))
+                        message.recommendations = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
                             message.recommendations.push(reader.int32());
-                        break;
-                    case 16:
-                        if (!(message.similar && message.similar.length))
-                            message.similar = [];
-                        if ((tag & 7) === 2) {
-                            let end2 = reader.uint32() + reader.pos;
-                            while (reader.pos < end2)
-                                message.similar.push(reader.int32());
-                        } else
+                    } else
+                        message.recommendations.push(reader.int32());
+                    break;
+                case 16:
+                    if (!(message.similar && message.similar.length))
+                        message.similar = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
                             message.similar.push(reader.int32());
-                        break;
-                    case 17:
-                        if (!(message.watch && message.watch.length))
-                            message.watch = [];
-                        message.watch.push($root.show.Watch.decode(reader, reader.uint32()));
-                        break;
-                    case 18:
-                        message.tv = $root.show.TV.decode(reader, reader.uint32());
-                        break;
-                    case 19:
-                        message.movie = $root.show.Movie.decode(reader, reader.uint32());
-                        break;
-                    case 20:
-                        message.type = reader.int32();
-                        break;
-                    case 21:
-                        message.date = reader.string();
-                        break;
-                    case 22:
-                        if (!(message.cast && message.cast.length))
-                            message.cast = [];
-                        message.cast.push($root.show.Cast.decode(reader, reader.uint32()));
-                        break;
-                    case 23:
-                        if (!(message.crew && message.crew.length))
-                            message.crew = [];
-                        message.crew.push($root.show.Crew.decode(reader, reader.uint32()));
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                    } else
+                        message.similar.push(reader.int32());
+                    break;
+                case 17:
+                    if (!(message.watch && message.watch.length))
+                        message.watch = [];
+                    message.watch.push($root.show.Watch.decode(reader, reader.uint32()));
+                    break;
+                case 18:
+                    message.tv = $root.show.TV.decode(reader, reader.uint32());
+                    break;
+                case 19:
+                    message.movie = $root.show.Movie.decode(reader, reader.uint32());
+                    break;
+                case 20:
+                    message.type = reader.int32();
+                    break;
+                case 21:
+                    message.date = reader.string();
+                    break;
+                case 22:
+                    if (!(message.cast && message.cast.length))
+                        message.cast = [];
+                    message.cast.push($root.show.Cast.decode(reader, reader.uint32()));
+                    break;
+                case 23:
+                    if (!(message.crew && message.crew.length))
+                        message.crew = [];
+                    message.crew.push($root.show.Crew.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -1598,11 +1598,11 @@ export const show = $root.show = (() => {
             }
             if (message.type != null && message.hasOwnProperty("type"))
                 switch (message.type) {
-                    default:
-                        return "type: enum value expected";
-                    case 0:
-                    case 1:
-                        break;
+                default:
+                    return "type: enum value expected";
+                case 0:
+                case 1:
+                    break;
                 }
             if (message.date != null && message.hasOwnProperty("date"))
                 if (!$util.isString(message.date))
@@ -1731,14 +1731,14 @@ export const show = $root.show = (() => {
                 message.movie = $root.show.Movie.fromObject(object.movie);
             }
             switch (object.type) {
-                case "TV":
-                case 0:
-                    message.type = 0;
-                    break;
-                case "Movie":
-                case 1:
-                    message.type = 1;
-                    break;
+            case "TV":
+            case 0:
+                message.type = 0;
+                break;
+            case "Movie":
+            case 1:
+                message.type = 1;
+                break;
             }
             if (object.date != null)
                 message.date = String(object.date);
@@ -1893,7 +1893,7 @@ export const show = $root.show = (() => {
          * @property {number} TV=0 TV value
          * @property {number} Movie=1 Movie value
          */
-        Detail.Type = (function () {
+        Detail.Type = (function() {
             const valuesById = {}, values = Object.create(valuesById);
             values[valuesById[0] = "TV"] = 0;
             values[valuesById[1] = "Movie"] = 1;
@@ -1903,7 +1903,7 @@ export const show = $root.show = (() => {
         return Detail;
     })();
 
-    show.TV = (function () {
+    show.TV = (function() {
 
         /**
          * Properties of a TV.
@@ -2006,15 +2006,15 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.status = reader.int32();
-                        break;
-                    case 2:
-                        message.seasons = reader.int32();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.status = reader.int32();
+                    break;
+                case 2:
+                    message.seasons = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -2049,16 +2049,16 @@ export const show = $root.show = (() => {
                 return "object expected";
             if (message.status != null && message.hasOwnProperty("status"))
                 switch (message.status) {
-                    default:
-                        return "status: enum value expected";
-                    case 0:
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                        break;
+                default:
+                    return "status: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                    break;
                 }
             if (message.seasons != null && message.hasOwnProperty("seasons"))
                 if (!$util.isInteger(message.seasons))
@@ -2079,34 +2079,34 @@ export const show = $root.show = (() => {
                 return object;
             let message = new $root.show.TV();
             switch (object.status) {
-                case "Rumored":
-                case 0:
-                    message.status = 0;
-                    break;
-                case "Planned":
-                case 1:
-                    message.status = 1;
-                    break;
-                case "InProduction":
-                case 2:
-                    message.status = 2;
-                    break;
-                case "PostProduction":
-                case 3:
-                    message.status = 3;
-                    break;
-                case "ReturningSeries":
-                case 4:
-                    message.status = 4;
-                    break;
-                case "Canceled":
-                case 5:
-                    message.status = 5;
-                    break;
-                case "Ended":
-                case 6:
-                    message.status = 6;
-                    break;
+            case "Rumored":
+            case 0:
+                message.status = 0;
+                break;
+            case "Planned":
+            case 1:
+                message.status = 1;
+                break;
+            case "InProduction":
+            case 2:
+                message.status = 2;
+                break;
+            case "PostProduction":
+            case 3:
+                message.status = 3;
+                break;
+            case "ReturningSeries":
+            case 4:
+                message.status = 4;
+                break;
+            case "Canceled":
+            case 5:
+                message.status = 5;
+                break;
+            case "Ended":
+            case 6:
+                message.status = 6;
+                break;
             }
             if (object.seasons != null)
                 message.seasons = object.seasons | 0;
@@ -2160,7 +2160,7 @@ export const show = $root.show = (() => {
          * @property {number} Canceled=5 Canceled value
          * @property {number} Ended=6 Ended value
          */
-        TV.Status = (function () {
+        TV.Status = (function() {
             const valuesById = {}, values = Object.create(valuesById);
             values[valuesById[0] = "Rumored"] = 0;
             values[valuesById[1] = "Planned"] = 1;
@@ -2175,7 +2175,7 @@ export const show = $root.show = (() => {
         return TV;
     })();
 
-    show.Movie = (function () {
+    show.Movie = (function() {
 
         /**
          * Properties of a Movie.
@@ -2322,27 +2322,27 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.imdbId = reader.string();
-                        break;
-                    case 2:
-                        message.originalLanguage = reader.string();
-                        break;
-                    case 3:
-                        message.originalTitle = reader.string();
-                        break;
-                    case 4:
-                        message.status = reader.int32();
-                        break;
-                    case 5:
-                        message.budget = reader.int32();
-                        break;
-                    case 6:
-                        message.runtime = reader.int32();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.imdbId = reader.string();
+                    break;
+                case 2:
+                    message.originalLanguage = reader.string();
+                    break;
+                case 3:
+                    message.originalTitle = reader.string();
+                    break;
+                case 4:
+                    message.status = reader.int32();
+                    break;
+                case 5:
+                    message.budget = reader.int32();
+                    break;
+                case 6:
+                    message.runtime = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -2386,15 +2386,15 @@ export const show = $root.show = (() => {
                     return "originalTitle: string expected";
             if (message.status != null && message.hasOwnProperty("status"))
                 switch (message.status) {
-                    default:
-                        return "status: enum value expected";
-                    case 0:
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                        break;
+                default:
+                    return "status: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    break;
                 }
             if (message.budget != null && message.hasOwnProperty("budget"))
                 if (!$util.isInteger(message.budget))
@@ -2424,30 +2424,30 @@ export const show = $root.show = (() => {
             if (object.originalTitle != null)
                 message.originalTitle = String(object.originalTitle);
             switch (object.status) {
-                case "Rumored":
-                case 0:
-                    message.status = 0;
-                    break;
-                case "Planned":
-                case 1:
-                    message.status = 1;
-                    break;
-                case "InProduction":
-                case 2:
-                    message.status = 2;
-                    break;
-                case "PostProduction":
-                case 3:
-                    message.status = 3;
-                    break;
-                case "Released":
-                case 4:
-                    message.status = 4;
-                    break;
-                case "Canceled":
-                case 5:
-                    message.status = 5;
-                    break;
+            case "Rumored":
+            case 0:
+                message.status = 0;
+                break;
+            case "Planned":
+            case 1:
+                message.status = 1;
+                break;
+            case "InProduction":
+            case 2:
+                message.status = 2;
+                break;
+            case "PostProduction":
+            case 3:
+                message.status = 3;
+                break;
+            case "Released":
+            case 4:
+                message.status = 4;
+                break;
+            case "Canceled":
+            case 5:
+                message.status = 5;
+                break;
             }
             if (object.budget != null)
                 message.budget = object.budget | 0;
@@ -2514,7 +2514,7 @@ export const show = $root.show = (() => {
          * @property {number} Released=4 Released value
          * @property {number} Canceled=5 Canceled value
          */
-        Movie.Status = (function () {
+        Movie.Status = (function() {
             const valuesById = {}, values = Object.create(valuesById);
             values[valuesById[0] = "Rumored"] = 0;
             values[valuesById[1] = "Planned"] = 1;
@@ -2528,7 +2528,7 @@ export const show = $root.show = (() => {
         return Movie;
     })();
 
-    show.Genre = (function () {
+    show.Genre = (function() {
 
         /**
          * Properties of a Genre.
@@ -2631,15 +2631,15 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.int32();
-                        break;
-                    case 2:
-                        message.name = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.id = reader.int32();
+                    break;
+                case 2:
+                    message.name = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -2738,7 +2738,7 @@ export const show = $root.show = (() => {
         return Genre;
     })();
 
-    show.Votes = (function () {
+    show.Votes = (function() {
 
         /**
          * Properties of a Votes.
@@ -2841,15 +2841,15 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.average = reader.double();
-                        break;
-                    case 2:
-                        message.count = reader.int32();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.average = reader.double();
+                    break;
+                case 2:
+                    message.count = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -2948,7 +2948,7 @@ export const show = $root.show = (() => {
         return Votes;
     })();
 
-    show.Video = (function () {
+    show.Video = (function() {
 
         /**
          * Properties of a Video.
@@ -3117,33 +3117,33 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.string();
-                        break;
-                    case 2:
-                        message.language = reader.string();
-                        break;
-                    case 3:
-                        message.country = reader.string();
-                        break;
-                    case 4:
-                        message.key = reader.string();
-                        break;
-                    case 5:
-                        message.name = reader.string();
-                        break;
-                    case 6:
-                        message.site = reader.string();
-                        break;
-                    case 7:
-                        message.size = reader.int32();
-                        break;
-                    case 8:
-                        message.type = reader.int32();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.language = reader.string();
+                    break;
+                case 3:
+                    message.country = reader.string();
+                    break;
+                case 4:
+                    message.key = reader.string();
+                    break;
+                case 5:
+                    message.name = reader.string();
+                    break;
+                case 6:
+                    message.site = reader.string();
+                    break;
+                case 7:
+                    message.size = reader.int32();
+                    break;
+                case 8:
+                    message.type = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -3199,16 +3199,16 @@ export const show = $root.show = (() => {
                     return "size: integer expected";
             if (message.type != null && message.hasOwnProperty("type"))
                 switch (message.type) {
-                    default:
-                        return "type: enum value expected";
-                    case 0:
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                        break;
+                default:
+                    return "type: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                    break;
                 }
             return null;
         };
@@ -3240,34 +3240,34 @@ export const show = $root.show = (() => {
             if (object.size != null)
                 message.size = object.size | 0;
             switch (object.type) {
-                case "Trailer":
-                case 0:
-                    message.type = 0;
-                    break;
-                case "Teaser":
-                case 1:
-                    message.type = 1;
-                    break;
-                case "Clip":
-                case 2:
-                    message.type = 2;
-                    break;
-                case "Featurette":
-                case 3:
-                    message.type = 3;
-                    break;
-                case "BehindtheScenes":
-                case 4:
-                    message.type = 4;
-                    break;
-                case "Bloopers":
-                case 5:
-                    message.type = 5;
-                    break;
-                case "OpeningCredits":
-                case 6:
-                    message.type = 6;
-                    break;
+            case "Trailer":
+            case 0:
+                message.type = 0;
+                break;
+            case "Teaser":
+            case 1:
+                message.type = 1;
+                break;
+            case "Clip":
+            case 2:
+                message.type = 2;
+                break;
+            case "Featurette":
+            case 3:
+                message.type = 3;
+                break;
+            case "BehindtheScenes":
+            case 4:
+                message.type = 4;
+                break;
+            case "Bloopers":
+            case 5:
+                message.type = 5;
+                break;
+            case "OpeningCredits":
+            case 6:
+                message.type = 6;
+                break;
             }
             return message;
         };
@@ -3337,7 +3337,7 @@ export const show = $root.show = (() => {
          * @property {number} Bloopers=5 Bloopers value
          * @property {number} OpeningCredits=6 OpeningCredits value
          */
-        Video.Type = (function () {
+        Video.Type = (function() {
             const valuesById = {}, values = Object.create(valuesById);
             values[valuesById[0] = "Trailer"] = 0;
             values[valuesById[1] = "Teaser"] = 1;
@@ -3352,7 +3352,7 @@ export const show = $root.show = (() => {
         return Video;
     })();
 
-    show.Image = (function () {
+    show.Image = (function() {
 
         /**
          * Properties of an Image.
@@ -3499,27 +3499,27 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.filePath = reader.string();
-                        break;
-                    case 2:
-                        message.aspectRatio = reader.double();
-                        break;
-                    case 3:
-                        message.height = reader.int32();
-                        break;
-                    case 4:
-                        message.width = reader.int32();
-                        break;
-                    case 5:
-                        message.votes = $root.show.Votes.decode(reader, reader.uint32());
-                        break;
-                    case 7:
-                        message.language = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.filePath = reader.string();
+                    break;
+                case 2:
+                    message.aspectRatio = reader.double();
+                    break;
+                case 3:
+                    message.height = reader.int32();
+                    break;
+                case 4:
+                    message.width = reader.int32();
+                    break;
+                case 5:
+                    message.votes = $root.show.Votes.decode(reader, reader.uint32());
+                    break;
+                case 7:
+                    message.language = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -3655,7 +3655,7 @@ export const show = $root.show = (() => {
         return Image;
     })();
 
-    show.Watch = (function () {
+    show.Watch = (function() {
 
         /**
          * Properties of a Watch.
@@ -3784,25 +3784,25 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.language = reader.string();
-                        break;
-                    case 2:
-                        message.link = reader.string();
-                        break;
-                    case 3:
-                        if (!(message.rent && message.rent.length))
-                            message.rent = [];
-                        message.rent.push($root.show.Watch.Provider.decode(reader, reader.uint32()));
-                        break;
-                    case 4:
-                        if (!(message.buy && message.buy.length))
-                            message.buy = [];
-                        message.buy.push($root.show.Watch.Provider.decode(reader, reader.uint32()));
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.language = reader.string();
+                    break;
+                case 2:
+                    message.link = reader.string();
+                    break;
+                case 3:
+                    if (!(message.rent && message.rent.length))
+                        message.rent = [];
+                    message.rent.push($root.show.Watch.Provider.decode(reader, reader.uint32()));
+                    break;
+                case 4:
+                    if (!(message.buy && message.buy.length))
+                        message.buy = [];
+                    message.buy.push($root.show.Watch.Provider.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -3950,7 +3950,7 @@ export const show = $root.show = (() => {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
-        Watch.Provider = (function () {
+        Watch.Provider = (function() {
 
             /**
              * Properties of a Provider.
@@ -4071,26 +4071,25 @@ export const show = $root.show = (() => {
             Provider.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                let end = length === undefined ? reader.len : reader.pos + length,
-                    message = new $root.show.Watch.Provider();
+                let end = length === undefined ? reader.len : reader.pos + length, message = new $root.show.Watch.Provider();
                 while (reader.pos < end) {
                     let tag = reader.uint32();
                     switch (tag >>> 3) {
-                        case 1:
-                            message.id = reader.int32();
-                            break;
-                        case 2:
-                            message.priority = reader.int32();
-                            break;
-                        case 3:
-                            message.logoPath = reader.string();
-                            break;
-                        case 4:
-                            message.name = reader.string();
-                            break;
-                        default:
-                            reader.skipType(tag & 7);
-                            break;
+                    case 1:
+                        message.id = reader.int32();
+                        break;
+                    case 2:
+                        message.priority = reader.int32();
+                        break;
+                    case 3:
+                        message.logoPath = reader.string();
+                        break;
+                    case 4:
+                        message.name = reader.string();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
                     }
                 }
                 return message;
@@ -4208,7 +4207,7 @@ export const show = $root.show = (() => {
         return Watch;
     })();
 
-    show.Cast = (function () {
+    show.Cast = (function() {
 
         /**
          * Properties of a Cast.
@@ -4333,21 +4332,21 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.int32();
-                        break;
-                    case 2:
-                        message.name = reader.string();
-                        break;
-                    case 3:
-                        message.character = reader.string();
-                        break;
-                    case 4:
-                        message.profilePath = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.id = reader.int32();
+                    break;
+                case 2:
+                    message.name = reader.string();
+                    break;
+                case 3:
+                    message.character = reader.string();
+                    break;
+                case 4:
+                    message.profilePath = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -4462,7 +4461,7 @@ export const show = $root.show = (() => {
         return Cast;
     })();
 
-    show.Crew = (function () {
+    show.Crew = (function() {
 
         /**
          * Properties of a Crew.
@@ -4587,21 +4586,21 @@ export const show = $root.show = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.int32();
-                        break;
-                    case 2:
-                        message.name = reader.string();
-                        break;
-                    case 3:
-                        message.job = reader.string();
-                        break;
-                    case 4:
-                        message.profilePath = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.id = reader.int32();
+                    break;
+                case 2:
+                    message.name = reader.string();
+                    break;
+                case 3:
+                    message.job = reader.string();
+                    break;
+                case 4:
+                    message.profilePath = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -4728,7 +4727,7 @@ export const user = $root.user = (() => {
      */
     const user = {};
 
-    user.Detail = (function () {
+    user.Detail = (function() {
 
         /**
          * Properties of a Detail.
@@ -4831,15 +4830,15 @@ export const user = $root.user = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.id = reader.string();
-                        break;
-                    case 2:
-                        message.email = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.id = reader.string();
+                    break;
+                case 2:
+                    message.email = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -4938,7 +4937,7 @@ export const user = $root.user = (() => {
         return Detail;
     })();
 
-    user.Register = (function () {
+    user.Register = (function() {
 
         /**
          * Properties of a Register.
@@ -5041,15 +5040,15 @@ export const user = $root.user = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.email = reader.string();
-                        break;
-                    case 2:
-                        message.password = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.email = reader.string();
+                    break;
+                case 2:
+                    message.password = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -5148,7 +5147,7 @@ export const user = $root.user = (() => {
         return Register;
     })();
 
-    user.Update = (function () {
+    user.Update = (function() {
 
         /**
          * Properties of an Update.
@@ -5251,15 +5250,15 @@ export const user = $root.user = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.email = reader.string();
-                        break;
-                    case 2:
-                        message.password = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.email = reader.string();
+                    break;
+                case 2:
+                    message.password = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -5358,7 +5357,7 @@ export const user = $root.user = (() => {
         return Update;
     })();
 
-    user.Login = (function () {
+    user.Login = (function() {
 
         /**
          * Properties of a Login.
@@ -5461,15 +5460,15 @@ export const user = $root.user = (() => {
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.email = reader.string();
-                        break;
-                    case 2:
-                        message.password = reader.string();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.email = reader.string();
+                    break;
+                case 2:
+                    message.password = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -5568,7 +5567,7 @@ export const user = $root.user = (() => {
         return Login;
     })();
 
-    user.DetailAndToken = (function () {
+    user.DetailAndToken = (function() {
 
         /**
          * Properties of a DetailAndToken.
@@ -5667,20 +5666,19 @@ export const user = $root.user = (() => {
         DetailAndToken.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length,
-                message = new $root.user.DetailAndToken();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.user.DetailAndToken();
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
-                    case 1:
-                        message.token = reader.string();
-                        break;
-                    case 2:
-                        message.detail = $root.user.Detail.decode(reader, reader.uint32());
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
+                case 1:
+                    message.token = reader.string();
+                    break;
+                case 2:
+                    message.detail = $root.user.Detail.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
                 }
             }
             return message;
@@ -5787,4 +5785,4 @@ export const user = $root.user = (() => {
     return user;
 })();
 
-export {$root as default};
+export { $root as default };
