@@ -28,6 +28,7 @@ import routing.queue
 import routing.show
 import routing.user
 import show.Show
+import test.PostgresTest
 import test.RedisCacheTest
 import user.User
 import java.io.PrintWriter
@@ -85,29 +86,43 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
         }
     }
 
+    val listener = SummaryGeneratingListener()
+    val request = LauncherDiscoveryRequestBuilder.request()
+        .selectors(
+            selectClass(RedisCacheTest::class.java),
+            selectClass(PostgresTest::class.java)
+        )
+        .build()
+    val launcher = LauncherFactory.create()
+    launcher.discover(request)
+    launcher.registerTestExecutionListeners(listener)
+    launcher.execute(request)
+
+    val summary = listener.summary
+
+    summary.printTo(PrintWriter(System.out))
+
+    //update our stuff
+    deps.updater().update()
+
     routing {
         route("/ready") {
             get("/") {
                 call.respond(HttpStatusCode.Accepted)
             }
         }
-        route("/test") {
+        route("/update") {
             get("/") {
 
-                val listener = SummaryGeneratingListener()
-                val request = LauncherDiscoveryRequestBuilder.request()
-                    .selectors(
-                        selectClass(RedisCacheTest::class.java)
-                    )
-                    .build()
-                val launcher = LauncherFactory.create()
-                launcher.discover(request)
-                launcher.registerTestExecutionListeners(listener)
-                launcher.execute(request)
-
-                val summary = listener.summary
-
-                summary.printTo(PrintWriter(System.out))
+                //update our stuff
+                deps.updater().update()
+            }
+        }
+        route("/startup") {
+            get("/") {
+                if (listener.summary.failures.size > 0) {
+                    call.respond(HttpStatusCode.InternalServerError)
+                }
 
                 //all good!
                 call.respond(HttpStatusCode.Accepted)

@@ -2,6 +2,9 @@ import cache.Cache
 import cache.RedisCache
 import catalog.Catalog
 import catalog.MetadataSource
+import db.DataSource
+import db.Database
+import db.Updater
 import etc.PasswordUtil
 import queue.Queues
 import show.Show
@@ -14,7 +17,8 @@ interface Dependencies {
     fun queues() : Queues
     fun cache() : Cache
     fun catalog() : Catalog
-
+    fun database() : Database
+    fun updater() : Updater
 }
 
 open class ProdDeps : Dependencies {
@@ -26,6 +30,9 @@ open class ProdDeps : Dependencies {
     private val catalog = Catalog(metadata, cache)
     private val queues = Queues(catalog)
     private val storage = UserStore(passwordUtil, awsUtil.ddb)
+    private val datasource = DataSource()
+    private val database = Database(datasource)
+    private val updater = Updater(datasource)
 
     override fun userStore(): UserStore {
         return storage
@@ -37,6 +44,14 @@ open class ProdDeps : Dependencies {
 
     override fun catalog(): Catalog {
         return catalog
+    }
+
+    override fun database(): Database {
+        return database
+    }
+
+    override fun updater(): Updater {
+        return updater
     }
 
     override fun cache(): Cache {

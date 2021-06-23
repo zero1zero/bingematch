@@ -31,10 +31,10 @@ task deployApi {
       commandLine "bash", "-c", "docker push ${tag}"
     }
 
-    def contents = new File('deploy/api-deployment.yaml').getText('UTF-8')
+    def contents = new File('deploy/api.yaml').getText('UTF-8')
             .replaceAll("VERSION", "${ver}")
 
-    def tmpDeploy = new File("/tmp/api-deployment-${ver}.yaml")
+    def tmpDeploy = new File("/tmp/api-${ver}.yaml")
     tmpDeploy.write(contents, 'UTF-8')
 
     exec {

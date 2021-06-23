@@ -13,6 +13,8 @@ spec:
         app: api
     spec:
       restartPolicy: Always
+      imagePullSecrets:
+        - name: ecr
       containers:
         - image: 990223444407.dkr.ecr.us-west-2.amazonaws.com/bingematch-api:VERSION
           name: api
@@ -20,18 +22,18 @@ spec:
           resources:
             requests:
               memory: "256Mi"
-              cpu: "250m"
+              cpu: "400m"
             limits:
-              memory: "384Mi"
-              cpu: "500m"
+              memory: "512Mi"
+              cpu: "400m"
           ports:
             - containerPort: 8080
               protocol: TCP
           startupProbe:
             httpGet:
-              path: /test
+              path: /startup
               port: 8080
-            failureThreshold: 30
+            failureThreshold: 5
             periodSeconds: 10
           readinessProbe:
             httpGet:
