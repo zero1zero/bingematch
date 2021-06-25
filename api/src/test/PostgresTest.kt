@@ -14,7 +14,6 @@ class PostgresTest {
 
         session.select("select 1") { result ->
             assertEquals(result.resultCount, 1)
-            session.close()
         }
     }
 }
