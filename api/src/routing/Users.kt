@@ -82,15 +82,13 @@ fun Routing.user(userStore : UserStore) {
                 val id: String = call.parameters["id"]!!
 
                 val user = User.Detail.newBuilder()
-                    .setEmail(updateUser.email)
                     .setId(id)
+                    .setEmail(updateUser.email)
+                    .setFirst(updateUser.first)
+                    .setLast(updateUser.last)
                     .build()
 
-                userStore.updateUser(user)
-
-                if (updateUser.password != "") {
-                    userStore.savePassword(id, updateUser.password)
-                }
+                userStore.updateUser(user, updateUser.password)
 
                 call.respond(HttpStatusCode.OK)
             }

@@ -1,28 +1,15 @@
 package routing
 
-import Dependencies
 import TestDeps
 import UserTestUtil
 import auth.JwtConfig
-import cache.Cache
-import cache.InMemoryCache
-import catalog.Catalog
-import catalog.MetadataSource
-import etc.PasswordUtil
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import module
 import objectMapper
-import org.junit.Assert.assertEquals
-import org.junit.Assert.fail
 import org.junit.BeforeClass
 import org.junit.Test
-import queue.Queues
-import store.AWSUtil
-import store.UserStore
 import user.User
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 
 
 class UsersTest {

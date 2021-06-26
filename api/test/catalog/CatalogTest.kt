@@ -4,14 +4,7 @@ import cache.InMemoryCache
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.any
-import org.mockito.Mockito.anyInt
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.spy
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import java.util.*
+import org.mockito.Mockito.*
 import kotlin.test.assertEquals
 
 internal class CatalogTest {

@@ -6,15 +6,10 @@ import liquibase.LabelExpression
 import liquibase.Liquibase
 import liquibase.database.DatabaseFactory
 import liquibase.database.jvm.JdbcConnection
-import liquibase.exception.LiquibaseException
 import liquibase.resource.ClassLoaderResourceAccessor
-import org.slf4j.LoggerFactory
-import java.sql.Connection
-import java.sql.SQLException
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.Executors
+import javax.sql.DataSource
 
-open class Updater(val dataSource: DataSource) {
+open class Updater(private val dataSource: DataSource) {
 
     open fun update() {
         runBlocking {

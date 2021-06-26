@@ -2,13 +2,10 @@ package catalog
 
 import cache.Cache
 import com.fasterxml.jackson.databind.JsonNode
-import com.github.kittinunf.fuel.core.FuelError
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
-import com.google.common.io.BaseEncoding
 import org.hashids.Hashids
 import show.Show
-import java.nio.ByteBuffer
 import java.util.*
 
 enum class Type(val char : Char) {

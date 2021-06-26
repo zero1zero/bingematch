@@ -4,9 +4,7 @@ import io.lettuce.core.RedisClient
 import io.lettuce.core.api.StatefulRedisConnection
 import io.lettuce.core.api.sync.RedisCommands
 import io.lettuce.core.codec.ByteArrayCodec
-import io.lettuce.core.codec.RedisCodec
 import show.Show
-import java.nio.ByteBuffer
 import java.util.*
 
 class RedisCache : Cache {

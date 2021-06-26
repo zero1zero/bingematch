@@ -11,7 +11,6 @@ import objectMapper
 import org.junit.BeforeClass
 import org.junit.Test
 import show.Show
-import user.User
 import kotlin.test.assertEquals
 
 class ShowsTest {

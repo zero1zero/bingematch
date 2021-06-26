@@ -2,22 +2,21 @@ import cache.Cache
 import cache.InMemoryCache
 import catalog.Catalog
 import catalog.MetadataSource
-import db.DataSource
 import db.Database
 import db.Updater
 import etc.PasswordUtil
+import org.apache.ibatis.datasource.pooled.PooledDataSource
 import queue.Queues
-import store.AWSUtil
 import store.UserStore
 
-class TestDeps : Dependencies {
+open class TestDeps : Dependencies {
     private val passwordUtil = PasswordUtil()
-    private val awsUtil = AWSUtil()
     private val metadata = MetadataSource()
-    private val storage = UserStore(passwordUtil, awsUtil.ddb)
-    private val datasource = DataSource()
+
+    private val datasource = EmbeddedDataSource()
     private val database = Database(datasource)
-    private val updater = DummyUpdater(datasource)
+    private val storage = UserStore(passwordUtil, database)
+    private val updater = Updater(datasource)
 
     //test overrides
     private val cache = InMemoryCache()
@@ -48,7 +47,9 @@ class TestDeps : Dependencies {
         return updater
     }
 }
-
-class DummyUpdater(dataSource: DataSource) : Updater(dataSource) {
-    override fun update() {}
+class EmbeddedDataSource : PooledDataSource (
+    "org.postgresql.Driver",
+    "jdbc:postgresql://localhost:5432/zack",
+    "zack",
+    "zack") {
 }

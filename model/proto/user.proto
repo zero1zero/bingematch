@@ -6,16 +6,22 @@ option java_outer_classname = "User";
 message Detail {
     string id = 1;
     string email = 2;
+    string first = 3;
+    string last = 4;
 }
 
 message Register {
     string email = 1;
     string password = 2;
+    string first = 3;
+    string last = 4;
 }
 
 message Update {
     string email = 1;
     string password = 2;
+    string first = 3;
+    string last = 4;
 }
 
 message Login {

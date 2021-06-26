@@ -1,4 +1,5 @@
 import * as $protobuf from "protobufjs";
+
 /** Namespace queue. */
 export namespace queue {
 
@@ -1788,6 +1789,12 @@ export namespace user {
 
         /** Detail email */
         email?: (string|null);
+
+        /** Detail first */
+        first?: (string|null);
+
+        /** Detail last */
+        last?: (string|null);
     }
 
     /** Represents a Detail. */
@@ -1804,6 +1811,12 @@ export namespace user {
 
         /** Detail email. */
         public email: string;
+
+        /** Detail first. */
+        public first: string;
+
+        /** Detail last. */
+        public last: string;
 
         /**
          * Creates a new Detail instance using the specified properties.
@@ -1884,6 +1897,12 @@ export namespace user {
 
         /** Register password */
         password?: (string|null);
+
+        /** Register first */
+        first?: (string|null);
+
+        /** Register last */
+        last?: (string|null);
     }
 
     /** Represents a Register. */
@@ -1900,6 +1919,12 @@ export namespace user {
 
         /** Register password. */
         public password: string;
+
+        /** Register first. */
+        public first: string;
+
+        /** Register last. */
+        public last: string;
 
         /**
          * Creates a new Register instance using the specified properties.
@@ -1980,6 +2005,12 @@ export namespace user {
 
         /** Update password */
         password?: (string|null);
+
+        /** Update first */
+        first?: (string|null);
+
+        /** Update last */
+        last?: (string|null);
     }
 
     /** Represents an Update. */
@@ -1996,6 +2027,12 @@ export namespace user {
 
         /** Update password. */
         public password: string;
+
+        /** Update first. */
+        public first: string;
+
+        /** Update last. */
+        public last: string;
 
         /**
          * Creates a new Update instance using the specified properties.

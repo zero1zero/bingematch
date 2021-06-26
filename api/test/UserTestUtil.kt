@@ -2,7 +2,6 @@ import auth.JwtConfig
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import org.junit.Assert
-import org.junit.BeforeClass
 import user.User
 import java.util.*
 import java.util.concurrent.CountDownLatch

@@ -4735,6 +4735,8 @@ export const user = $root.user = (() => {
          * @interface IDetail
          * @property {string|null} [id] Detail id
          * @property {string|null} [email] Detail email
+         * @property {string|null} [first] Detail first
+         * @property {string|null} [last] Detail last
          */
 
         /**
@@ -4769,6 +4771,22 @@ export const user = $root.user = (() => {
         Detail.prototype.email = "";
 
         /**
+         * Detail first.
+         * @member {string} first
+         * @memberof user.Detail
+         * @instance
+         */
+        Detail.prototype.first = "";
+
+        /**
+         * Detail last.
+         * @member {string} last
+         * @memberof user.Detail
+         * @instance
+         */
+        Detail.prototype.last = "";
+
+        /**
          * Creates a new Detail instance using the specified properties.
          * @function create
          * @memberof user.Detail
@@ -4796,6 +4814,10 @@ export const user = $root.user = (() => {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
             if (message.email != null && Object.hasOwnProperty.call(message, "email"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.email);
+            if (message.first != null && Object.hasOwnProperty.call(message, "first"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.first);
+            if (message.last != null && Object.hasOwnProperty.call(message, "last"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.last);
             return writer;
         };
 
@@ -4835,6 +4857,12 @@ export const user = $root.user = (() => {
                     break;
                 case 2:
                     message.email = reader.string();
+                    break;
+                case 3:
+                    message.first = reader.string();
+                    break;
+                case 4:
+                    message.last = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -4877,6 +4905,12 @@ export const user = $root.user = (() => {
             if (message.email != null && message.hasOwnProperty("email"))
                 if (!$util.isString(message.email))
                     return "email: string expected";
+            if (message.first != null && message.hasOwnProperty("first"))
+                if (!$util.isString(message.first))
+                    return "first: string expected";
+            if (message.last != null && message.hasOwnProperty("last"))
+                if (!$util.isString(message.last))
+                    return "last: string expected";
             return null;
         };
 
@@ -4896,6 +4930,10 @@ export const user = $root.user = (() => {
                 message.id = String(object.id);
             if (object.email != null)
                 message.email = String(object.email);
+            if (object.first != null)
+                message.first = String(object.first);
+            if (object.last != null)
+                message.last = String(object.last);
             return message;
         };
 
@@ -4915,11 +4953,17 @@ export const user = $root.user = (() => {
             if (options.defaults) {
                 object.id = "";
                 object.email = "";
+                object.first = "";
+                object.last = "";
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
             if (message.email != null && message.hasOwnProperty("email"))
                 object.email = message.email;
+            if (message.first != null && message.hasOwnProperty("first"))
+                object.first = message.first;
+            if (message.last != null && message.hasOwnProperty("last"))
+                object.last = message.last;
             return object;
         };
 
@@ -4945,6 +4989,8 @@ export const user = $root.user = (() => {
          * @interface IRegister
          * @property {string|null} [email] Register email
          * @property {string|null} [password] Register password
+         * @property {string|null} [first] Register first
+         * @property {string|null} [last] Register last
          */
 
         /**
@@ -4979,6 +5025,22 @@ export const user = $root.user = (() => {
         Register.prototype.password = "";
 
         /**
+         * Register first.
+         * @member {string} first
+         * @memberof user.Register
+         * @instance
+         */
+        Register.prototype.first = "";
+
+        /**
+         * Register last.
+         * @member {string} last
+         * @memberof user.Register
+         * @instance
+         */
+        Register.prototype.last = "";
+
+        /**
          * Creates a new Register instance using the specified properties.
          * @function create
          * @memberof user.Register
@@ -5006,6 +5068,10 @@ export const user = $root.user = (() => {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.email);
             if (message.password != null && Object.hasOwnProperty.call(message, "password"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.password);
+            if (message.first != null && Object.hasOwnProperty.call(message, "first"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.first);
+            if (message.last != null && Object.hasOwnProperty.call(message, "last"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.last);
             return writer;
         };
 
@@ -5045,6 +5111,12 @@ export const user = $root.user = (() => {
                     break;
                 case 2:
                     message.password = reader.string();
+                    break;
+                case 3:
+                    message.first = reader.string();
+                    break;
+                case 4:
+                    message.last = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -5087,6 +5159,12 @@ export const user = $root.user = (() => {
             if (message.password != null && message.hasOwnProperty("password"))
                 if (!$util.isString(message.password))
                     return "password: string expected";
+            if (message.first != null && message.hasOwnProperty("first"))
+                if (!$util.isString(message.first))
+                    return "first: string expected";
+            if (message.last != null && message.hasOwnProperty("last"))
+                if (!$util.isString(message.last))
+                    return "last: string expected";
             return null;
         };
 
@@ -5106,6 +5184,10 @@ export const user = $root.user = (() => {
                 message.email = String(object.email);
             if (object.password != null)
                 message.password = String(object.password);
+            if (object.first != null)
+                message.first = String(object.first);
+            if (object.last != null)
+                message.last = String(object.last);
             return message;
         };
 
@@ -5125,11 +5207,17 @@ export const user = $root.user = (() => {
             if (options.defaults) {
                 object.email = "";
                 object.password = "";
+                object.first = "";
+                object.last = "";
             }
             if (message.email != null && message.hasOwnProperty("email"))
                 object.email = message.email;
             if (message.password != null && message.hasOwnProperty("password"))
                 object.password = message.password;
+            if (message.first != null && message.hasOwnProperty("first"))
+                object.first = message.first;
+            if (message.last != null && message.hasOwnProperty("last"))
+                object.last = message.last;
             return object;
         };
 
@@ -5155,6 +5243,8 @@ export const user = $root.user = (() => {
          * @interface IUpdate
          * @property {string|null} [email] Update email
          * @property {string|null} [password] Update password
+         * @property {string|null} [first] Update first
+         * @property {string|null} [last] Update last
          */
 
         /**
@@ -5189,6 +5279,22 @@ export const user = $root.user = (() => {
         Update.prototype.password = "";
 
         /**
+         * Update first.
+         * @member {string} first
+         * @memberof user.Update
+         * @instance
+         */
+        Update.prototype.first = "";
+
+        /**
+         * Update last.
+         * @member {string} last
+         * @memberof user.Update
+         * @instance
+         */
+        Update.prototype.last = "";
+
+        /**
          * Creates a new Update instance using the specified properties.
          * @function create
          * @memberof user.Update
@@ -5216,6 +5322,10 @@ export const user = $root.user = (() => {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.email);
             if (message.password != null && Object.hasOwnProperty.call(message, "password"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.password);
+            if (message.first != null && Object.hasOwnProperty.call(message, "first"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.first);
+            if (message.last != null && Object.hasOwnProperty.call(message, "last"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.last);
             return writer;
         };
 
@@ -5255,6 +5365,12 @@ export const user = $root.user = (() => {
                     break;
                 case 2:
                     message.password = reader.string();
+                    break;
+                case 3:
+                    message.first = reader.string();
+                    break;
+                case 4:
+                    message.last = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -5297,6 +5413,12 @@ export const user = $root.user = (() => {
             if (message.password != null && message.hasOwnProperty("password"))
                 if (!$util.isString(message.password))
                     return "password: string expected";
+            if (message.first != null && message.hasOwnProperty("first"))
+                if (!$util.isString(message.first))
+                    return "first: string expected";
+            if (message.last != null && message.hasOwnProperty("last"))
+                if (!$util.isString(message.last))
+                    return "last: string expected";
             return null;
         };
 
@@ -5316,6 +5438,10 @@ export const user = $root.user = (() => {
                 message.email = String(object.email);
             if (object.password != null)
                 message.password = String(object.password);
+            if (object.first != null)
+                message.first = String(object.first);
+            if (object.last != null)
+                message.last = String(object.last);
             return message;
         };
 
@@ -5335,11 +5461,17 @@ export const user = $root.user = (() => {
             if (options.defaults) {
                 object.email = "";
                 object.password = "";
+                object.first = "";
+                object.last = "";
             }
             if (message.email != null && message.hasOwnProperty("email"))
                 object.email = message.email;
             if (message.password != null && message.hasOwnProperty("password"))
                 object.password = message.password;
+            if (message.first != null && message.hasOwnProperty("first"))
+                object.first = message.first;
+            if (message.last != null && message.hasOwnProperty("last"))
+                object.last = message.last;
             return object;
         };
 

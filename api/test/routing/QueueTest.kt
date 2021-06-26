@@ -2,7 +2,6 @@ package routing
 
 import TestDeps
 import UserTestUtil
-import catalog.tmdbIdToInternalId
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import module
@@ -11,7 +10,6 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import queue.Queue
-import show.Show
 import kotlin.test.assertEquals
 
 class QueueTest {

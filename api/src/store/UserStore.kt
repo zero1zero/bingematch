@@ -1,217 +1,92 @@
 package store
 
+import db.Database
+import db.mappers.UserMapper
 import etc.PasswordUtil
 import etc.generateId
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue
-import software.amazon.awssdk.services.dynamodb.model.AttributeValueUpdate
-import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest
-import software.amazon.awssdk.services.dynamodb.model.GetItemRequest
-import software.amazon.awssdk.services.dynamodb.model.GetItemResponse
-import software.amazon.awssdk.services.dynamodb.model.PutItemRequest
-import software.amazon.awssdk.services.dynamodb.model.QueryRequest
-import software.amazon.awssdk.services.dynamodb.model.QueryResponse
-import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest
 import user.User
-import java.util.*
 
 class UserStore(private val passwordUtil: PasswordUtil,
-                private val ddb : DynamoDbClient) {
-
-    private val table = "users"
+                val db : Database) {
 
     fun getUserByLogin(email: String, password: String): Result<User.Detail> {
 
-        val attrs = mapOf(
-            ":email" to AttributeValue.builder()
-                .s(email)
-                .build()
-        )
+        val session = db.newSession()
+        val mapper = session.getMapper(UserMapper::class.java)
 
-        val queryReq = QueryRequest.builder()
-            .tableName(table)
-            .indexName("email-index")
-            .limit(1)
-            .keyConditionExpression("email = :email")
-            .expressionAttributeValues(attrs)
-            .build()
-
-        val response: QueryResponse = ddb.query(queryReq)
-
-        if (response.count() == 0) {
-            return Result.failure(UnauthorizedException())
-        }
-
-        val item = response.items()[0]
+        val hash = mapper.getHashByEmail(email) ?: return Result.failure(UnauthorizedException())
 
         //if pw doesnt match, scratch it
-        if (!passwordUtil.verify(password, item["hash"]!!.s())) {
+        if (!passwordUtil.verify(password, hash)) {
             return Result.failure(RuntimeException("password hash mismatch"))
         }
 
+        val user = mapper.getUserByEmail(email)!!
+
         return Result.success(
-            User.Detail.newBuilder()
-                .setEmail(item["email"]!!.s())
-                .setId(item["id"]!!.s())
-                .build()
+            user.build()
         )
     }
 
     fun getUserByEmail(email: String): Result<User.Detail> {
 
-        val attrs = mapOf(
-            ":email" to AttributeValue.builder()
-                .s(email)
-                .build()
-        )
+        val session = db.newSession()
+        val mapper = session.getMapper(UserMapper::class.java)
 
-        val queryReq = QueryRequest.builder()
-            .tableName(table)
-            .indexName("email-index")
-            .limit(1)
-            .keyConditionExpression("email = :email")
-            .expressionAttributeValues(attrs)
-            .build()
-
-        val response: QueryResponse = ddb.query(queryReq)
-
-        if (response.count() == 0) {
-            return Result.failure(UserNotFoundException())
-        }
-
-        val item = response.items()[0]
+        val user = mapper.getUserByEmail(email) ?: return Result.failure(UserNotFoundException())
 
         return Result.success(
-            User.Detail.newBuilder()
-                .setEmail(item["email"]!!.s())
-                .setId(item["id"]!!.s())
-                .build()
+            user.build()
         )
     }
 
     fun getUser(id: String): Result<User.Detail> {
-        val attrs = mapOf(
-            "id" to AttributeValue.builder()
-                .s(id)
-                .build()
-        )
 
-        // Create a PutItemRequest object
-        val request = GetItemRequest.builder()
-            .tableName(table)
-            .key(attrs)
-            .build()
+        val session = db.newSession()
+        val mapper = session.getMapper(UserMapper::class.java)
 
-        val response: GetItemResponse = ddb.getItem(request)
-
-        if (!response.hasItem()) {
-            return Result.failure(UserNotFoundException())
-        }
-
-        val item = response.item()
+        val user = mapper.getUserByID(id) ?: return Result.failure(UserNotFoundException())
 
         return Result.success(
-            User.Detail.newBuilder()
-                .setEmail(item["email"]!!.s())
-                .setId(item["id"]!!.s())
-                .build()
+            user.build()
         )
     }
 
     fun createUser(signUp: User.Register): User.Detail {
+        val session = db.newSession()
+        val mapper = session.getMapper(UserMapper::class.java)
+
         val user = User.Detail.newBuilder()
             .setId(generateId())
             .setEmail(signUp.email)
+            .setFirst(signUp.first)
+            .setLast(signUp.last)
             .build()
 
-        val attrs = mapOf(
-            "id" to AttributeValue.builder()
-                .s(user.id)
-                .build(),
-            "email" to AttributeValue.builder()
-                .s(user.email)
-                .build(),
-            "hash" to AttributeValue.builder()
-                .s(passwordUtil.hash(signUp.password))
-                .build()
+        mapper.createUser(user, passwordUtil.hash(signUp.password))
 
-        )
-
-        val request = PutItemRequest.builder()
-            .tableName(table)
-            .item(attrs)
-            .build()
-
-        ddb.putItem(request)
+        session.commit()
 
         return user
     }
 
-    fun savePassword(id: String, password: String) {
-        val key = mapOf(
-            "id" to AttributeValue.builder()
-                .s(id)
-                .build()
-        )
-        val attrs = mapOf(
-            "hash" to AttributeValueUpdate.builder()
-                .value(
-                    AttributeValue.builder()
-                        .s(passwordUtil.hash(password))
-                        .build()
-                )
-                .build()
-        )
+    fun updateUser(user: User.Detail, password : String): User.Detail {
+        val session = db.newSession()
+        val mapper = session.getMapper(UserMapper::class.java)
 
-        val request = UpdateItemRequest.builder()
-            .tableName(table)
-            .key(key)
-            .attributeUpdates(attrs)
-            .build()
+        mapper.updateUser(user)
 
-        ddb.updateItem(request)
-    }
+        if (password != "") {
+            mapper.updatePassword(user.id, passwordUtil.hash(password))
+        }
 
-    fun updateUser(user: User.Detail): User.Detail {
-        val key = mapOf(
-            "id" to AttributeValue.builder()
-                .s(user.id)
-                .build()
-        )
-        val attrs = mapOf(
-            "email" to AttributeValueUpdate.builder()
-                .value(
-                    AttributeValue.builder()
-                        .s(user.email)
-                        .build()
-                )
-                .build(),
-        )
-
-        val request = UpdateItemRequest.builder()
-            .tableName(table)
-            .key(key)
-            .attributeUpdates(attrs)
-            .build()
-
-        ddb.updateItem(request)
+        session.commit()
 
         return user
     }
 
     fun delUser(user: String) {
-        val keyToGet = HashMap<String, AttributeValue>()
-
-        keyToGet["id"] = AttributeValue.builder()
-            .s(user)
-            .build()
-
-        val deleteReq = DeleteItemRequest.builder()
-            .tableName(table)
-            .key(keyToGet)
-            .build()
-
-        ddb.deleteItem(deleteReq)
+        //todo go
     }
 }
 

@@ -2,13 +2,11 @@ import cache.Cache
 import cache.RedisCache
 import catalog.Catalog
 import catalog.MetadataSource
-import db.DataSource
 import db.Database
 import db.Updater
 import etc.PasswordUtil
+import org.apache.ibatis.datasource.pooled.PooledDataSource
 import queue.Queues
-import show.Show
-import store.AWSUtil
 import store.UserStore
 
 interface Dependencies {
@@ -24,15 +22,14 @@ interface Dependencies {
 open class ProdDeps : Dependencies {
 
     private val passwordUtil = PasswordUtil()
-    private val awsUtil = AWSUtil()
     private val metadata = MetadataSource()
     private val cache : Cache = RedisCache()
     private val catalog = Catalog(metadata, cache)
     private val queues = Queues(catalog)
-    private val storage = UserStore(passwordUtil, awsUtil.ddb)
-    private val datasource = DataSource()
+    private val datasource = ProdDataSource()
     private val database = Database(datasource)
     private val updater = Updater(datasource)
+    private val storage = UserStore(passwordUtil, database)
 
     override fun userStore(): UserStore {
         return storage
@@ -58,3 +55,10 @@ open class ProdDeps : Dependencies {
         return cache
     }
 }
+
+class ProdDataSource : PooledDataSource(
+    "org.postgresql.Driver",
+    "jdbc:postgresql://postgres.default.svc.cluster.local:5432/zack",
+    "zack",
+    "bzGa8m6ekUYsRRUWpy"
+)
