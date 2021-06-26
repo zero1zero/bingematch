@@ -7,7 +7,7 @@ import etc.generateId
 import user.User
 
 class UserStore(private val passwordUtil: PasswordUtil,
-                val db : Database) {
+                private val db : Database) {
 
     fun getUserByLogin(email: String, password: String): Result<User.Detail> {
 
@@ -85,8 +85,22 @@ class UserStore(private val passwordUtil: PasswordUtil,
         return user
     }
 
-    fun delUser(user: String) {
-        //todo go
+    fun delUser(id: String) {
+        val session = db.newSession()
+        val mapper = session.getMapper(UserMapper::class.java)
+
+        mapper.deleteUser(id)
+
+        session.commit()
+    }
+
+    fun delUserByEmail(email: String) {
+        val session = db.newSession()
+        val mapper = session.getMapper(UserMapper::class.java)
+
+        mapper.deleteUserByEmail(email)
+
+        session.commit()
     }
 }
 

@@ -21,7 +21,9 @@ class UserTestUtil {
             return user.get()
         }
 
-        withTestApplication({ module(TestDeps()) }) {
+        val deps = TestDeps()
+
+        withTestApplication({ module(deps) }) {
 
             val latch = CountDownLatch(1)
 
@@ -60,7 +62,8 @@ class UserTestUtil {
                 setBody(objectMapper.writeValueAsString(login))
             }.apply {
                 if (response.content == "user-exists") {
-                    Assert.fail("user-exists during attempt to create, something is wrong with the test flow")
+                    //cleanup user by hand in the db
+                    deps.userStore().delUserByEmail(login.email)
                 }
                 val userwtoken = objectMapper.readValue(response.content, User.DetailAndToken::class.java)
                 user = Optional.of(userwtoken.detail)

@@ -35,15 +35,27 @@ interface UserMapper {
 
     @Update("""
         UPDATE users SET 
-            (email = #{detail.email}, first = #{detail.first}, last = #{detail.last})
+            email = #{detail.email}, first = #{detail.first}, last = #{detail.last}
             WHERE id = #{detail.id}
         """)
     fun updateUser(@Param("detail") detail: User.Detail)
 
     @Update("""
-        UPDATE users SET password = #{hash} 
-            WHERE id = #{detail.id}
+        UPDATE users SET hash = #{hash} 
+            WHERE id = #{id}
         """)
     fun updatePassword(@Param("id") id: String, @Param("hash") hash: String)
+
+    @Update("""
+        DELETE FROM users 
+            WHERE id = #{id}
+        """)
+    fun deleteUser(@Param("id") id : String)
+
+    @Update("""
+        DELETE FROM users 
+            WHERE email = #{email}
+        """)
+    fun deleteUserByEmail(@Param("email") email : String)
 }
 
