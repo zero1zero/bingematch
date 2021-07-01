@@ -1,5 +1,6 @@
 package db
 
+import db.mappers.CatalogMapper
 import db.mappers.UserMapper
 import org.apache.ibatis.mapping.Environment
 import org.apache.ibatis.session.Configuration
@@ -24,6 +25,7 @@ class Database (dataSource: DataSource) {
 
 //        configuration.typeAliasRegistry.registerAlias(Blog.class);
         configuration.addMapper(UserMapper::class.java)
+        configuration.addMapper(CatalogMapper::class.java)
 
         val builder = SqlSessionFactoryBuilder()
         this.factory = builder.build(configuration)

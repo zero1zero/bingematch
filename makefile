@@ -43,7 +43,6 @@ dashboardCreds:
 	kubectl describe secret `kubectl describe serviceaccount admin-user -n default| grep -o 'admin-user-token-.*' | head -n 1` -n default
 
 deployInfra:
-	kubectl apply -f deploy/redis.yaml
 	kubectl apply -f deploy/postgres.yaml
 
 auth:
@@ -53,7 +52,7 @@ auth:
 deployApi: auth
 	gradle deployApi
 
-fresh: setup auth 
+fresh: setup auth
 	make deployInfra 
 	sleep 10
 	make dashboard

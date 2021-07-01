@@ -141,19 +141,19 @@ export default function App() {
         <Stack.Navigator initialRouteName={'SignUp'} mode={'modal'}>
             <Stack.Screen name='SignUp' component={SignUp}/>
             <Stack.Screen name='Login' component={Login} options={{
-                animationTypeForReplace: 'push',
+                headerShown: false,
+                cardOverlayEnabled: true,
                 cardStyle: {
                     backgroundColor: 'transparent',
                 },
-                cardOverlayEnabled: true,
-                cardOverlay: props => <View style={styles.overlay} />,
+                cardStyleInterpolator: cardInterpolator,
                 gestureResponseDistance: {vertical: 1000},
             }}/>
             <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{
                 animationTypeForReplace: 'push'
             }}/>
         </Stack.Navigator>
-    )
+)
 
     return (
         <AuthContext.Provider value={authContext}>
@@ -165,10 +165,3 @@ export default function App() {
         </AuthContext.Provider>
     );
 }
-const styles = StyleSheet.create({
-    overlay: {
-        height: '100%',
-        backgroundColor: 'black',
-        opacity: .5
-    },
-})

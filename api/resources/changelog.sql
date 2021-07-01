@@ -18,3 +18,19 @@ create table users (
 );
 CREATE INDEX hash_index ON users (hash);
 
+-- changeset zack:3
+create table shows (
+      id varchar(16) PRIMARY KEY,
+
+      tmdb JSON NOT NULL,
+
+      created TIMESTAMP NOT NULL DEFAULT current_timestamp,
+      updated TIMESTAMP NOT NULL DEFAULT current_timestamp
+);
+
+CREATE INDEX tmdb_id ON shows((tmdb->>'id'));
+
+create table catalog_sync (
+    last TIMESTAMP NOT NULL,
+    count integer NOT NULL
+)

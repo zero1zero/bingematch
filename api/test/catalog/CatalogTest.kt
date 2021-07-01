@@ -1,19 +1,21 @@
 package catalog
 
-import cache.InMemoryCache
+import EmbeddedDataSource
+import db.Database
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.mockito.Mockito.*
 import kotlin.test.assertEquals
 
 internal class CatalogTest {
+    private val datasource = EmbeddedDataSource()
+    private val database = Database(datasource)
 
     @Test
     fun getPopularTVAndMovie() {
         val metadataSource = MetadataSource()
 
-        val catalogStore = Catalog(metadataSource, InMemoryCache())
+        val catalogStore = Catalog(metadataSource, database)
 
         val popular = catalogStore.getPopular()
 
@@ -25,29 +27,12 @@ internal class CatalogTest {
     fun noDuplicates() {
         val metadataSource = MetadataSource()
 
-        val catalogStore = Catalog(metadataSource, InMemoryCache())
+        val catalogStore = Catalog(metadataSource, database)
 
         val popular = catalogStore.getPopular()
             .map { it.id }
 
         assertEquals(40, popular.toTypedArray().toSet().size)
-    }
-
-    @Test
-    fun secondIsCached() {
-        val tmdb = spy(TMDB())
-
-        val catalogStore = Catalog(MetadataSource(tmdb), InMemoryCache())
-
-        val popular = catalogStore.getPopular()
-        val popularCached = catalogStore.getPopular()
-
-        //only 4 calls total with 80 items across two lists
-        verify(tmdb, times(20)).getMovie(anyInt())
-        verify(tmdb, times(20)).getTV(anyInt())
-
-        //need to intersect as popular is shuffled each time
-        assertEquals(40, popular.intersect(popularCached).size)
     }
 
     @Test
@@ -68,10 +53,10 @@ internal class CatalogTest {
     fun verifyDataMatches() {
         val metadata = MetadataSource(TMDB())
 
-        val movie = metadata.tmdb.getMovie(399566)
-        val tv = metadata.tmdb.getTV(69478)
+        metadata.tmdb.getMovie(399566)
+        metadata.tmdb.getTV(69478)
 
-        val catalogStore = Catalog(metadata, InMemoryCache())
+        val catalogStore = Catalog(metadata, database)
 
         val movieShow = catalogStore.getShow(tmdbIdToInternalId(399566, Type.Movie))
         val tvShow = catalogStore.getShow(tmdbIdToInternalId(69478, Type.TV))

@@ -1,6 +1,7 @@
 package routing
 
 import TestDeps
+import UseTestApp
 import UserTestUtil
 import catalog.Type
 import catalog.tmdbIdToInternalId
@@ -9,10 +10,12 @@ import io.ktor.server.testing.*
 import module
 import objectMapper
 import org.junit.BeforeClass
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import show.Show
 import kotlin.test.assertEquals
 
+@ExtendWith(UseTestApp::class)
 class ShowsTest {
 
     companion object {

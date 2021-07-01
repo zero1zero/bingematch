@@ -31,76 +31,85 @@ class UserStore(private val passwordUtil: PasswordUtil,
     fun getUserByEmail(email: String): Result<User.Detail> {
 
         val session = db.newSession()
-        val mapper = session.getMapper(UserMapper::class.java)
 
-        val user = mapper.getUserByEmail(email) ?: return Result.failure(UserNotFoundException())
+        session.use {
+            val mapper = session.getMapper(UserMapper::class.java)
 
-        return Result.success(
-            user.build()
-        )
+            val user = mapper.getUserByEmail(email) ?: return Result.failure(UserNotFoundException())
+
+            return Result.success(
+                user.build()
+            )
+        }
     }
 
     fun getUser(id: String): Result<User.Detail> {
 
         val session = db.newSession()
-        val mapper = session.getMapper(UserMapper::class.java)
+        session.use {
+            val mapper = session.getMapper(UserMapper::class.java)
 
-        val user = mapper.getUserByID(id) ?: return Result.failure(UserNotFoundException())
+            val user = mapper.getUserByID(id) ?: return Result.failure(UserNotFoundException())
 
-        return Result.success(
-            user.build()
-        )
+            return Result.success(
+                user.build()
+            )
+        }
     }
 
     fun createUser(signUp: User.Register): User.Detail {
         val session = db.newSession()
-        val mapper = session.getMapper(UserMapper::class.java)
 
-        val user = User.Detail.newBuilder()
-            .setId(generateId())
-            .setEmail(signUp.email)
-            .setFirst(signUp.first)
-            .setLast(signUp.last)
-            .build()
+        session.use {
+            val mapper = session.getMapper(UserMapper::class.java)
 
-        mapper.createUser(user, passwordUtil.hash(signUp.password))
+            val user = User.Detail.newBuilder()
+                .setId(generateId())
+                .setEmail(signUp.email)
+                .setFirst(signUp.first)
+                .setLast(signUp.last)
+                .build()
 
-        session.commit()
+            mapper.createUser(user, passwordUtil.hash(signUp.password))
 
-        return user
+            return user
+        }
     }
 
     fun updateUser(user: User.Detail, password : String): User.Detail {
         val session = db.newSession()
-        val mapper = session.getMapper(UserMapper::class.java)
 
-        mapper.updateUser(user)
+        session.use {
+            val mapper = session.getMapper(UserMapper::class.java)
 
-        if (password != "") {
-            mapper.updatePassword(user.id, passwordUtil.hash(password))
+            mapper.updateUser(user)
+
+            if (password != "") {
+                mapper.updatePassword(user.id, passwordUtil.hash(password))
+            }
+
+            return user
         }
-
-        session.commit()
-
-        return user
     }
 
     fun delUser(id: String) {
         val session = db.newSession()
-        val mapper = session.getMapper(UserMapper::class.java)
 
-        mapper.deleteUser(id)
+        session.use {
+            val mapper = session.getMapper(UserMapper::class.java)
 
-        session.commit()
+            mapper.deleteUser(id)
+        }
     }
 
     fun delUserByEmail(email: String) {
         val session = db.newSession()
-        val mapper = session.getMapper(UserMapper::class.java)
 
-        mapper.deleteUserByEmail(email)
+        session.use {
+            val mapper = session.getMapper(UserMapper::class.java)
 
-        session.commit()
+            mapper.deleteUserByEmail(email)
+        }
     }
 }
 

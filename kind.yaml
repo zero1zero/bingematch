@@ -14,5 +14,5 @@ nodes:
     hostPort: 80
     protocol: TCP
   extraMounts:
-  - hostPath: /tmp/postgres/
+  - hostPath: /Users/zack/src/bingematch/pg_data
     containerPath: /postgres/

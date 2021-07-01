@@ -1,11 +1,10 @@
-import cache.Cache
-import cache.InMemoryCache
 import catalog.Catalog
 import catalog.MetadataSource
 import db.Database
 import db.Updater
 import etc.PasswordUtil
 import org.apache.ibatis.datasource.pooled.PooledDataSource
+import org.junit.jupiter.api.BeforeAll
 import queue.Queues
 import store.UserStore
 
@@ -19,8 +18,7 @@ open class TestDeps : Dependencies {
     private val updater = Updater(datasource)
 
     //test overrides
-    private val cache = InMemoryCache()
-    private val catalog = Catalog(metadata, cache)
+    private val catalog = Catalog(metadata, database)
     private val queues = Queues(catalog)
 
     override fun userStore(): UserStore {
@@ -29,10 +27,6 @@ open class TestDeps : Dependencies {
 
     override fun queues(): Queues {
         return queues
-    }
-
-    override fun cache(): Cache {
-        return cache
     }
 
     override fun catalog(): Catalog {

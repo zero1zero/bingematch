@@ -25,7 +25,6 @@ import routing.show
 import routing.user
 import show.Show
 import test.PostgresTest
-import test.RedisCacheTest
 import user.User
 import java.io.PrintWriter
 import java.text.DateFormat
@@ -42,7 +41,6 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
     }
     environment.monitor.subscribe(ApplicationStopped){
         println("Game over, man")
-        deps.cache().close()
     }
 
     install(Authentication) {
@@ -85,7 +83,6 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
     val listener = SummaryGeneratingListener()
     val request = LauncherDiscoveryRequestBuilder.request()
         .selectors(
-            selectClass(RedisCacheTest::class.java),
             selectClass(PostgresTest::class.java)
         )
         .build()

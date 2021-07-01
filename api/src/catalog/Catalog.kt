@@ -1,43 +1,19 @@
 package catalog
 
-import cache.Cache
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
+import db.Database
+import db.mappers.CatalogMapper
 import org.hashids.Hashids
 import show.Show
-import java.util.*
-
-enum class Type(val char : Char) {
-    TV('t'),
-    Movie('m');
-
-    companion object {
-        fun fromChar(char : Char): Type {
-            return if (char == 't') TV else Movie
-        }
-    }
-}
-
-class TMDBId(val id : Int, val type : Type)
-
-val hashid = Hashids("horse battery staple zack", 3, "23456789abcdefghkmpqrstuvwxyz")
-
-fun tmdbIdToInternalId(id : Int, type : Type): String {
-    return hashid.encode(type.char.toLong(), id.toLong())
-}
-
-fun internalIdToTmdbId(id : String): TMDBId {
-    val decoded = hashid.decode(id)
-
-    check(decoded.size == 2) { "Poorly formed internal identifier" }
-
-    return TMDBId(decoded[1].toInt(), Type.fromChar(decoded[0].toChar()))
-}
 
 class Catalog(
     private val metadataSource: MetadataSource,
-    private val cache : Cache) {
+    private val db : Database) {
+
+    private val mapper : ObjectMapper = ObjectMapper()
 
     private val genres : com.google.common.cache.Cache<Int, Show.Genre> = CacheBuilder.newBuilder()
         .build(CacheLoader.from { id ->
@@ -214,63 +190,73 @@ class Catalog(
     }
 
     fun getShow(id : String) : Show.Detail {
+        val session = db.newSession()
 
-        var maybeItem = cache.getShow(id)
+        session.use {
+            val mapper = session.getMapper(CatalogMapper::class.java)
 
-        if (maybeItem.isEmpty) {
+            val maybeShow = mapper.getShow(id)
 
-            val tmdbId = internalIdToTmdbId(id)
+            if (maybeShow == null) {
+                val tmdbId = internalIdToTmdbId(id)
 
-            val newShow = cacheTmdb(tmdbId.id, id) {
-                when (tmdbId.type) {
-                    Type.TV -> metadataSource.tmdb.getTV(it)
-                    Type.Movie -> metadataSource.tmdb.getMovie(it)
+                val node = when (tmdbId.type) {
+                    Type.TV -> metadataSource.tmdb.getTV(tmdbId.id)
+                    Type.Movie -> metadataSource.tmdb.getMovie(tmdbId.id)
                 }
+
+                mapper.addShow(id, this.mapper.writeValueAsString(node))
+
+                return fullShowJsonToShow(id, node)
             }
 
-            cache.setShow(newShow)
-
-            maybeItem = Optional.of(newShow)
+            return fullShowJsonToShow(id, this.mapper.readTree(maybeShow.tmdb))
         }
-
-        return maybeItem.get()
     }
-
-    fun cacheTmdb(tmdbId: Int, id: String, hydrate : (tmdbId: Int) -> JsonNode): Show.Detail {
-
-        var maybeCached = cache.getShow(id)
-
-        if (maybeCached.isEmpty) {
-            val newShow = fullShowJsonToShow(id, hydrate(tmdbId))
-
-            cache.setShow(newShow)
-
-            maybeCached = Optional.of(newShow)
-        }
-
-        return maybeCached.get()
-    }
-
 
     fun getPopular() : List<Show.Detail> {
         val movies = metadataSource.tmdb.getPopularMovies()["results"]
             .map {
                 val id = tmdbIdToInternalId(it["id"].asInt(), Type.Movie)
-                cacheTmdb(it["id"].asInt(), id) { tmdbId ->
-                    metadataSource.tmdb.getMovie(tmdbId)
-                }
+                getShow(id)
             }
             .toList()
 
         val tv = metadataSource.tmdb.getPopularTV()["results"]
             .map {
                 val id = tmdbIdToInternalId(it["id"].asInt(), Type.TV)
-                cacheTmdb(it["id"].asInt(), id) { tmdbId ->
-                    metadataSource.tmdb.getTV(tmdbId)
-                }
+
+                getShow(id)
             }
             .toList()
 
         return (movies + tv).shuffled()
     }
+}
+
+enum class Type(val char : Char) {
+    TV('t'),
+    Movie('m');
+
+    companion object {
+        fun fromChar(char : Char): Type {
+            return if (char == 't') TV else Movie
+        }
+    }
+}
+
+class TMDBId(val id : Int, val type : Type)
+
+val hashid = Hashids("horse battery staple zack", 3, "23456789abcdefghkmpqrstuvwxyz")
+
+fun tmdbIdToInternalId(id : Int, type : Type): String {
+    return hashid.encode(type.char.toLong(), id.toLong())
+}
+
+fun internalIdToTmdbId(id : String): TMDBId {
+    val decoded = hashid.decode(id)
+
+    check(decoded.size == 2) { "Poorly formed internal identifier" }
+
+    return TMDBId(decoded[1].toInt(), Type.fromChar(decoded[0].toChar()))
 }

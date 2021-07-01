@@ -12,8 +12,10 @@ class PostgresTest {
         val database = Database(ProdDataSource())
         val session = database.newSession()
 
-        session.select("select 1") { result ->
-            assertEquals(result.resultCount, 1)
+        session.use {
+            it.select("select 1") { result ->
+                assertEquals(result.resultCount, 1)
+            }
         }
     }
 }

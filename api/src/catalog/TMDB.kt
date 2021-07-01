@@ -3,6 +3,8 @@ package catalog
 import com.fasterxml.jackson.databind.JsonNode
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.jackson.responseObject
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 
 /**
  * The Movie DB
@@ -17,8 +19,38 @@ import com.github.kittinunf.fuel.jackson.responseObject
  */
 class TMDB {
 
-    val key = "ba647fb82147021ea5fd00ccf6ebb571"
-    val baseURL = "https://api.themoviedb.org/3"
+    private val key = "ba647fb82147021ea5fd00ccf6ebb571"
+    private val baseURL = "https://api.themoviedb.org/3"
+
+    private var dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
+    fun getMovieChanges(start : Instant, end : Instant, page : Int) : JsonNode {
+        val (request, response, result) = Fuel.get(
+            "$baseURL/movie/changes", listOf(
+                "api_key" to key,
+                "language" to "en",
+                "$page" to "page",
+                dateFormatter.format(start) to "start_date",
+                dateFormatter.format(end) to "end_date",
+            ))
+            .responseObject<JsonNode>()
+
+        return result.get()
+    }
+
+    fun getTvChanges(start : Instant, end : Instant, page : Int) : JsonNode {
+        val (request, response, result) = Fuel.get(
+            "$baseURL/tv/changes", listOf(
+                "api_key" to key,
+                "language" to "en",
+                "$page" to "page",
+                dateFormatter.format(start) to "start_date",
+                dateFormatter.format(end) to "end_date",
+            ))
+            .responseObject<JsonNode>()
+
+        return result.get()
+    }
 
     fun getMovieGenres() : JsonNode {
         val (request, response, result) = Fuel.get(

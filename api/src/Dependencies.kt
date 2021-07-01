@@ -1,5 +1,3 @@
-import cache.Cache
-import cache.RedisCache
 import catalog.Catalog
 import catalog.MetadataSource
 import db.Database
@@ -13,7 +11,6 @@ interface Dependencies {
 
     fun userStore() : UserStore
     fun queues() : Queues
-    fun cache() : Cache
     fun catalog() : Catalog
     fun database() : Database
     fun updater() : Updater
@@ -23,11 +20,10 @@ open class ProdDeps : Dependencies {
 
     private val passwordUtil = PasswordUtil()
     private val metadata = MetadataSource()
-    private val cache : Cache = RedisCache()
-    private val catalog = Catalog(metadata, cache)
-    private val queues = Queues(catalog)
     private val datasource = ProdDataSource()
     private val database = Database(datasource)
+    private val catalog = Catalog(metadata, database)
+    private val queues = Queues(catalog)
     private val updater = Updater(datasource)
     private val storage = UserStore(passwordUtil, database)
 
@@ -49,10 +45,6 @@ open class ProdDeps : Dependencies {
 
     override fun updater(): Updater {
         return updater
-    }
-
-    override fun cache(): Cache {
-        return cache
     }
 }
 
