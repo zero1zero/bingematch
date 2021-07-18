@@ -1,12 +1,12 @@
 import catalog.Catalog
+import catalog.Genres
 import catalog.MetadataSource
 import db.Database
 import db.Updater
 import etc.PasswordUtil
 import org.apache.ibatis.datasource.pooled.PooledDataSource
-import org.junit.jupiter.api.BeforeAll
 import queue.Queues
-import store.UserStore
+import user.UserStore
 
 open class TestDeps : Dependencies {
     private val passwordUtil = PasswordUtil()
@@ -14,11 +14,12 @@ open class TestDeps : Dependencies {
 
     private val datasource = EmbeddedDataSource()
     private val database = Database(datasource)
-    private val storage = UserStore(passwordUtil, database)
+    private val genres = Genres(metadata)
+    private val storage = UserStore(passwordUtil, genres)
     private val updater = Updater(datasource)
 
     //test overrides
-    private val catalog = Catalog(metadata, database)
+    private val catalog = Catalog(metadata)
     private val queues = Queues(catalog)
 
     override fun userStore(): UserStore {
@@ -39,6 +40,10 @@ open class TestDeps : Dependencies {
 
     override fun updater(): Updater {
         return updater
+    }
+
+    override fun genres(): Genres {
+        return genres
     }
 }
 class EmbeddedDataSource : PooledDataSource (

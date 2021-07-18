@@ -1,6 +1,6 @@
 import {Text, ViewStyle} from "react-native";
 import React from "react";
-import {StateChange, ValidationStatus} from "../UserReducer";
+import {StateChange, verify} from "../SignUpReducer";
 import {Input} from "../../components/Input";
 import {faLock} from "@fortawesome/free-solid-svg-icons";
 import {BingeMatch} from "../../theme";
@@ -15,16 +15,22 @@ interface Props {
 
 export const PasswordInput: React.FC<Props> = (props) => {
 
-    return (
-        <>
-            <Text style={BingeMatch.form.message}>
+    const message = () => {
+        if (props.message) {
+            return <Text style={BingeMatch.form.message}>
                 {props.message}
             </Text>
+        }
+    }
+
+    return (
+        <>
+            {message()}
 
             <Input
                 style={props.style}
                 icon={faLock}
-                onBlur={() => props.dispatch({password: {validation: {status: ValidationStatus.Verify}}})}
+                onBlur={() => props.dispatch({password: verify})}
                 clearTextOnFocus={true}
                 autoCapitalize='none'
                 secureTextEntry={true}

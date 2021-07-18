@@ -49,24 +49,24 @@ export const Swipable: React.FC<Props> = (props) => {
             rotate: .10,
             easing: Easing.in(Easing.back(1))
         }],
-        [Sentiment.Love, {
-            scale: 1.05,
-            xy: {
-                x: 0,
-                y: -HEIGHT_HALF * 2.5,
-            },
-            rotate: 0,
-            easing: Easing.in(Easing.back(1))
-        }],
-        [Sentiment.Hate, {
-            scale: 1.05,
-            xy: {
-                x: 0,
-                y: HEIGHT_HALF * 2.5,
-            },
-            rotate: 0,
-            easing: Easing.in(Easing.back(1))
-        }],
+        // [Sentiment.Love, {
+        //     scale: 1.05,
+        //     xy: {
+        //         x: 0,
+        //         y: -HEIGHT_HALF * 2.5,
+        //     },
+        //     rotate: 0,
+        //     easing: Easing.in(Easing.back(1))
+        // }],
+        // [Sentiment.Hate, {
+        //     scale: 1.05,
+        //     xy: {
+        //         x: 0,
+        //         y: HEIGHT_HALF * 2.5,
+        //     },
+        //     rotate: 0,
+        //     easing: Easing.in(Easing.back(1))
+        // }],
 
         [Sentiment.Unknown, {
             scale: 1,
@@ -193,27 +193,27 @@ export const Swipable: React.FC<Props> = (props) => {
                         useNativeDriver: true,
                     }).start();
                     setTimeout(() => triggerSwipe(InteractionName.SwipeDislike), 200, props)
-                    // up
-                } else if (upValue < -1) {
-                    Animated.spring(card, {
-                        toValue: {
-                            x: 0,
-                            y: HEIGHT_HALF * -2,
-                        },
-                        useNativeDriver: true,
-                    }).start();
-                    setTimeout(() => triggerSwipe(InteractionName.SwipeLove), 200, props)
-                    // down
-                } else if (upValue > 1) {
-                    Animated.spring(card, {
-                        toValue: {
-                            x: 0,
-                            y: HEIGHT_HALF * 2,
-                        },
-                        useNativeDriver: true,
-                    }).start();
-                    setTimeout(() => triggerSwipe(InteractionName.SwipeHate), 200, props)
-                    // the card didn't reach its swipe position
+                //     // up
+                // } else if (upValue < -1) {
+                //     Animated.spring(card, {
+                //         toValue: {
+                //             x: 0,
+                //             y: HEIGHT_HALF * -2,
+                //         },
+                //         useNativeDriver: true,
+                //     }).start();
+                //     setTimeout(() => triggerSwipe(InteractionName.SwipeLove), 200, props)
+                //     // down
+                // } else if (upValue > 1) {
+                //     Animated.spring(card, {
+                //         toValue: {
+                //             x: 0,
+                //             y: HEIGHT_HALF * 2,
+                //         },
+                //         useNativeDriver: true,
+                //     }).start();
+                //     setTimeout(() => triggerSwipe(InteractionName.SwipeHate), 200, props)
+                //     // the card didn't reach its swipe position
                 } else {
                     Animated.spring(card, {
                         toValue: {x: 0, y: 0},

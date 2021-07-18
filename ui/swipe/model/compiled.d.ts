@@ -1,4 +1,5 @@
 import * as $protobuf from "protobufjs";
+
 /** Namespace queue. */
 export namespace queue {
 
@@ -98,6 +99,9 @@ export namespace queue {
         /** QueuedItem id */
         id?: (string|null);
 
+        /** QueuedItem user */
+        user?: (string|null);
+
         /** QueuedItem show */
         show?: (show.IThinDetail|null);
     }
@@ -113,6 +117,9 @@ export namespace queue {
 
         /** QueuedItem id. */
         public id: string;
+
+        /** QueuedItem user. */
+        public user: string;
 
         /** QueuedItem show. */
         public show?: (show.IThinDetail|null);
@@ -188,119 +195,11 @@ export namespace queue {
         public toJSON(): { [k: string]: any };
     }
 
-    /** Properties of an Item. */
-    interface IItem {
-
-        /** Item id */
-        id?: (string|null);
-
-        /** Item state */
-        state?: (queue.Item.State|null);
-
-        /** Item show */
-        show?: (show.IDetail|null);
-    }
-
-    /** Represents an Item. */
-    class Item implements IItem {
-
-        /**
-         * Constructs a new Item.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: queue.IItem);
-
-        /** Item id. */
-        public id: string;
-
-        /** Item state. */
-        public state: queue.Item.State;
-
-        /** Item show. */
-        public show?: (show.IDetail|null);
-
-        /**
-         * Creates a new Item instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns Item instance
-         */
-        public static create(properties?: queue.IItem): queue.Item;
-
-        /**
-         * Encodes the specified Item message. Does not implicitly {@link queue.Item.verify|verify} messages.
-         * @param message Item message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: queue.IItem, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified Item message, length delimited. Does not implicitly {@link queue.Item.verify|verify} messages.
-         * @param message Item message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: queue.IItem, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes an Item message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns Item
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): queue.Item;
-
-        /**
-         * Decodes an Item message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns Item
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): queue.Item;
-
-        /**
-         * Verifies an Item message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates an Item message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns Item
-         */
-        public static fromObject(object: { [k: string]: any }): queue.Item;
-
-        /**
-         * Creates a plain object from an Item message. Also converts values to other types if specified.
-         * @param message Item
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: queue.Item, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this Item to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    namespace Item {
-
-        /** State enum. */
-        enum State {
-            Queued = 0,
-            Like = 1,
-            Dislike = 2,
-            Love = 3,
-            Hate = 4,
-            Skipped = 5
-        }
+    /** QueueItemState enum. */
+    enum QueueItemState {
+        Queued = 0,
+        Liked = 1,
+        Disliked = 2
     }
 }
 
@@ -1794,6 +1693,9 @@ export namespace user {
 
         /** Detail last */
         last?: (string|null);
+
+        /** Detail genres */
+        genres?: (show.IGenre[]|null);
     }
 
     /** Represents a Detail. */
@@ -1816,6 +1718,9 @@ export namespace user {
 
         /** Detail last. */
         public last: string;
+
+        /** Detail genres. */
+        public genres: show.IGenre[];
 
         /**
          * Creates a new Detail instance using the specified properties.

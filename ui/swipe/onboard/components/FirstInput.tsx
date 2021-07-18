@@ -3,7 +3,6 @@ import {Text, ViewStyle} from "react-native";
 import {StateChange, verify} from "../SignUpReducer";
 import {BingeMatch} from "../../theme";
 import {Input} from "../../components/Input";
-import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 
 
 interface Props {
@@ -14,7 +13,7 @@ interface Props {
     dispatch: React.Dispatch<StateChange>
 }
 
-export const EmailInput: React.FC<Props> = (props) => {
+export const FirstInput: React.FC<Props> = (props) => {
 
     const message = () => {
         if (props.message) {
@@ -30,16 +29,14 @@ export const EmailInput: React.FC<Props> = (props) => {
 
             <Input
                 style={props.style}
-                icon={faEnvelope}
-                onBlur={() => props.dispatch({email: verify})}
-                autoCapitalize='none'
-                placeholder='Email'
+                placeholder='First'
                 autoCorrect={false}
-                autoCompleteType='username'
-                textContentType='emailAddress'
-                keyboardType='email-address'
+                autoCompleteType='name'
+                textContentType='givenName'
+                keyboardType='default'
                 value={props.value}
-                onChangeText={(value) => props.dispatch({email: {value: value}})}
+                onBlur={() => props.dispatch({first: verify})}
+                onChangeText={(value) => props.dispatch({first: {value: value}})}
             />
         </>
     )

@@ -3,13 +3,15 @@ import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from "react-
 import Social from "./components/Social";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
-import {defaultReducer, isReadyToValidate, isValid, UserEvents, userReduder, verify} from "./UserReducer";
+import {defaultReducer, isReadyToValidate, isValid, UserEvents, userReduder, verify} from "./SignUpReducer";
 import {Button} from "../components/Button";
 import {BingeMatch} from "../theme";
 import {PasswordInput} from "./components/PasswordInput";
 import {VerifyInput} from "./components/VerifyPassword";
 import {EmailInput} from "./components/EmailInput";
 import {AuthContext} from "../api/Auth";
+import {FirstInput} from "./components/FirstInput";
+import {LastInput} from "./components/LastInput";
 
 export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
@@ -28,6 +30,8 @@ export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
     const onSignUpButtonPress = (): void => {
         dispatch({
             email: verify,
+            first: verify,
+            last: verify,
             password: verify,
             verify: verify,
             submit: true
@@ -39,15 +43,12 @@ export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
     useEffect(() => {
         setServerMessage('')
 
-        if (!state.submit
-            || !isReadyToValidate(state.email.validation, state.password.validation, state.verify.validation)) {
+        if (!state.submit || !isReadyToValidate(state)) {
             return
         }
 
         //ready to submit, abort if not valid
-        if (!isValid(state.email.validation,
-            state.password.validation,
-            state.verify.validation)) {
+        if (!isValid(state)) {
             dispatch({submit: false})
             return
         }
@@ -56,6 +57,8 @@ export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
         api.signup({
             email: state.email.value,
+            first: state.first.value,
+            last: state.last.value,
             password: state.password.value
         }).then(() => {
             login()
@@ -86,11 +89,23 @@ export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
                     {serverMessage}
                 </Text>
                 <KeyboardAvoidingView>
+                    <FirstInput
+                        style={{marginBottom: 10}}
+                        message={state.first.validation.message}
+                        value={state.first.value}
+                        dispatch={dispatch}/>
+                    <LastInput
+                        style={{marginBottom: 30}}
+                        message={state.last.validation.message}
+                        value={state.last.value}
+                        dispatch={dispatch}/>
+
                     <EmailInput
                         style={{marginBottom: 10}}
                         message={state.email.validation.message}
                         value={state.email.value}
                         dispatch={dispatch}/>
+
                     <PasswordInput
                         style={{marginBottom: 6}}
                         message={state.password.validation.message}
@@ -129,7 +144,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     formContainer: {
-        flex: 3,
+        flex: 4,
         paddingHorizontal: 16,
     },
     signUpButton: {
@@ -144,6 +159,6 @@ const styles = StyleSheet.create({
 
     loginButtonText: {
         ...BingeMatch.theme.onboard.signup.text
-    }
+    },
 });
 

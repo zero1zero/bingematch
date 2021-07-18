@@ -1,6 +1,7 @@
 package db
 
 import db.mappers.CatalogMapper
+import db.mappers.QueueMapper
 import db.mappers.UserMapper
 import org.apache.ibatis.mapping.Environment
 import org.apache.ibatis.session.Configuration
@@ -9,6 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactory
 import org.apache.ibatis.session.SqlSessionFactoryBuilder
 import org.apache.ibatis.transaction.TransactionFactory
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory
+import test.SmokeTestMapper
 import javax.sql.DataSource
 
 class Database (dataSource: DataSource) {
@@ -24,8 +26,10 @@ class Database (dataSource: DataSource) {
         configuration.isLazyLoadingEnabled = true
 
 //        configuration.typeAliasRegistry.registerAlias(Blog.class);
+        configuration.addMapper(SmokeTestMapper::class.java)
         configuration.addMapper(UserMapper::class.java)
         configuration.addMapper(CatalogMapper::class.java)
+        configuration.addMapper(QueueMapper::class.java)
 
         val builder = SqlSessionFactoryBuilder()
         this.factory = builder.build(configuration)

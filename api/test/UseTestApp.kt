@@ -1,14 +1,8 @@
-
+import auth.JwtConfig
 import db.Database
-import io.ktor.server.testing.*
-import javax.xml.bind.annotation.XmlElementDecl.GLOBAL
-
-import org.junit.jupiter.api.extension.ExtensionContext
-
 import org.junit.jupiter.api.extension.BeforeAllCallback
+import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource
-import module
-import org.apache.ibatis.mapping.MappedStatement
 import org.slf4j.LoggerFactory
 import kotlin.test.assertEquals
 
@@ -16,12 +10,20 @@ class UseTestApp: BeforeAllCallback, CloseableResource {
 
     private val log = LoggerFactory.getLogger(UseTestApp::class.java)
 
+    companion object {
+        private var started = false
+        val userUtil: UserTestUtil = UserTestUtil()
+
+        fun token(): String {
+            return JwtConfig.makeToken(userUtil.getTestUser())
+        }
+    }
+
     override fun beforeAll(context: ExtensionContext) {
         if (!started) {
             started = true
 
             log.info("Starting up test app")
-
 
             val database = Database(EmbeddedDataSource())
             val session = database.newSession()
@@ -34,7 +36,11 @@ class UseTestApp: BeforeAllCallback, CloseableResource {
                 assertEquals("PostgreSQL 13.3 on x86_64-apple-darwin20.4.0, compiled by Apple clang version 12.0.5 (clang-1205.0.22.9), 64-bit", version.getString(1))
 
                 //clear all tables
-                statement.execute("truncate table users, shows, catalog_sync")
+                try {
+                    statement.execute("truncate table users, catalog_sync, queue")
+                } catch (e : Exception) {
+                    println(e)
+                }
             }
 
 
@@ -56,18 +62,12 @@ class UseTestApp: BeforeAllCallback, CloseableResource {
 //            }
             // Your "before all tests" startup logic goes here
             // The following line registers a callback hook when the root test context is shut down
-//            context.root.getStore(GLOBAL).put("any unique name", this)
+//            context.root.getStore(ExtensionContext.Namespace.GLOBAL).put("any unique name", this)
         }
     }
 
     override fun close() {
         // Your "after all tests" logic goes here
 //                engine.stop(0L, 0L)
-    }
-
-    companion object {
-        private var started = false
-
-//        private var engine
     }
 }

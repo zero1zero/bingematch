@@ -1,6 +1,6 @@
 import {StyleProp, TextStyle} from "react-native";
 import React from "react";
-import {StateChange, verify} from "../UserReducer";
+import {StateChange, verify} from "../SignUpReducer";
 import {Input} from "../../components/Input";
 import {faLock} from "@fortawesome/free-solid-svg-icons";
 

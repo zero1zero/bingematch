@@ -4,7 +4,7 @@ import * as React from 'react'
 import {useReducer} from 'react'
 import {EmailInput} from "../EmailInput";
 import {PasswordInput} from "../PasswordInput";
-import {UserEvents, userReduder, ValidationStatus} from "../../UserReducer";
+import {UserEvents, userReduder, ValidationStatus} from "../../SignUpReducer";
 import {renderHook} from '@testing-library/react-hooks'
 import {VerifyInput} from "../VerifyPassword";
 

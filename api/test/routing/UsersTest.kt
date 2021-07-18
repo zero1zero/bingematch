@@ -1,28 +1,20 @@
 package routing
 
 import TestDeps
-import UserTestUtil
-import auth.JwtConfig
+import UseTestApp
+import UseTestApp.Companion.userUtil
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import module
 import objectMapper
-import org.junit.BeforeClass
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import user.User
 
-
+@ExtendWith(UseTestApp::class)
 class UsersTest {
-
-    companion object {
-
-        private lateinit var userUtil : UserTestUtil
-
-        @BeforeClass @JvmStatic
-        fun setup() {
-            userUtil = UserTestUtil()
-        }
-    }
 
     @Test
     fun testLogin() {
@@ -38,13 +30,13 @@ class UsersTest {
 
                 setBody(objectMapper.writeValueAsString(login))
             }.apply {
-                kotlin.test.assertEquals(HttpStatusCode.Forbidden, response.status())
+                assertEquals(HttpStatusCode.Forbidden, response.status())
             }
 
             //unauthorized api call
             handleRequest(HttpMethod.Get, "/user/${userUtil.getTestUser().id}") {} //no auth
                 .apply {
-                    kotlin.test.assertEquals(HttpStatusCode.Unauthorized, response.status())
+                    assertEquals(HttpStatusCode.Unauthorized, response.status())
                 }
 
             val token: String
@@ -59,7 +51,7 @@ class UsersTest {
 
                 setBody(objectMapper.writeValueAsString(login))
             }.apply {
-                kotlin.test.assertEquals(HttpStatusCode.OK, response.status())
+                assertEquals(HttpStatusCode.OK, response.status())
 
                 token = response.content!!
             }
@@ -69,10 +61,10 @@ class UsersTest {
                 addHeader(HttpHeaders.Authorization, "Bearer : $token")
             }
                 .apply {
-                    kotlin.test.assertEquals(HttpStatusCode.OK, response.status())
+                    assertEquals(HttpStatusCode.OK, response.status())
                     val user1 = objectMapper.readValue(response.content, User.Detail::class.java)
 
-                    kotlin.test.assertEquals(userUtil.getTestUser().id, user1.id)
+                    assertEquals(userUtil.getTestUser().id, user1.id)
                 }
         }
     }
@@ -87,24 +79,24 @@ class UsersTest {
                 .build()
 
             handleRequest(HttpMethod.Put, "/user/${userUtil.getTestUser().id}") {
-                addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(userUtil.getTestUser())}")
+                addHeader(HttpHeaders.Authorization, "Bearer ${UseTestApp.token()}")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
                 setBody(objectMapper.writeValueAsString(updateUser))
             }
                 .apply {
-                    kotlin.test.assertEquals(HttpStatusCode.OK, response.status())
+                    assertEquals(HttpStatusCode.OK, response.status())
                 }
 
             handleRequest(HttpMethod.Get, "/user/${userUtil.getTestUser().id}") {
-                addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(userUtil.getTestUser())}")
+                addHeader(HttpHeaders.Authorization, "Bearer ${UseTestApp.token()}")
             }
                 .apply {
-                    kotlin.test.assertEquals(HttpStatusCode.OK, response.status())
+                    assertEquals(HttpStatusCode.OK, response.status())
 
                     val user1 = objectMapper.readValue(response.content, User.Detail::class.java)
 
-                    kotlin.test.assertEquals(userUtil.getTestUser().id, user1.id)
+                    assertEquals(userUtil.getTestUser().id, user1.id)
 
                 }
         }
@@ -121,12 +113,12 @@ class UsersTest {
                 .build()
 
             handleRequest(HttpMethod.Put, "/user/${userUtil.getTestUser().id}") {
-                addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(userUtil.getTestUser())}")
+                addHeader(HttpHeaders.Authorization, "Bearer ${UseTestApp.token()}")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
                 setBody(objectMapper.writeValueAsString(updateUser))
             }.apply {
-                kotlin.test.assertEquals(HttpStatusCode.OK, response.status())
+                assertEquals(HttpStatusCode.OK, response.status())
             }
 
             //login test test new pw
@@ -140,12 +132,12 @@ class UsersTest {
                 
                 setBody(objectMapper.writeValueAsString(login))
             }.apply {
-                kotlin.test.assertEquals(HttpStatusCode.OK, response.status())
+                assertEquals(HttpStatusCode.OK, response.status())
             }
 
             //switch password back for cleanup
             handleRequest(HttpMethod.Put, "/user/${userUtil.getTestUser().id}") {
-                addHeader(HttpHeaders.Authorization, "Bearer ${JwtConfig.makeToken(userUtil.getTestUser())}")
+                addHeader(HttpHeaders.Authorization, "Bearer ${UseTestApp.token()}")
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 
                 val updated = User.Update.newBuilder()
@@ -155,7 +147,23 @@ class UsersTest {
 
                 setBody(objectMapper.writeValueAsString(updated))
             }.apply {
-                kotlin.test.assertEquals(HttpStatusCode.OK, response.status())
+                assertEquals(HttpStatusCode.OK, response.status())
+            }
+        }
+    }
+
+    @Test
+    fun userGenres() {
+        withTestApplication({ module(TestDeps()) }) {
+
+            handleRequest(HttpMethod.Get, "/user/${userUtil.getTestUser().id}") {
+                addHeader(HttpHeaders.Authorization, "Bearer ${UseTestApp.token()}")
+            }.apply {
+                assertEquals(HttpStatusCode.OK, response.status())
+
+                val user1 = objectMapper.readValue(response.content, User.Detail::class.java)
+
+                assertTrue(user1.genresCount > 0)
             }
         }
     }

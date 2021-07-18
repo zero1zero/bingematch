@@ -2,11 +2,12 @@ import {fireEvent, render, waitFor, waitForElementToBeRemoved} from '@testing-li
 import * as SecureStore from 'expo-secure-store';
 import {jest, test} from '@jest/globals'
 import * as React from 'react'
-import App, {RootStackParamList} from "../../../App";
+import App from "../../../App";
 import {createStackNavigator} from "@react-navigation/stack";
 import API from "../../api/API";
 import Storage from '../../Storage'
 import {user} from "../../model/compiled";
+import {RootStackParamList} from "../../etc/RootStackParamList";
 
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 

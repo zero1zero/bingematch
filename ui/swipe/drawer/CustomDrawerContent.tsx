@@ -7,22 +7,12 @@ import {FlagIcon, HeartIcon, MovieIcon} from "../components/Icons";
 
 export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
 
-    // const translateX = Animated.interpolate(props.progress[" __value"],
-    //     [0, 1],
-    //     [-100, 0],
-    // );
     const route = () => props.state.routes[props.state.index].name
 
     return (
         <DrawerContentScrollView {...props}
                                  style={styles.drawer}
                                  contentContainerStyle={{paddingTop: 15}}>
-            {/*<Animated.View style={{ transform: [{ translateX }] }}>*/}
-            {/*    <DrawerItemList {...props}*/}
-            {/*                    labelStyle={styles.label}*/}
-            {/*                    itemStyle={styles.item}*/}
-            {/*                    activeBackgroundColor={'#5C5C5FB0'}*/}
-            {/*     />*/}
             <DrawerItem
                 label="Queue"
                 icon={({focused}) => {
@@ -34,7 +24,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props
                 labelStyle={styles.label}
                 onPress={() => props.navigation.navigate('Queue')} />
             <DrawerItem
-                label="Likes"
+                label="Your Lists"
                 icon={({focused}) => {
                         return <HeartIcon color={focused ? BingeMatch.colors.success: BingeMatch.colors.grey} style={styles.icon} />
                 }}
@@ -54,7 +44,6 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props
                     style={styles.item}
                     labelStyle={styles.label}
                     onPress={() => alert('Link to help')} />
-            {/*</Animated.View>*/}
         </DrawerContentScrollView>
     );
 }

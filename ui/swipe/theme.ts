@@ -4,15 +4,18 @@ import {FontAwesomeIconStyle} from "@fortawesome/react-native-fontawesome";
 
 export namespace BingeMatch {
 
-    //https://coolors.co/74d3ae-678d58-a6c48a-f6e7cb-dd9787
+    //https://coolors.co/0077b8-a27c88-709b59-e7ca9d-d64933-0f110c-d62828-f77f00-fcbf49-eae2b7
     export const colors = {
-        error: "#FF6E2B",
-        yellow: "#FFBD26",
-        success: "#8CC62D",
+        error: "#D64933",
+        yellow: "#FCBF49",
+        success: "#709B59",
 
         bg: "#d7efe7",
 
-        grey: "#555558"
+        blue: "#003049",
+        grey: "#555558",
+        black: "#0F110C",
+        t: 0x0F110C
     }
 
     interface Theme {
@@ -24,6 +27,7 @@ export namespace BingeMatch {
         input: {
             field: TextStyle
             icon: FontAwesomeIconStyle
+            placeholder: ColorValue
         }
 
         actions: {
@@ -40,6 +44,9 @@ export namespace BingeMatch {
         profile: {
             save: ViewStyle
             logout: ViewStyle
+            label: TextStyle
+            genres: TextStyle
+            addGenres: TextStyle
         }
 
         queue: {
@@ -71,14 +78,18 @@ export namespace BingeMatch {
         }
 
         likes: {
-            title: TextStyle
+            title: TextStyle,
+            actions: {
+                text: TextStyle
+                remColor: ColorValue
+            }
         }
     }
 
     export const theme: Theme = {
         button: {
             text: {
-                color: colors.grey,
+                color: colors.black,
                 fontSize: 22,
                 fontWeight: '400',
             },
@@ -98,7 +109,8 @@ export namespace BingeMatch {
             },
             icon: {
                 color: colors.grey
-            }
+            },
+            placeholder: colors.grey
         },
 
         actions: {
@@ -148,7 +160,18 @@ export namespace BingeMatch {
             },
             logout: {
                 backgroundColor: colors.error,
-            }
+            },
+            label: {
+                fontSize: 18,
+                fontWeight: '700',
+                color: colors.grey
+            },
+            genres: {
+                fontSize: 17,
+            },
+            addGenres: {
+                fontSize: 18,
+            },
         },
 
         onboard: {
@@ -203,6 +226,13 @@ export namespace BingeMatch {
             title: {
                 fontSize: 19,
                 fontWeight: '400',
+            },
+            actions: {
+                text: {
+                    fontWeight: '600',
+                    color: colors.bg,
+                },
+                remColor:  colors.error
             }
         }
     }

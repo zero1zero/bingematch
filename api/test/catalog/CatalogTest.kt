@@ -2,9 +2,9 @@ package catalog
 
 import EmbeddedDataSource
 import db.Database
-import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 internal class CatalogTest {
@@ -15,24 +15,12 @@ internal class CatalogTest {
     fun getPopularTVAndMovie() {
         val metadataSource = MetadataSource()
 
-        val catalogStore = Catalog(metadataSource, database)
+        val catalogStore = Catalog(metadataSource)
 
         val popular = catalogStore.getPopular()
 
         assertTrue(popular.size > 10)
         assertNotNull(popular)
-    }
-
-    @Test
-    fun noDuplicates() {
-        val metadataSource = MetadataSource()
-
-        val catalogStore = Catalog(metadataSource, database)
-
-        val popular = catalogStore.getPopular()
-            .map { it.id }
-
-        assertEquals(40, popular.toTypedArray().toSet().size)
     }
 
     @Test
@@ -56,14 +44,14 @@ internal class CatalogTest {
         metadata.tmdb.getMovie(399566)
         metadata.tmdb.getTV(69478)
 
-        val catalogStore = Catalog(metadata, database)
+        val catalogStore = Catalog(metadata)
+        database.newSession().use {
+            val movieShow = catalogStore.getShow(tmdbIdToInternalId(399566, Type.Movie), it)
+            val tvShow = catalogStore.getShow(tmdbIdToInternalId(69478, Type.TV), it)
 
-        val movieShow = catalogStore.getShow(tmdbIdToInternalId(399566, Type.Movie))
-        val tvShow = catalogStore.getShow(tmdbIdToInternalId(69478, Type.TV))
-
-        //random attribute tests as you add them
-
-        assertEquals(113, movieShow.movie.runtime)
-        assertEquals(4, tvShow.tv.seasons)
+            //random attribute tests as you add them
+            assertEquals(113, movieShow.movie.runtime)
+            assertEquals(4, tvShow.tv.seasons)
+        }
     }
 }

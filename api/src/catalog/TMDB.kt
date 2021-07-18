@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.jackson.responseObject
 import java.time.Instant
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+
 
 /**
  * The Movie DB
@@ -22,7 +24,8 @@ class TMDB {
     private val key = "ba647fb82147021ea5fd00ccf6ebb571"
     private val baseURL = "https://api.themoviedb.org/3"
 
-    private var dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+    private var dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        .withZone(ZoneId.systemDefault())
 
     fun getMovieChanges(start : Instant, end : Instant, page : Int) : JsonNode {
         val (request, response, result) = Fuel.get(
@@ -42,7 +45,6 @@ class TMDB {
         val (request, response, result) = Fuel.get(
             "$baseURL/tv/changes", listOf(
                 "api_key" to key,
-                "language" to "en",
                 "$page" to "page",
                 dateFormatter.format(start) to "start_date",
                 dateFormatter.format(end) to "end_date",

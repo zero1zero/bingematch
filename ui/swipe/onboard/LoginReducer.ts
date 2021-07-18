@@ -17,21 +17,19 @@ export interface InputState {
 export interface StateChange {
     email?: InputState
     password?: InputState
-    verify?: InputState
     submit?: boolean
 }
 
 export interface OnboardState {
     email: InputState
     password: InputState
-    verify?: InputState
     submit?: boolean
 }
 
 const emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
 
-export type UserEvents = (state: OnboardState, change: StateChange) => OnboardState
-export const userReduder = (state: OnboardState, change: StateChange): OnboardState => {
+export type LoginEvents = (state: OnboardState, change: StateChange) => OnboardState
+export const loginReduder = (state: OnboardState, change: StateChange): OnboardState => {
     state = _.merge({}, state, change)
 
     if (state.email && shouldValidate(state.email.validation.status)) {
@@ -40,10 +38,6 @@ export const userReduder = (state: OnboardState, change: StateChange): OnboardSt
 
     if (state.password && shouldValidate(state.password.validation.status)) {
         state.password = _.merge({}, state.password, passwordCheck(state.password))
-    }
-
-    if (state.verify && shouldValidate(state.verify.validation.status)) {
-        state = _.merge({}, state, verifyCheck(state))
     }
 
     if (change.submit != undefined) {
@@ -67,18 +61,25 @@ const invalid = (message): InputState => {
     }
 }
 
-export const isReadyToValidate = (...validations: Validation[]) => {
-    return validations.filter(validation => {
+const stateToValidations = (state : OnboardState) => {
+    return [state.email.validation,
+        state.password.validation]
+}
+
+export const isReadyToValidate = (state : OnboardState) => {
+    return stateToValidations(state).filter(validation => {
         return validation.status == ValidationStatus.Input
             || validation.status == ValidationStatus.Verify
     }).length == 0
 }
 
-export const isValid = (...validations: Validation[]) => {
+export const isValid = (state : OnboardState) => {
+    const validations = stateToValidations(state)
     return validations.filter(validation => validation.status == ValidationStatus.Valid).length == validations.length
 }
 
 export const verify = {validation: {status: ValidationStatus.Verify}}
+export const input = {validation: {status: ValidationStatus.Verify}}
 
 export const emailCheck = (state: InputState): InputState => {
     if (!state.value || !emailRegex.test(state.value)) {
@@ -95,32 +96,10 @@ export const passwordCheck = (state: InputState): InputState => {
         return invalid('Please enter your password')
     }
 
-    //todo ive had 3 aviations
-    //secure enough
-    // if (state.value.length < 8) {
-    //     return invalid('Your password needs to be at least 8 characters')
-    // }
-
     return valid
 }
 
-export const verifyCheck = (state: OnboardState): StateChange => {
-
-    if (state.password.value != state.verify.value) {
-        return {
-            verify: invalid(''),
-            password: invalid('Please double check the two password fields match')
-        }
-    }
-
-    return {
-        verify: valid,
-        password: valid
-    }
-}
-
 export const defaultReducer = {
-    email: {validation: {status: ValidationStatus.Input}},
-    password: {validation: {status: ValidationStatus.Input}},
-    verify: {validation: {status: ValidationStatus.Input}}
+    email: input,
+    password: input,
 }

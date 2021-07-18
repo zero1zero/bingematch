@@ -1,44 +1,24 @@
 package catalog
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
-import db.Database
+import com.google.protobuf.util.JsonFormat
 import db.mappers.CatalogMapper
+import org.apache.ibatis.session.SqlSession
 import org.hashids.Hashids
 import show.Show
 
-class Catalog(
-    private val metadataSource: MetadataSource,
-    private val db : Database) {
+class Catalog(private val metadataSource: MetadataSource) {
 
     private val mapper : ObjectMapper = ObjectMapper()
 
-    private val genres : com.google.common.cache.Cache<Int, Show.Genre> = CacheBuilder.newBuilder()
-        .build(CacheLoader.from { id ->
-            loadGenres().first { it.id == id } //this should really only happen in the odd case a genre is added in flight
-        })
-
     //hydrate all to start
     init {
-        loadGenres().forEach { genre ->
-            genres.put(genre.id, genre)
-        }
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     }
 
-    private fun loadGenres(): List<Show.Genre> {
-        return (metadataSource.tmdb.getMovieGenres()["genres"] + metadataSource.tmdb.getTVGenres()["genres"])
-            .map { json ->
-                Show.Genre.newBuilder()
-                    .setName(json["name"].asText())
-                    .setId(json["id"].asInt())
-                    .build()
-            }
-            .toList()
-    }
-
-    private fun fullShowJsonToShow(id : String, json : JsonNode): Show.Detail {
+    private fun internalizeInitial(id : String, json : JsonNode): Show.Detail {
 
         val show = Show.Detail.newBuilder()
             .setId(id)
@@ -50,7 +30,7 @@ class Catalog(
             .setOverview(json["overview"].asText())
             .setPosterPath(json["poster_path"].asText())
             .setBackdropPath(json["backdrop_path"].asText())
-            .setPopularity(json["popularity"].asInt())
+            .setPopularity(json["popularity"].asDouble())
             .setVotes(
                 Show.Votes.newBuilder()
                 .setCount(json["vote_count"].asInt())
@@ -189,44 +169,54 @@ class Catalog(
         )
     }
 
-    fun getShow(id : String) : Show.Detail {
-        val session = db.newSession()
-
-        session.use {
-            val mapper = session.getMapper(CatalogMapper::class.java)
-
-            val maybeShow = mapper.getShow(id)
-
-            if (maybeShow == null) {
-                val tmdbId = internalIdToTmdbId(id)
-
-                val node = when (tmdbId.type) {
-                    Type.TV -> metadataSource.tmdb.getTV(tmdbId.id)
-                    Type.Movie -> metadataSource.tmdb.getMovie(tmdbId.id)
-                }
-
-                mapper.addShow(id, this.mapper.writeValueAsString(node))
-
-                return fullShowJsonToShow(id, node)
-            }
-
-            return fullShowJsonToShow(id, this.mapper.readTree(maybeShow.tmdb))
-        }
+    fun getShow(id: String, session: SqlSession) : Show.Detail {
+        return getShow(id, session, false)
     }
 
-    fun getPopular() : List<Show.Detail> {
+    fun getShow(id: String, session: SqlSession, forceRefresh : Boolean) : Show.Detail {
+        val mapper = session.getMapper(CatalogMapper::class.java)
+
+        val maybeShow = mapper.getShow(id)
+
+        if (maybeShow == null || forceRefresh) {
+            val tmdbId = internalIdToTmdbId(id)
+
+            val node = when (tmdbId.type) {
+                Type.TV -> metadataSource.tmdb.getTV(tmdbId.id)
+                Type.Movie -> metadataSource.tmdb.getMovie(tmdbId.id)
+            }
+
+            val internalized = internalizeInitial(id, node)
+
+            val json = JsonFormat.printer()
+                .omittingInsignificantWhitespace()
+                .print(internalized)
+
+            //will either insert new or update
+            mapper.addShow(id, json)
+
+            return internalized
+        }
+
+        val existingShow = Show.Detail.newBuilder()
+
+        JsonFormat.parser()
+            .ignoringUnknownFields()
+            .merge(maybeShow.tmdb, existingShow)
+
+        return existingShow.build()
+    }
+
+    fun getPopular() : List<String> {
         val movies = metadataSource.tmdb.getPopularMovies()["results"]
             .map {
-                val id = tmdbIdToInternalId(it["id"].asInt(), Type.Movie)
-                getShow(id)
+                tmdbIdToInternalId(it["id"].asInt(), Type.Movie)
             }
             .toList()
 
         val tv = metadataSource.tmdb.getPopularTV()["results"]
             .map {
-                val id = tmdbIdToInternalId(it["id"].asInt(), Type.TV)
-
-                getShow(id)
+                tmdbIdToInternalId(it["id"].asInt(), Type.TV)
             }
             .toList()
 

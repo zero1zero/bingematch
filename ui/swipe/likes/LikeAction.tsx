@@ -12,7 +12,6 @@ export const LikeAction: React.FC<BaseNavigationProps<'LikeAction'>> = (props) =
     }
 
     const watched = () => {
-        console.log(props.route.params.id)
         props.navigation.goBack()
     }
 

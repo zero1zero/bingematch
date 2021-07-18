@@ -23,7 +23,7 @@ message Detail {
 
     Votes votes = 9;
 
-    int32 popularity = 10;
+    double popularity = 10;
 
     string tagline = 11;
     repeated string spokenLanguage = 12;

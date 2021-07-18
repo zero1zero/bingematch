@@ -28,7 +28,7 @@ const items: Item[] = [
         sentiment: Sentiment.Unknown,
         onscreen: true,
         synced: idx < 2 ? SyncStatus.Synced : idx == 2 ? SyncStatus.Syncing : SyncStatus.UnSynced,
-        data: queue.Item.create({
+        data: queue.QueuedItem.create({
             id: str
         })
     }
@@ -82,7 +82,7 @@ test('correctly get head item', async () => {
         sentiment: Sentiment.Unknown,
         synced: SyncStatus.UnSynced,
         onscreen: true,
-        data: queue.Item.create({
+        data: queue.QueuedItem.create({
             id: 'ars'
         }),
     })

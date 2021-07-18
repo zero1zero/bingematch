@@ -1,6 +1,6 @@
 import catalog.MetadataSource
 import catalog.TMDB
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 internal class MetadataSourceTest {
 //    @Test

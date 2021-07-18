@@ -92,11 +92,41 @@ export default class API {
             .then(json => queue.QueuedItems.fromObject(json))
     }
 
+    getLikes = async (): Promise<queue.QueuedItems> => {
+        return this.get('/queue/likes')
+            .then(r => r.data)
+            .then(json => queue.QueuedItems.fromObject(json))
+    }
+
     getShow = async (id: string): Promise<show.Detail> => {
         return this.get(`/show/${id}`)
             .then(r => r.data)
             .then(json => show.Detail.fromObject(json))
     }
+
+    setQueueState = async (id: string, state: number): Promise<void> => {
+        return this.put(`/queue/set/${id}/${state}`)
+            .then(() => {
+                return
+            })
+    }
+
+    getGenres = async (): Promise<show.Genre[]> => (
+        this.get(`/genres`)
+            .then(r => r.data)
+            .then(json => (
+                    json.map(genre => show.Genre.fromObject(genre))
+                )
+            )
+    )
+
+    setGenres = async (genres : show.IGenre[]): Promise<void> => (
+        this.storage.getUser()
+            .then(id => {
+                    this.put(`/user/${id}/genres`, genres.map(g => g.id))
+                }
+            )
+    )
 
     /*
      *  General purpose below
@@ -162,7 +192,7 @@ export default class API {
             })
     }
 
-    put = async (url: string, payload: any): Promise<AxiosResponse> => {
+    put = async (url: string, payload: any = ""): Promise<AxiosResponse> => {
         return this.storage.getToken()
             .then(token => {
                 const headers = {

@@ -231,6 +231,7 @@ export const queue = $root.queue = (() => {
          * @memberof queue
          * @interface IQueuedItem
          * @property {string|null} [id] QueuedItem id
+         * @property {string|null} [user] QueuedItem user
          * @property {show.IThinDetail|null} [show] QueuedItem show
          */
 
@@ -256,6 +257,14 @@ export const queue = $root.queue = (() => {
          * @instance
          */
         QueuedItem.prototype.id = "";
+
+        /**
+         * QueuedItem user.
+         * @member {string} user
+         * @memberof queue.QueuedItem
+         * @instance
+         */
+        QueuedItem.prototype.user = "";
 
         /**
          * QueuedItem show.
@@ -291,8 +300,10 @@ export const queue = $root.queue = (() => {
                 writer = $Writer.create();
             if (message.id != null && Object.hasOwnProperty.call(message, "id"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            if (message.user != null && Object.hasOwnProperty.call(message, "user"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.user);
             if (message.show != null && Object.hasOwnProperty.call(message, "show"))
-                $root.show.ThinDetail.encode(message.show, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                $root.show.ThinDetail.encode(message.show, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -331,6 +342,9 @@ export const queue = $root.queue = (() => {
                     message.id = reader.string();
                     break;
                 case 2:
+                    message.user = reader.string();
+                    break;
+                case 3:
                     message.show = $root.show.ThinDetail.decode(reader, reader.uint32());
                     break;
                 default:
@@ -371,6 +385,9 @@ export const queue = $root.queue = (() => {
             if (message.id != null && message.hasOwnProperty("id"))
                 if (!$util.isString(message.id))
                     return "id: string expected";
+            if (message.user != null && message.hasOwnProperty("user"))
+                if (!$util.isString(message.user))
+                    return "user: string expected";
             if (message.show != null && message.hasOwnProperty("show")) {
                 let error = $root.show.ThinDetail.verify(message.show);
                 if (error)
@@ -393,6 +410,8 @@ export const queue = $root.queue = (() => {
             let message = new $root.queue.QueuedItem();
             if (object.id != null)
                 message.id = String(object.id);
+            if (object.user != null)
+                message.user = String(object.user);
             if (object.show != null) {
                 if (typeof object.show !== "object")
                     throw TypeError(".queue.QueuedItem.show: object expected");
@@ -416,10 +435,13 @@ export const queue = $root.queue = (() => {
             let object = {};
             if (options.defaults) {
                 object.id = "";
+                object.user = "";
                 object.show = null;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
+            if (message.user != null && message.hasOwnProperty("user"))
+                object.user = message.user;
             if (message.show != null && message.hasOwnProperty("show"))
                 object.show = $root.show.ThinDetail.toObject(message.show, options);
             return object;
@@ -439,296 +461,20 @@ export const queue = $root.queue = (() => {
         return QueuedItem;
     })();
 
-    queue.Item = (function() {
-
-        /**
-         * Properties of an Item.
-         * @memberof queue
-         * @interface IItem
-         * @property {string|null} [id] Item id
-         * @property {queue.Item.State|null} [state] Item state
-         * @property {show.IDetail|null} [show] Item show
-         */
-
-        /**
-         * Constructs a new Item.
-         * @memberof queue
-         * @classdesc Represents an Item.
-         * @implements IItem
-         * @constructor
-         * @param {queue.IItem=} [properties] Properties to set
-         */
-        function Item(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Item id.
-         * @member {string} id
-         * @memberof queue.Item
-         * @instance
-         */
-        Item.prototype.id = "";
-
-        /**
-         * Item state.
-         * @member {queue.Item.State} state
-         * @memberof queue.Item
-         * @instance
-         */
-        Item.prototype.state = 0;
-
-        /**
-         * Item show.
-         * @member {show.IDetail|null|undefined} show
-         * @memberof queue.Item
-         * @instance
-         */
-        Item.prototype.show = null;
-
-        /**
-         * Creates a new Item instance using the specified properties.
-         * @function create
-         * @memberof queue.Item
-         * @static
-         * @param {queue.IItem=} [properties] Properties to set
-         * @returns {queue.Item} Item instance
-         */
-        Item.create = function create(properties) {
-            return new Item(properties);
-        };
-
-        /**
-         * Encodes the specified Item message. Does not implicitly {@link queue.Item.verify|verify} messages.
-         * @function encode
-         * @memberof queue.Item
-         * @static
-         * @param {queue.IItem} message Item message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Item.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-            if (message.state != null && Object.hasOwnProperty.call(message, "state"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.state);
-            if (message.show != null && Object.hasOwnProperty.call(message, "show"))
-                $root.show.Detail.encode(message.show, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Item message, length delimited. Does not implicitly {@link queue.Item.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof queue.Item
-         * @static
-         * @param {queue.IItem} message Item message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Item.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an Item message from the specified reader or buffer.
-         * @function decode
-         * @memberof queue.Item
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {queue.Item} Item
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Item.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.queue.Item();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.id = reader.string();
-                    break;
-                case 3:
-                    message.state = reader.int32();
-                    break;
-                case 4:
-                    message.show = $root.show.Detail.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an Item message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof queue.Item
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {queue.Item} Item
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Item.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an Item message.
-         * @function verify
-         * @memberof queue.Item
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Item.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.id != null && message.hasOwnProperty("id"))
-                if (!$util.isString(message.id))
-                    return "id: string expected";
-            if (message.state != null && message.hasOwnProperty("state"))
-                switch (message.state) {
-                default:
-                    return "state: enum value expected";
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                    break;
-                }
-            if (message.show != null && message.hasOwnProperty("show")) {
-                let error = $root.show.Detail.verify(message.show);
-                if (error)
-                    return "show." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates an Item message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof queue.Item
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {queue.Item} Item
-         */
-        Item.fromObject = function fromObject(object) {
-            if (object instanceof $root.queue.Item)
-                return object;
-            let message = new $root.queue.Item();
-            if (object.id != null)
-                message.id = String(object.id);
-            switch (object.state) {
-            case "Queued":
-            case 0:
-                message.state = 0;
-                break;
-            case "Like":
-            case 1:
-                message.state = 1;
-                break;
-            case "Dislike":
-            case 2:
-                message.state = 2;
-                break;
-            case "Love":
-            case 3:
-                message.state = 3;
-                break;
-            case "Hate":
-            case 4:
-                message.state = 4;
-                break;
-            case "Skipped":
-            case 5:
-                message.state = 5;
-                break;
-            }
-            if (object.show != null) {
-                if (typeof object.show !== "object")
-                    throw TypeError(".queue.Item.show: object expected");
-                message.show = $root.show.Detail.fromObject(object.show);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an Item message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof queue.Item
-         * @static
-         * @param {queue.Item} message Item
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Item.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.id = "";
-                object.state = options.enums === String ? "Queued" : 0;
-                object.show = null;
-            }
-            if (message.id != null && message.hasOwnProperty("id"))
-                object.id = message.id;
-            if (message.state != null && message.hasOwnProperty("state"))
-                object.state = options.enums === String ? $root.queue.Item.State[message.state] : message.state;
-            if (message.show != null && message.hasOwnProperty("show"))
-                object.show = $root.show.Detail.toObject(message.show, options);
-            return object;
-        };
-
-        /**
-         * Converts this Item to JSON.
-         * @function toJSON
-         * @memberof queue.Item
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Item.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * State enum.
-         * @name queue.Item.State
-         * @enum {number}
-         * @property {number} Queued=0 Queued value
-         * @property {number} Like=1 Like value
-         * @property {number} Dislike=2 Dislike value
-         * @property {number} Love=3 Love value
-         * @property {number} Hate=4 Hate value
-         * @property {number} Skipped=5 Skipped value
-         */
-        Item.State = (function() {
-            const valuesById = {}, values = Object.create(valuesById);
-            values[valuesById[0] = "Queued"] = 0;
-            values[valuesById[1] = "Like"] = 1;
-            values[valuesById[2] = "Dislike"] = 2;
-            values[valuesById[3] = "Love"] = 3;
-            values[valuesById[4] = "Hate"] = 4;
-            values[valuesById[5] = "Skipped"] = 5;
-            return values;
-        })();
-
-        return Item;
+    /**
+     * QueueItemState enum.
+     * @name queue.QueueItemState
+     * @enum {number}
+     * @property {number} Queued=0 Queued value
+     * @property {number} Liked=1 Liked value
+     * @property {number} Disliked=2 Disliked value
+     */
+    queue.QueueItemState = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "Queued"] = 0;
+        values[valuesById[1] = "Liked"] = 1;
+        values[valuesById[2] = "Disliked"] = 2;
+        return values;
     })();
 
     return queue;
@@ -1302,7 +1048,7 @@ export const show = $root.show = (() => {
             if (message.votes != null && Object.hasOwnProperty.call(message, "votes"))
                 $root.show.Votes.encode(message.votes, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
             if (message.popularity != null && Object.hasOwnProperty.call(message, "popularity"))
-                writer.uint32(/* id 10, wireType 0 =*/80).int32(message.popularity);
+                writer.uint32(/* id 10, wireType 1 =*/81).double(message.popularity);
             if (message.tagline != null && Object.hasOwnProperty.call(message, "tagline"))
                 writer.uint32(/* id 11, wireType 2 =*/90).string(message.tagline);
             if (message.spokenLanguage != null && message.spokenLanguage.length)
@@ -1401,7 +1147,7 @@ export const show = $root.show = (() => {
                     message.votes = $root.show.Votes.decode(reader, reader.uint32());
                     break;
                 case 10:
-                    message.popularity = reader.int32();
+                    message.popularity = reader.double();
                     break;
                 case 11:
                     message.tagline = reader.string();
@@ -1533,8 +1279,8 @@ export const show = $root.show = (() => {
                     return "votes." + error;
             }
             if (message.popularity != null && message.hasOwnProperty("popularity"))
-                if (!$util.isInteger(message.popularity))
-                    return "popularity: integer expected";
+                if (typeof message.popularity !== "number")
+                    return "popularity: number expected";
             if (message.tagline != null && message.hasOwnProperty("tagline"))
                 if (!$util.isString(message.tagline))
                     return "tagline: string expected";
@@ -1666,7 +1412,7 @@ export const show = $root.show = (() => {
                 message.votes = $root.show.Votes.fromObject(object.votes);
             }
             if (object.popularity != null)
-                message.popularity = object.popularity | 0;
+                message.popularity = Number(object.popularity);
             if (object.tagline != null)
                 message.tagline = String(object.tagline);
             if (object.spokenLanguage) {
@@ -1821,7 +1567,7 @@ export const show = $root.show = (() => {
             if (message.votes != null && message.hasOwnProperty("votes"))
                 object.votes = $root.show.Votes.toObject(message.votes, options);
             if (message.popularity != null && message.hasOwnProperty("popularity"))
-                object.popularity = message.popularity;
+                object.popularity = options.json && !isFinite(message.popularity) ? String(message.popularity) : message.popularity;
             if (message.tagline != null && message.hasOwnProperty("tagline"))
                 object.tagline = message.tagline;
             if (message.spokenLanguage && message.spokenLanguage.length) {
@@ -4737,6 +4483,7 @@ export const user = $root.user = (() => {
          * @property {string|null} [email] Detail email
          * @property {string|null} [first] Detail first
          * @property {string|null} [last] Detail last
+         * @property {Array.<show.IGenre>|null} [genres] Detail genres
          */
 
         /**
@@ -4748,6 +4495,7 @@ export const user = $root.user = (() => {
          * @param {user.IDetail=} [properties] Properties to set
          */
         function Detail(properties) {
+            this.genres = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -4787,6 +4535,14 @@ export const user = $root.user = (() => {
         Detail.prototype.last = "";
 
         /**
+         * Detail genres.
+         * @member {Array.<show.IGenre>} genres
+         * @memberof user.Detail
+         * @instance
+         */
+        Detail.prototype.genres = $util.emptyArray;
+
+        /**
          * Creates a new Detail instance using the specified properties.
          * @function create
          * @memberof user.Detail
@@ -4818,6 +4574,9 @@ export const user = $root.user = (() => {
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.first);
             if (message.last != null && Object.hasOwnProperty.call(message, "last"))
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.last);
+            if (message.genres != null && message.genres.length)
+                for (let i = 0; i < message.genres.length; ++i)
+                    $root.show.Genre.encode(message.genres[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             return writer;
         };
 
@@ -4863,6 +4622,11 @@ export const user = $root.user = (() => {
                     break;
                 case 4:
                     message.last = reader.string();
+                    break;
+                case 5:
+                    if (!(message.genres && message.genres.length))
+                        message.genres = [];
+                    message.genres.push($root.show.Genre.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -4911,6 +4675,15 @@ export const user = $root.user = (() => {
             if (message.last != null && message.hasOwnProperty("last"))
                 if (!$util.isString(message.last))
                     return "last: string expected";
+            if (message.genres != null && message.hasOwnProperty("genres")) {
+                if (!Array.isArray(message.genres))
+                    return "genres: array expected";
+                for (let i = 0; i < message.genres.length; ++i) {
+                    let error = $root.show.Genre.verify(message.genres[i]);
+                    if (error)
+                        return "genres." + error;
+                }
+            }
             return null;
         };
 
@@ -4934,6 +4707,16 @@ export const user = $root.user = (() => {
                 message.first = String(object.first);
             if (object.last != null)
                 message.last = String(object.last);
+            if (object.genres) {
+                if (!Array.isArray(object.genres))
+                    throw TypeError(".user.Detail.genres: array expected");
+                message.genres = [];
+                for (let i = 0; i < object.genres.length; ++i) {
+                    if (typeof object.genres[i] !== "object")
+                        throw TypeError(".user.Detail.genres: object expected");
+                    message.genres[i] = $root.show.Genre.fromObject(object.genres[i]);
+                }
+            }
             return message;
         };
 
@@ -4950,6 +4733,8 @@ export const user = $root.user = (() => {
             if (!options)
                 options = {};
             let object = {};
+            if (options.arrays || options.defaults)
+                object.genres = [];
             if (options.defaults) {
                 object.id = "";
                 object.email = "";
@@ -4964,6 +4749,11 @@ export const user = $root.user = (() => {
                 object.first = message.first;
             if (message.last != null && message.hasOwnProperty("last"))
                 object.last = message.last;
+            if (message.genres && message.genres.length) {
+                object.genres = [];
+                for (let j = 0; j < message.genres.length; ++j)
+                    object.genres[j] = $root.show.Genre.toObject(message.genres[j], options);
+            }
             return object;
         };
 

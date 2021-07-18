@@ -3,7 +3,7 @@ import {ActivityIndicator, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text,
 import Social from "./components/Social";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
-import {isReadyToValidate, isValid, UserEvents, userReduder, ValidationStatus} from "./UserReducer";
+import {isReadyToValidate, isValid, LoginEvents, loginReduder, ValidationStatus} from "./LoginReducer";
 import {Button} from "../components/Button";
 import {BingeMatch} from "../theme";
 import {PasswordInput} from "./components/PasswordInput";
@@ -23,7 +23,7 @@ export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
         });
     }, [props.navigation]);
 
-    const [state, dispatch] = useReducer<UserEvents>(userReduder, {
+    const [state, dispatch] = useReducer<LoginEvents>(loginReduder, {
         email: {validation: {status: ValidationStatus.Input}},
         password: {validation: {status: ValidationStatus.Input}},
     })
@@ -43,13 +43,12 @@ export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
         setServerMessage('')
 
-        if (!state.submit
-            || !isReadyToValidate(state.email.validation, state.password.validation)) {
+        if (!state.submit || !isReadyToValidate(state)) {
             return
         }
 
         //ready to submit, abort if not valid
-        if (!isValid(state.email.validation, state.password.validation)) {
+        if (!isValid(state)) {
             dispatch({submit: false})
             return
         }
@@ -95,6 +94,7 @@ export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
                 </Text>
                 <KeyboardAvoidingView>
                     <EmailInput
+                        style={{marginBottom: 20}}
                         message={state.email.validation.message}
                         value={state.email.value}
                         dispatch={dispatch}/>

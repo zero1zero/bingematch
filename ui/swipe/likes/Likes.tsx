@@ -1,39 +1,36 @@
 import React, {useEffect, useState} from "react";
-import {BaseNavigationProps} from "../etc/BaseNavigationProps";
+import {DrawerNavigationProps} from "../etc/BaseNavigationProps";
 import {
     ActivityIndicator,
-    FlatList,
     Image,
     ListRenderItemInfo,
+    Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
     View
 } from "react-native";
 import Dependencies from "../Dependencies";
-import {show} from "../model/compiled";
+import {queue, show} from "../model/compiled";
 import {BingeMatch} from "../theme";
-import {EllipsisIcon, EyeIcon, HeartIcon} from "../components/Icons";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {SwipeListView, SwipeRow} from "react-native-swipe-list-view";
 
-export const Likes: React.FC<BaseNavigationProps<'Likes'>> = (props) => {
+export const Likes: React.FC<DrawerNavigationProps<'Likes'>> = (props) => {
 
     const api = Dependencies.instance.api
 
-    const [likes, setLikes] = useState<show.IThinDetail[]>()
+    const [likes, setLikes] = useState<queue.QueuedItem[]>()
 
     useEffect(() => {
-        //todo get likes
-        function fy(a,b,c,d){//array,placeholder,placeholder,placeholder
-            c=a.length;while(c)b=Math.random()*(--c+1)|0,d=a[c],a[c]=a[b],a[b]=d
-        }
-        api.getQueue()
-            .then(likes => {
-                setLikes(likes.items
-                    .map(queueItem => queueItem.show)
-                )
-            })
-    }, [])
+        props.navigation.addListener('focus', () => {
+            setLikes(null)
+            //hydrate if likes is empty
+            api.getLikes()
+                .then(likes => {
+                    setLikes(likes.items as queue.QueuedItem[]) //reverse to put ~newest at top
+                })
+        })
+    }, [props.navigation])
 
     if (!likes) {
         return (<View style={styles.loading}>
@@ -41,24 +38,36 @@ export const Likes: React.FC<BaseNavigationProps<'Likes'>> = (props) => {
         </View>)
     }
 
-    const onPress = (item: show.IThinDetail) => {
+    const onPress = (item: show.ThinDetail) => {
         props.navigation.navigate('Detail', {
             id: item.id
         })
     }
 
-    const toCard = (renderItemInfo : ListRenderItemInfo<show.IThinDetail>) => {
+    const remove = (renderItemInfo : ListRenderItemInfo<queue.QueuedItem>, rowMap) => {
+        const row : SwipeRow<show.ThinDetail> = rowMap[renderItemInfo.index]
+        row.closeRow()
 
-        const item = renderItemInfo.item
+        setLikes( likes.filter(item => item.id != renderItemInfo.item.id))
+
+        api.setQueueState(renderItemInfo.item.id, queue.QueueItemState.Queued)
+            .then(() => {
+                //todo no error handling for this
+            })
+    };
+
+    const toCard = (renderItemInfo : ListRenderItemInfo<queue.QueuedItem>) => {
+
+        const show = renderItemInfo.item.show as show.ThinDetail
 
         return <View style={styles.item}>
-                <Image
-                    style={styles.poster}
-                    resizeMode={"contain"}
-                    source={{uri: `https://image.tmdb.org/t/p/w92${item.posterPath}`}} />
-            <TouchableOpacity style={styles.title} onPress={() => onPress(item) }>
-                <Text key={item.id} style={styles.titleText}>
-                    {item.title}
+            <Image
+                style={styles.poster}
+                resizeMode={"contain"}
+                source={{uri: `https://image.tmdb.org/t/p/w92${show.posterPath}`}} />
+            <Pressable style={styles.title} onPress={() => onPress(show) }>
+                <Text key={show.id} style={styles.titleText}>
+                    {show.title}
                 </Text>
                 <View style={styles.detailsLastLineRating}>
                     <Image style={styles.detailsLastLineRatingIcon} source={require('../assets/rt_tomato.png')}/>
@@ -68,59 +77,43 @@ export const Likes: React.FC<BaseNavigationProps<'Likes'>> = (props) => {
                            source={require('../assets/rt_user.png')}/>
                     <Text style={styles.detailsLastLineRatingPerc}>89%</Text>
                 </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.actions}
-                onPress={() => props.navigation.navigate('LikeAction', {
-                    id: item.id
-                })}>
-                <EllipsisIcon size={15}/>
-            </TouchableOpacity>
+                <Text numberOfLines={4} style={{marginBottom: 9}}>
+                    {show.overview}
+                </Text>
+            </Pressable>
         </View>
     }
 
-    const likesList : React.FC<BaseNavigationProps<'Likes'>> = () => {
-        return <FlatList style={styles.likes} data={likes} renderItem={toCard} />
-    }
+    const renderHiddenItem = (renderItemInfo : ListRenderItemInfo<queue.QueuedItem>, rowMap) => (
+        <View style={styles.rowBack}>
+            <Text>Left</Text>
+            <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnLeft]}
+                // onPress={() => alertt(rowMap, data.item.key)}
+            >
+                <Text style={BingeMatch.theme.likes.actions.text}>More</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnRight]}
+                onPress={() => remove(renderItemInfo, rowMap)}
+            >
+                <Text style={BingeMatch.theme.likes.actions.text}>Remove</Text>
+            </TouchableOpacity>
+        </View>
+    );
 
-    const watchedList : React.FC<BaseNavigationProps<'Likes'>> = () => {
-        return <FlatList style={styles.likes} data={likes} renderItem={toCard} />
-    }
-
-    const Tab = createBottomTabNavigator();
-
-    return (
-        <Tab.Navigator screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                    if (route.name === 'Likes') {
-                        return focused
-                            ? <HeartIcon size={20} color={BingeMatch.colors.success} />
-                            : <HeartIcon size={20} color={BingeMatch.colors.grey} />;
-                    }
-
-                    if (route.name === 'Watched') {
-                        return focused
-                            ? <EyeIcon size={20} color={BingeMatch.colors.success} />
-                            : <EyeIcon size={20} color={BingeMatch.colors.grey} />;
-                    }
-                },
-            })}
-            tabBarOptions={{
-                style: {
-                    backgroundColor: BingeMatch.colors.bg,
-                    paddingTop: 7
-                },
-                labelStyle: {
-                    fontSize: 17,
-                    fontWeight: '700',
-                    marginTop: 4,
-                    color: BingeMatch.colors.grey,
-                },
-            }}>
-            <Tab.Screen name="Likes" component={likesList} />
-            <Tab.Screen name="Watched" component={watchedList} />
-        </Tab.Navigator>
-    )
+        return <SwipeListView style={styles.likes}
+                              data={likes}
+                              renderItem={toCard}
+                              showsVerticalScrollIndicator={false}
+                              renderHiddenItem={renderHiddenItem}
+                              leftOpenValue={75}
+                              rightOpenValue={-150}
+                              previewOpenValue={-150}
+                              previewOpenDelay={2000}
+                              keyExtractor={(item, index) => index.toString()}
+                              previewRowKey={'0'}
+        />
 }
 
 const styles = StyleSheet.create({
@@ -133,15 +126,16 @@ const styles = StyleSheet.create({
 
     likes: {
         padding: 14,
-        backgroundColor: BingeMatch.colors.bg
+        backgroundColor: BingeMatch.colors.bg,
     },
 
     item: {
-        flex: 1,
+        flex:1,
         flexDirection: 'row',
 
         height: 92 * 1.5, //poster ratio
         marginVertical: 5,
+        backgroundColor: BingeMatch.colors.bg,
     },
 
     poster:  {
@@ -150,7 +144,6 @@ const styles = StyleSheet.create({
 
     title: {
         flex: 1,
-        flexGrow: 2,
         marginLeft: 9,
         justifyContent: 'center',
     },
@@ -158,12 +151,6 @@ const styles = StyleSheet.create({
     titleText: {
 
         ...BingeMatch.theme.likes.title
-    },
-
-    actions: {
-        width: 40,
-        marginTop: 5,
-        alignItems: 'center',
     },
 
     detailsLastLineRating: {
@@ -179,4 +166,44 @@ const styles = StyleSheet.create({
     detailsLastLineRatingPerc: {
         fontWeight: 'bold'
     },
+
+    container: {
+        marginVertical: 5,
+        flex: 1,
+    },
+    rowFront: {
+        alignItems: 'center',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        justifyContent: 'center',
+        height: 50,
+    },
+    rowBack: {
+        alignItems: 'center',
+        backgroundColor: '#DDD',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+        marginVertical: 5,
+    },
+    backRightBtn: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75,
+    },
+    backRightBtnLeft: {
+        right: 75,
+
+        backgroundColor: BingeMatch.colors.blue
+    },
+    backRightBtnRight: {
+        right: 0,
+
+        backgroundColor: BingeMatch.theme.likes.actions.remColor
+    },
 })
+

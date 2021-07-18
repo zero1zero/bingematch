@@ -80,6 +80,7 @@ dependencies {
     //database
     implementation 'org.liquibase:liquibase-core:4.4.0'
     implementation 'org.mybatis:mybatis:3.5.7'
+    implementation "org.mybatis:mybatis-typehandlers-jsr310:1.0.2"
     implementation "org.postgresql:postgresql:42.2.22"
 
     //client
@@ -89,11 +90,9 @@ dependencies {
 //    implementation "com.github.kittinunf.fuel:fuel-coroutines:$fuel_version"
 
     //testing. we also use junit in prod for k8s ready checks
-    implementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
-    implementation "org.junit.platform:junit-platform-launcher:1.7.1"
-    implementation "io.ktor:ktor-server-tests:$ktor_version"
-
-    //only for unit testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+    testImplementation "org.junit.platform:junit-platform-launcher:1.7.1"
+    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     testImplementation("org.mockito:mockito-inline:3.9.0")
 }
 

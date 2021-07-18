@@ -2,48 +2,54 @@ package routing
 
 import TestDeps
 import UseTestApp
-import UserTestUtil
 import catalog.Type
 import catalog.tmdbIdToInternalId
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import module
 import objectMapper
-import org.junit.BeforeClass
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import show.Show
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @ExtendWith(UseTestApp::class)
 class ShowsTest {
 
-    companion object {
+    @Test
+    fun testGetShow() {
+        //mortal kombat
+        val gend = tmdbIdToInternalId(9312, Type.Movie)
 
-        private lateinit var userUtil: UserTestUtil
+        withTestApplication({ module(TestDeps()) }) {
 
-        @BeforeClass
-        @JvmStatic
-        fun setup() {
-            userUtil = UserTestUtil()
+            for (id in arrayOf(gend, "prbuqq7yq")) {
+                for (i in 1..2) {
+                    handleRequest(HttpMethod.Get, "/show/$id") {
+                        addHeader(HttpHeaders.Authorization, "Bearer : ${UseTestApp.token()}")
+                    }.apply {
+                        assertEquals(HttpStatusCode.OK, response.status())
+                        val show = objectMapper.readValue(response.content, Show.Detail::class.java)
+
+                        assertEquals(id, show.id)
+                    }
+                }
+            }
         }
     }
 
     @Test
-    fun testGetShow() {
-        //mortal kombat
-        val id = tmdbIdToInternalId(9312, Type.Movie)
-
+    fun generes() {
         withTestApplication({ module(TestDeps()) }) {
 
-            handleRequest(HttpMethod.Get, "/show/$id") {
-                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+            handleRequest(HttpMethod.Get, "/genres") {
+                addHeader(HttpHeaders.Authorization, "Bearer : ${UseTestApp.token()}")
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
-                val show = objectMapper.readValue(response.content, Show.Detail::class.java)
+                val genres = objectMapper.readValue(response.content, List::class.java) as List<Show.Genre>
 
-                assertEquals(id, show.id)
-                assertEquals(show.title, "Mortal Kombat")
+                assertTrue(genres.isNotEmpty())
             }
         }
     }

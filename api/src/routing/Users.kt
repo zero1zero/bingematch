@@ -8,9 +8,10 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import principalNoMatch
-import store.UserAlreadyExists
-import store.UserStore
+import routing.etc.SharedSqlSession
 import user.User
+import user.UserAlreadyExists
+import user.UserStore
 
 fun Routing.user(userStore : UserStore) {
 
@@ -20,8 +21,10 @@ fun Routing.user(userStore : UserStore) {
          * etc.Login user
          */
         post("/login") {
+            val session = call.attributes[SharedSqlSession.session]
+
             val credentials = call.receive<User.Login>()
-            val user = userStore.getUserByLogin(credentials.email, credentials.password)
+            val user = userStore.getUserByLogin(credentials.email, credentials.password, session)
 
             user
                 .onFailure {
@@ -38,11 +41,12 @@ fun Routing.user(userStore : UserStore) {
          */
         post("/") {
             val newUser = call.receive<User.Register>()
+            val session = call.attributes[SharedSqlSession.session]
 
-            userStore.getUserByEmail(newUser.email)
+            userStore.getUserByEmail(newUser.email, session)
                 .onFailure {
                     //user is not found, we're good to create
-                    val user = userStore.createUser(newUser)
+                    val user = userStore.createUser(newUser, session)
                     val token: String = JwtConfig.makeToken(user)
 
                     call.respond(User.DetailAndToken.newBuilder()
@@ -61,12 +65,14 @@ fun Routing.user(userStore : UserStore) {
              * Get user by id
              */
             get("/{id}") {
+                val session = call.attributes[SharedSqlSession.session]
+
                 val id: String = call.parameters["id"]!!
 
                 //check principal
                 if (principalNoMatch(id, call)) return@get
 
-                userStore.getUser(id)
+                userStore.getUser(id, session)
                     .onFailure {
                         call.respond(HttpStatusCode.NotFound)
                     }.onSuccess {
@@ -78,8 +84,12 @@ fun Routing.user(userStore : UserStore) {
              * Update user
              */
             put("/{id}") {
+                val session = call.attributes[SharedSqlSession.session]
+
                 val updateUser = call.receive<User.Update>()
                 val id: String = call.parameters["id"]!!
+
+                if (principalNoMatch(id, call)) return@put
 
                 val user = User.Detail.newBuilder()
                     .setId(id)
@@ -88,7 +98,21 @@ fun Routing.user(userStore : UserStore) {
                     .setLast(updateUser.last)
                     .build()
 
-                userStore.updateUser(user, updateUser.password)
+                userStore.updateUser(user, updateUser.password, session)
+
+                call.respond(HttpStatusCode.OK)
+            }
+
+            put("/{id}/genres") {
+                val session = call.attributes[SharedSqlSession.session]
+
+                val genres = call.receive<List<Int>>()
+
+                val id: String = call.parameters["id"]!!
+
+                if (principalNoMatch(id, call)) return@put
+
+                userStore.updateGenres(id, genres, session)
 
                 call.respond(HttpStatusCode.OK)
             }
@@ -97,12 +121,13 @@ fun Routing.user(userStore : UserStore) {
              * Delete user
              */
             delete("/{id}") {
+                val session = call.attributes[SharedSqlSession.session]
                 val id: String = call.parameters["id"]!!
 
                 //check principal
                 if (principalNoMatch(id, call)) return@delete
 
-                userStore.delUser(id)
+                userStore.delUser(id, session)
 
                 call.respond(HttpStatusCode.Accepted)
             }

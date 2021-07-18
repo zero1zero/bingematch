@@ -1,21 +1,23 @@
 package test
 
-import ProdDataSource
+import com.google.common.base.Preconditions.checkState
 import db.Database
-import org.junit.Test
-import kotlin.test.assertEquals
+import org.apache.ibatis.annotations.Select
 
-class PostgresTest {
+interface SmokeTestMapper {
 
-    @Test
+    @Select("SELECT 1")
+    fun get() : Int
+}
+
+class PostgresTest(private val database : Database) {
+
     fun connect() {
-        val database = Database(ProdDataSource())
         val session = database.newSession()
 
         session.use {
-            it.select("select 1") { result ->
-                assertEquals(result.resultCount, 1)
-            }
+            val mapper = it.getMapper(SmokeTestMapper::class.java)
+            checkState(mapper.get() == 1)
         }
     }
 }

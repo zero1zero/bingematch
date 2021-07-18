@@ -1,9 +1,13 @@
 import auth.JwtConfig
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.*
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.JsonSerializer
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.google.protobuf.Message
 import com.google.protobuf.util.JsonFormat
@@ -15,18 +19,14 @@ import io.ktor.http.*
 import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
-import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
-import org.junit.platform.launcher.core.LauncherFactory
-import org.junit.platform.launcher.listeners.SummaryGeneratingListener
 import queue.Queue
+import routing.etc.SharedSqlSession
 import routing.queue
 import routing.show
 import routing.user
 import show.Show
 import test.PostgresTest
 import user.User
-import java.io.PrintWriter
 import java.text.DateFormat
 import kotlin.streams.toList
 
@@ -43,6 +43,10 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
         println("Game over, man")
     }
 
+    install(SharedSqlSession) {
+        db = deps.database()
+    }
+
     install(Authentication) {
         /**
          * Setup the JWT authentication to be used in [Routing].
@@ -54,7 +58,7 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
             realm = "bingematch.com"
             validate { it ->
                 it.payload.getClaim("id").asString().let {
-                    UserIdPrincipal(deps.userStore().getUser(it).getOrThrow().id)
+                    UserIdPrincipal(it)
                 }
             }
         }
@@ -80,21 +84,6 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
         }
     }
 
-    val listener = SummaryGeneratingListener()
-    val request = LauncherDiscoveryRequestBuilder.request()
-        .selectors(
-            selectClass(PostgresTest::class.java)
-        )
-        .build()
-    val launcher = LauncherFactory.create()
-    launcher.discover(request)
-    launcher.registerTestExecutionListeners(listener)
-    launcher.execute(request)
-
-    val summary = listener.summary
-
-    summary.printTo(PrintWriter(System.out))
-
     //update our stuff
     deps.updater().update()
 
@@ -109,22 +98,24 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
 
                 //update our stuff
                 deps.updater().update()
+
+                call.respond(HttpStatusCode.Accepted)
             }
         }
         route("/startup") {
             get("/") {
-                if (listener.summary.failures.size > 0) {
-                    call.respond(HttpStatusCode.InternalServerError)
-                }
+
+                PostgresTest(deps.database()).connect()
 
                 //all good!
                 call.respond(HttpStatusCode.Accepted)
             }
         }
 
+        @Suppress("UNCHECKED_CAST")
         install(ContentNegotiation) {
             register(ContentType.Application.Json, JacksonConverter(objectMapper.apply {
-                enable(SerializationFeature.INDENT_OUTPUT)
+//                enable(SerializationFeature.INDENT_OUTPUT)
                 dateFormat = DateFormat.getDateInstance()
 
                 val module = SimpleModule()
@@ -132,24 +123,49 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
                 val messages : List<Class<out Message>> = setOf(
                     User::class,
                     Queue::class,
-                    Show::class
+                    Show::class,
                 ).stream().flatMap {
                     it.java.declaredClasses.asList().stream()
+                        .filter { innerClass ->
+                            !innerClass.name.endsWith("Builder")
+                        }
                 }.map { it as Class<out Message> }
                     .toList()
 
                 messages.forEach { clazz ->
                     module.addSerializer(clazz, ProtoSerializer())
                     module.addDeserializer(clazz, ProtoDeserializer(clazz))
+
                 }
+
+                //anything that is in list form
+//                module.addDeserializer(List::class.java, ListProtoDeserializer<Show.Genre>(Show.Genre::class.java))
+
                 registerModule(module)
             }))
         }
 
-        //all users stuff
+        //register routing
         user(deps.userStore())
         queue(deps.queues())
-        show(deps.catalog())
+        show(deps.catalog(), deps.genres())
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+class ListProtoDeserializer<T>(private val clazz : Class<out Message>) : StdDeserializer<List<T>>(List::class.java) {
+
+    private val parser = JsonFormat.parser()
+
+    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): List<T> {
+
+        val node = p.readValueAsTree<ArrayNode>()
+
+        return node.map {
+            val message : Message.Builder = clazz.getMethod("newBuilder").invoke(null) as Message.Builder
+            parser.merge(it.toString(), message)
+            message.build()
+        }.toList() as List<T>
     }
 }
 
@@ -162,6 +178,7 @@ class ProtoSerializer : JsonSerializer<Message>() {
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 class ProtoDeserializer<T>(private val clazz : Class<out Message>) : StdDeserializer<T>(clazz) {
 
     private val parser = JsonFormat.parser()

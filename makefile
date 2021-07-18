@@ -3,7 +3,9 @@ delete:
 
 setup: delete
 	kind create cluster --config=kind.yaml
+
 	kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
 	helm repo add metallb https://metallb.github.io/metallb
 	helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 	helm repo update
@@ -39,7 +41,7 @@ dashboard:
 	make dashboardCreds
 	#kubectl -n default port-forward `kubectl get pods -n default -l "app.kubernetes.io/name=kubernetes-dashboard,app.kubernetes.io/instance=kubernetes-dashboard" -o jsonpath="{.items[0].metadata.name}"` 8443:8443
 
-dashboardCreds:
+dashboardCreds: auth
 	kubectl describe secret `kubectl describe serviceaccount admin-user -n default| grep -o 'admin-user-token-.*' | head -n 1` -n default
 
 deployInfra:

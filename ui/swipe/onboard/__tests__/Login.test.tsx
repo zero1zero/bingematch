@@ -1,12 +1,13 @@
 import {fireEvent, render, waitFor, waitForElementToBeRemoved} from '@testing-library/react-native';
 import {jest, test} from '@jest/globals'
 import * as React from 'react'
-import App, {RootStackParamList} from "../../../App";
+import App from "../../../App";
 import {createStackNavigator} from "@react-navigation/stack";
 import API from "../../api/API";
 import Storage from '../../Storage'
 import {user} from "../../model/compiled";
 import {Login} from "../Login";
+import {RootStackParamList} from "../../etc/RootStackParamList";
 
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 

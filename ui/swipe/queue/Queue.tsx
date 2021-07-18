@@ -23,7 +23,7 @@ import {BarsIcon, SettingsIcon} from "../components/Icons";
 import {Button} from "../components/Button";
 
 interface QueueState {
-    cacheItems: queue.IItem[]
+    cacheItems: queue.QueuedItem[]
     cardItems: Item[]
 
     head: string
@@ -57,12 +57,6 @@ const reducer = (state: QueueState, change: StateChange): QueueState => {
             case InteractionName.SwipeDislike:
                 item.sentiment = Sentiment.Dislike
                 break
-            case InteractionName.SwipeLove:
-                item.sentiment = Sentiment.Love
-                break
-            case InteractionName.SwipeHate:
-                item.sentiment = Sentiment.Hate
-                break
             case InteractionName.ButtonBackPress:
                 item.sentiment = Sentiment.Unknown
                 break;
@@ -76,9 +70,7 @@ const reducer = (state: QueueState, change: StateChange): QueueState => {
 
         //if we swiped, we can do this right away
         if (change.interaction.name == InteractionName.SwipeLike
-            || change.interaction.name == InteractionName.SwipeDislike
-            || change.interaction.name == InteractionName.SwipeLove
-            || change.interaction.name == InteractionName.SwipeHate) {
+            || change.interaction.name == InteractionName.SwipeDislike) {
 
             //everything but the buttons should advance head
             state.head = nextHead(state.cardItems, state.head)
@@ -224,7 +216,7 @@ const Queue: React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
         if (state.cacheItems.length < activeCardMax) {
             api.getQueue()
                 .then(moreActive => {
-                    dispatch({addToCache: moreActive.items})
+                    dispatch({addToCache: moreActive.items as queue.QueuedItem[]})
                 })
         }
     }, [state.cacheItems])
@@ -234,14 +226,14 @@ const Queue: React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
             .filter(item => item.synced == SyncStatus.UnSynced)
             .forEach(item => {
                 dispatch({setSync: {sync: SyncStatus.Syncing, id: item.data.id}})
-                new Promise<Item>((resolve) => {
-                    resolve(item)
-                }).then(item => {
-                    dispatch({setSync: {sync: SyncStatus.Synced, id: item.data.id}})
-                })
+
+                api.setQueueState(item.data.id, item.sentiment.valueOf())
+                    .then(() => {
+                        dispatch({setSync: {sync: SyncStatus.Synced, id: item.data.id}})
+                    })
             })
 
-    }, [state.cardItems])
+    }, [state.head])
 
     return (
         <View style={styles.home}>

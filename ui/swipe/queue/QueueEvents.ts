@@ -3,8 +3,7 @@ import {queue} from "../model/compiled";
 export enum InteractionName {
     SwipeLike,
     SwipeDislike,
-    SwipeLove,
-    SwipeHate,
+    Report,
     ButtonLikePress,
     ButtonDislikePress,
     ButtonBackPress,
@@ -12,13 +11,13 @@ export enum InteractionName {
 
 //throwing in bad in case we want to report
 export enum Sentiment {
-    Unknown, Like, Dislike, Love, Hate, Report
+    Unknown, Like, Dislike, Report
 }
 
 export interface StateChange {
     interaction?: { name: InteractionName, item: Item }
 
-    addToCache?: queue.IItem[]
+    addToCache?: queue.QueuedItem[]
     addToCardItems?: Item[]
 
     regressHead?: string //from
@@ -35,7 +34,7 @@ export enum SyncStatus {
 }
 
 export interface Item {
-    data: queue.IItem
+    data: queue.QueuedItem
     sentiment: Sentiment
     onscreen: boolean
     synced: SyncStatus

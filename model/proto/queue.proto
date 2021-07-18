@@ -11,24 +11,13 @@ message QueuedItems {
 
 message QueuedItem {
     string id = 1;
-    show.ThinDetail show = 2;
+    string user = 2;
 
-    //todo other stuff like who liked it, etc
+    show.ThinDetail show = 3;
 }
 
-message Item {
-
-    string id = 1;
-    State state = 3;
-
-    show.Detail show = 4;
-
-    enum State {
-        Queued = 0;
-        Like = 1;
-        Dislike = 2;
-        Love = 3;
-        Hate = 4;
-        Skipped = 5;
-    }
+enum QueueItemState {
+    Queued = 0;
+    Liked = 1;
+    Disliked = 2;
 }

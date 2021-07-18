@@ -1,22 +1,18 @@
 import _ from 'lodash';
-import {emailCheck, passwordCheck, shouldValidate, verifyCheck} from "../onboard/UserReducer";
-
-export enum ValidationStatus {
-    Input, Verify, Valid, Invalid
-}
-
-export interface Validation {
-    status?: ValidationStatus
-    message?: string
-}
-
-export interface InputState {
-    validation?: Validation
-    value?: string
-}
+import {
+    emailCheck,
+    firstCheck,
+    InputState,
+    lastCheck,
+    passwordCheck,
+    shouldValidate,
+    verifyCheck
+} from "../onboard/SignUpReducer";
 
 export interface StateChange {
     email?: InputState
+    first?: InputState
+    last?: InputState
     password?: InputState
     verify?: InputState
     submit?: boolean
@@ -24,6 +20,8 @@ export interface StateChange {
 
 export interface UserState {
     email: InputState
+    first: InputState
+    last: InputState
     password: InputState
     verify: InputState
     submit?: boolean
@@ -35,6 +33,14 @@ export const reducer = (state: UserState, change: StateChange): UserState => {
 
     if (state.email && shouldValidate(state.email.validation.status)) {
         state.email = _.merge({}, state.email, emailCheck(state.email))
+    }
+
+    if (state.first && shouldValidate(state.first.validation.status)) {
+        state.first = _.merge({}, state.first, firstCheck(state.first))
+    }
+
+    if (state.last && shouldValidate(state.last.validation.status)) {
+        state.last = _.merge({}, state.last, lastCheck(state.last))
     }
 
     if (state.password && shouldValidate(state.password.validation.status)) {

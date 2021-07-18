@@ -1,22 +1,31 @@
 package routing
 
 import catalog.Catalog
+import catalog.Genres
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import routing.etc.SharedSqlSession
 
 
-fun Routing.show(catalog : Catalog) {
+fun Routing.show(catalog : Catalog, genres : Genres) {
+    authenticate {
 
-    route("/show") {
+        get("/genres") {
+            call.respond(genres.getAllGenres())
+        }
 
-        get("/{id}") {
-            val principal = call.principal<UserIdPrincipal>()
+        route("/show") {
 
-            val id = call.parameters["id"]!!
+            get("/{id}") {
+                val principal = call.principal<UserIdPrincipal>()
+                val session = call.attributes[SharedSqlSession.session]
 
-            call.respond(catalog.getShow(id))
+                val id = call.parameters["id"]!!
+
+                call.respond(catalog.getShow(id, session))
+            }
         }
     }
 }

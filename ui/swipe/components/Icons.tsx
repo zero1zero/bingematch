@@ -11,6 +11,7 @@ import {
     faHeartBroken,
     faHistory,
     faLock,
+    faMinus,
     faPlus,
     faThumbsUp,
     faTimes,
@@ -52,6 +53,10 @@ export const PasswordIcon = (props: Props): JSX.Element => (
 
 export const PlusIcon = (props: Props): JSX.Element => (
     <FontAwesomeIcon {...props} icon={faPlus}/>
+);
+
+export const MinusIcon = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faMinus}/>
 );
 
 export const FlagIcon = (props: Props): JSX.Element => (
