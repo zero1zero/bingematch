@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {DrawerNavigationProps} from "../etc/BaseNavigationProps";
 import {
     ActivityIndicator,
     Image,
-    ListRenderItemInfo,
     Pressable,
     StyleSheet,
     Text,
@@ -13,7 +12,8 @@ import {
 import Dependencies from "../Dependencies";
 import {queue, show} from "../model/compiled";
 import {BingeMatch} from "../theme";
-import {SwipeListView, SwipeRow} from "react-native-swipe-list-view";
+import DraggableFlatList, {RenderItemParams} from "react-native-draggable-flatlist";
+import {Swipeable} from "react-native-gesture-handler";
 
 export const Likes: React.FC<DrawerNavigationProps<'Likes'>> = (props) => {
 
@@ -32,10 +32,13 @@ export const Likes: React.FC<DrawerNavigationProps<'Likes'>> = (props) => {
         })
     }, [props.navigation])
 
-    if (!likes) {
-        return (<View style={styles.loading}>
-            <ActivityIndicator size="large"/>
-        </View>)
+    const updateOrder = (likes : queue.QueuedItem[]) => {
+        //todo no backend support yet
+
+        // api.setQueueState(item.id, queue.QueueItemState.Queued)
+        //     .then(() => {
+        //         //todo no error handling for this
+        //     })
     }
 
     const onPress = (item: show.ThinDetail) => {
@@ -44,76 +47,76 @@ export const Likes: React.FC<DrawerNavigationProps<'Likes'>> = (props) => {
         })
     }
 
-    const remove = (renderItemInfo : ListRenderItemInfo<queue.QueuedItem>, rowMap) => {
-        const row : SwipeRow<show.ThinDetail> = rowMap[renderItemInfo.index]
-        row.closeRow()
+    const remove = (index : Number, item : queue.QueuedItem) => {
+        setLikes( likes.filter(item => item.id != item.id))
 
-        setLikes( likes.filter(item => item.id != renderItemInfo.item.id))
-
-        api.setQueueState(renderItemInfo.item.id, queue.QueueItemState.Queued)
+        api.setQueueState(item.id, queue.QueueItemState.Queued)
             .then(() => {
                 //todo no error handling for this
             })
     };
 
-    const toCard = (renderItemInfo : ListRenderItemInfo<queue.QueuedItem>) => {
+    const toCard = useCallback(({ item, index, drag, isActive }: RenderItemParams<queue.QueuedItem>) => {
+        const show = item.show as show.ThinDetail
+        return <Swipeable
+            renderRightActions={() => renderActions(index, item)}>
+            <View style={styles.item}>
+                <Image
+                    style={styles.poster}
+                    resizeMode={"contain"}
+                    source={{uri: `https://image.tmdb.org/t/p/w92${show.posterPath}`}} />
+                <Pressable style={styles.title}
+                           onPress={() => onPress(show)}
+                           onLongPress={drag}>
+                    <Text key={show.id} style={styles.titleText}>
+                        {show.title}
+                    </Text>
+                    <View style={styles.detailsLastLineRating}>
+                        <Image style={styles.detailsLastLineRatingIcon} source={require('../assets/rt_tomato.png')}/>
+                        <Text style={styles.detailsLastLineRatingPerc}>69%</Text>
 
-        const show = renderItemInfo.item.show as show.ThinDetail
+                        <Image style={{...styles.detailsLastLineRatingIcon, marginLeft: 12}}
+                               source={require('../assets/rt_user.png')}/>
+                        <Text style={styles.detailsLastLineRatingPerc}>89%</Text>
+                    </View>
+                    <Text numberOfLines={4} style={{marginBottom: 9}}>
+                        {show.overview}
+                    </Text>
+                </Pressable>
+            </View>
+        </Swipeable>
+        }, [])
 
-        return <View style={styles.item}>
-            <Image
-                style={styles.poster}
-                resizeMode={"contain"}
-                source={{uri: `https://image.tmdb.org/t/p/w92${show.posterPath}`}} />
-            <Pressable style={styles.title} onPress={() => onPress(show) }>
-                <Text key={show.id} style={styles.titleText}>
-                    {show.title}
-                </Text>
-                <View style={styles.detailsLastLineRating}>
-                    <Image style={styles.detailsLastLineRatingIcon} source={require('../assets/rt_tomato.png')}/>
-                    <Text style={styles.detailsLastLineRatingPerc}>69%</Text>
-
-                    <Image style={{...styles.detailsLastLineRatingIcon, marginLeft: 12}}
-                           source={require('../assets/rt_user.png')}/>
-                    <Text style={styles.detailsLastLineRatingPerc}>89%</Text>
-                </View>
-                <Text numberOfLines={4} style={{marginBottom: 9}}>
-                    {show.overview}
-                </Text>
-            </Pressable>
-        </View>
-    }
-
-    const renderHiddenItem = (renderItemInfo : ListRenderItemInfo<queue.QueuedItem>, rowMap) => (
-        <View style={styles.rowBack}>
-            <Text>Left</Text>
-            <TouchableOpacity
-                style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                // onPress={() => alertt(rowMap, data.item.key)}
-            >
+    const renderActions = (index : Number, item : queue.QueuedItem) => (
+        <View style={styles.actionsRow}>
+            <Pressable
+                style={[styles.actionsButton, styles.moreAction]}
+                onPress={() => alert(item.id)}>
                 <Text style={BingeMatch.theme.likes.actions.text}>More</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[styles.backRightBtn, styles.backRightBtnRight]}
-                onPress={() => remove(renderItemInfo, rowMap)}
-            >
+            </Pressable>
+            <Pressable
+                style={[styles.actionsButton, styles.removeAction]}
+                onPress={() => remove(index, item)}>
                 <Text style={BingeMatch.theme.likes.actions.text}>Remove</Text>
-            </TouchableOpacity>
+            </Pressable>
         </View>
     );
 
-        return <SwipeListView style={styles.likes}
-                              data={likes}
-                              renderItem={toCard}
-                              showsVerticalScrollIndicator={false}
-                              renderHiddenItem={renderHiddenItem}
-                              leftOpenValue={75}
-                              rightOpenValue={-150}
-                              previewOpenValue={-150}
-                              previewOpenDelay={2000}
-                              keyExtractor={(item, index) => index.toString()}
-                              previewRowKey={'0'}
-        />
+    if (!likes) {
+        return <View style={styles.loading}>
+            <ActivityIndicator size="large"/>
+        </View>
+    }
+
+
+    return <DraggableFlatList
+        style={styles.likes}
+        data={likes}
+        renderItem={toCard}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item, index) => `list-item-${index}`}
+        onDragEnd={({ data }) => updateOrder(data)}
+    />
 }
 
 const styles = StyleSheet.create({
@@ -171,39 +174,26 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         flex: 1,
     },
-    rowFront: {
-        alignItems: 'center',
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
-        justifyContent: 'center',
-        height: 50,
-    },
-    rowBack: {
-        alignItems: 'center',
+
+    actionsRow: {
         backgroundColor: '#DDD',
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingLeft: 15,
         marginVertical: 5,
     },
-    backRightBtn: {
+
+    actionsButton: {
         alignItems: 'center',
-        bottom: 0,
         justifyContent: 'center',
-        position: 'absolute',
-        top: 0,
         width: 75,
     },
-    backRightBtnLeft: {
-        right: 75,
 
-        backgroundColor: BingeMatch.colors.blue
+    removeAction: {
+        backgroundColor: BingeMatch.theme.likes.actions.removeColor
     },
-    backRightBtnRight: {
-        right: 0,
 
-        backgroundColor: BingeMatch.theme.likes.actions.remColor
+    moreAction: {
+        backgroundColor: BingeMatch.theme.likes.actions.moreColor
     },
 })
 

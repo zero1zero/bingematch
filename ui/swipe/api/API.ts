@@ -3,6 +3,7 @@ import Storage from '../Storage'
 
 import getEnvVars from '../../environment';
 import {AxiosResponse} from "axios";
+import jwt_decode from "jwt-decode";
 
 const {apiUrl} = getEnvVars();
 
@@ -27,6 +28,7 @@ export default class API {
 
         let dat = user.DetailAndToken.fromObject(response.data)
         await this.storage.setToken(dat.token)
+        console.log(dat.token)
 
         return dat
     }
@@ -67,18 +69,22 @@ export default class API {
         let token = response.data
         await this.storage.setToken(token)
 
+        const id = await this.storage.getUserId()
+        console.log(`user: ${id}`)
+        console.log(jwt_decode(token))
+
         return token
     }
 
     userUpdate = async (user: user.IUpdate): Promise<void> => {
-        this.storage.getUser()
+        this.storage.getUserId()
             .then(id => {
                 this.put('/user/' + id, user)
             })
     }
 
     getUser = async (): Promise<user.Detail> => {
-        return this.storage.getUser()
+        return this.storage.getUserId()
             .then(id => (
                 this.get('/user/' + id)
                     .then(r => r.data)
@@ -121,7 +127,7 @@ export default class API {
     )
 
     setGenres = async (genres : show.IGenre[]): Promise<void> => (
-        this.storage.getUser()
+        this.storage.getUserId()
             .then(id => {
                     this.put(`/user/${id}/genres`, genres.map(g => g.id))
                 }
@@ -233,7 +239,7 @@ export default class API {
     }
 
     deleteCurrentUser = async (): Promise<void> => {
-        let id = await this.storage.getUser()
+        let id = await this.storage.getUserId()
 
         if (!id) {
             console.log("No current user to delete... test probably failed")

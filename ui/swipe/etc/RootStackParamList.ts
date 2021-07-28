@@ -12,7 +12,16 @@ export type RootStackParamList = {
         id: string //show id
     }
 
-    Likes: undefined
+    Likes: {
+        list: string //list name
+    }
+    Watched: {
+        list: string //list name
+    }
+    Matched: {
+        list: string //list name
+    }
+
     LikeAction: {
         id: string //show id
     }

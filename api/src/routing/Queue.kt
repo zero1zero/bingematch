@@ -6,6 +6,7 @@ import io.ktor.http.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.util.*
+import principalNoMatch
 import queue.Queues
 import routing.etc.SharedSqlSession
 
@@ -19,7 +20,11 @@ fun Routing.queue(queues : Queues) {
                 val principal = call.principal<UserIdPrincipal>()
                 val session = call.attributes[SharedSqlSession.session]
 
-                call.respond(queues.getQueued(principal!!.name, session))
+                val queued = queues.getQueued(principal!!.name, session)
+
+                if (principalNoMatch(queued.getItems(0).user, call)) return@get
+
+                call.respond(queued)
             }
 
             put("/set/{id}/{state}") {

@@ -1,5 +1,5 @@
 import React, {useEffect, useLayoutEffect, useReducer, useState} from 'react';
-import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
 import {reducer, Reducer} from "./ProfileReducer";
@@ -40,6 +40,10 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
                 .then(user =>
                     setUserGenres(user.genres)
                 )
+                .catch(e => {
+                    //todo handle failure case
+                    console.error(e)
+                })
         })
 
         api.getUser()
@@ -113,9 +117,9 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
             .then(r => {
 
                 // Add a Toast on screen.
-                Toast.show('Updated', {
+                Toast.show('Saved', {
                     keyboardAvoiding: true,
-                    duration: Toast.durations.LONG,
+                    duration: Toast.durations.SHORT,
                 });
             })
     }, [state.submit, state.email, state.password])
@@ -135,69 +139,71 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
     )
 
     return (
-        <SafeAreaView style={styles.container}>
-            <KeyboardAvoidingView style={{flex: 1}}>
+        <ScrollView>
+            <SafeAreaView style={styles.container}>
+                <KeyboardAvoidingView style={{flex: 1}}>
 
-                <View style={styles.formContainer}>
+                    <View style={styles.formContainer}>
 
-                    <View>
-                        <Text style={styles.label}>Your Genres</Text>
+                        <View>
+                            <Text style={styles.label}>Your Genres</Text>
 
-                        <View style={styles.detailsGenres}>
-                            {userGenres.map(toGenreBlob)}
+                            <View style={styles.detailsGenres}>
+                                {userGenres.map(toGenreBlob)}
+                            </View>
+
+                            <Button
+                                style={styles.addGenres}
+                                onPress={addGenres}>
+                                <View style={{alignItems: "center", flexDirection: "row"}}>
+                                    <PlusIcon style={{marginRight: 5}}/>
+                                    <Text style={styles.addGenresText}>Add Genres You Like</Text>
+                                </View>
+                            </Button>
                         </View>
 
+                        <Text style={styles.label}>First</Text>
+                        <FirstInput
+                            message={state.first.validation.message}
+                            value={state.first.value}
+                            dispatch={dispatch}/>
+
+                        <Text style={styles.label}>Last</Text>
+                        <LastInput
+                            message={state.last.validation.message}
+                            value={state.last.value}
+                            dispatch={dispatch}/>
+
+                        <Text style={styles.label}>Email</Text>
+                        <EmailInput
+                            message={state.email.validation.message}
+                            value={state.email.value}
+                            dispatch={dispatch}/>
+
+                        <Text style={styles.label}>Password</Text>
+                        <PasswordInput
+                            message={state.password.validation.message}
+                            style={{marginBottom: 12}}
+                            value={state.password.value}
+                            dispatch={dispatch}/>
+                        <VerifyInput
+                            value={state.verify.value}
+                            dispatch={dispatch}/>
                         <Button
-                            style={styles.addGenres}
-                            onPress={addGenres}>
-                            <View style={{alignItems: "center", flexDirection: "row"}}>
-                                <PlusIcon style={{marginRight: 5}}/>
-                                <Text style={styles.addGenresText}>Add Genres You Like</Text>
-                            </View>
+                            style={styles.saveButton}
+                            onPress={onSavePress}>
+                            <Text style={BingeMatch.theme.button.text}>Save</Text>
+                        </Button>
+
+                        <Button
+                            onPress={onLogoutPress}
+                            style={styles.logoutButton}>
+                            <Text style={BingeMatch.theme.button.text}>Logout</Text>
                         </Button>
                     </View>
-
-                    <Text style={styles.label}>First</Text>
-                    <FirstInput
-                        message={state.first.validation.message}
-                        value={state.first.value}
-                        dispatch={dispatch}/>
-
-                    <Text style={styles.label}>Last</Text>
-                    <LastInput
-                        message={state.last.validation.message}
-                        value={state.last.value}
-                        dispatch={dispatch}/>
-
-                    <Text style={styles.label}>Email</Text>
-                    <EmailInput
-                        message={state.email.validation.message}
-                        value={state.email.value}
-                        dispatch={dispatch}/>
-
-                    <Text style={styles.label}>Password</Text>
-                    <PasswordInput
-                        message={state.password.validation.message}
-                        style={{marginBottom: 12}}
-                        value={state.password.value}
-                        dispatch={dispatch}/>
-                    <VerifyInput
-                        value={state.verify.value}
-                        dispatch={dispatch}/>
-                    <Button
-                        style={styles.saveButton}
-                        onPress={onSavePress}>
-                        <Text style={BingeMatch.theme.button.text}>Save</Text>
-                    </Button>
-
-                    <Button
-                        onPress={onLogoutPress}
-                        style={styles.logoutButton}>
-                        <Text style={BingeMatch.theme.button.text}>Logout</Text>
-                    </Button>
-                </View>
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+        </ScrollView>
     );
 };
 

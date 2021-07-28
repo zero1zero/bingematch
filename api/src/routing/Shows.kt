@@ -19,7 +19,6 @@ fun Routing.show(catalog : Catalog, genres : Genres) {
         route("/show") {
 
             get("/{id}") {
-                val principal = call.principal<UserIdPrincipal>()
                 val session = call.attributes[SharedSqlSession.session]
 
                 val id = call.parameters["id"]!!

@@ -128,7 +128,8 @@ export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        borderRadius: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         marginTop: '50%',
         backgroundColor: BingeMatch.theme.onboard.loginbg,
         flex: 1,
