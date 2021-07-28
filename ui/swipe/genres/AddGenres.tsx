@@ -6,6 +6,7 @@ import {Button} from "../components/Button";
 import {MinusIcon, PlusIcon} from "../components/Icons";
 import Dependencies from "../Dependencies";
 import {show} from "../model/compiled";
+import Toast from "react-native-root-toast";
 
 export const AddGenres: React.FC<BaseNavigationProps<'AddGenres'>> = (props) => {
 
@@ -20,10 +21,14 @@ export const AddGenres: React.FC<BaseNavigationProps<'AddGenres'>> = (props) => 
 
     const save = () => (
         api.setGenres(userGenres)
-            .then(() => (
-                //todo success toast
+            .then(() => {
+                    Toast.show('Saved', {
+                        keyboardAvoiding: true,
+                        duration: Toast.durations.SHORT,
+                    })
+
                     props.navigation.goBack()
-                )
+                }
             )
     )
 

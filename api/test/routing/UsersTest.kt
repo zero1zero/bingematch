@@ -39,8 +39,6 @@ class UsersTest {
                     assertEquals(HttpStatusCode.Unauthorized, response.status())
                 }
 
-            val token: String
-
             //login user
             val login = User.Login.newBuilder()
                 .setEmail(userUtil.login.email)
@@ -53,19 +51,19 @@ class UsersTest {
             }.apply {
                 assertEquals(HttpStatusCode.OK, response.status())
 
-                token = response.content!!
-            }
+                val token = response.content!!
 
-            //get user
-            handleRequest(HttpMethod.Get, "/user/${userUtil.getTestUser().id}") {
-                addHeader(HttpHeaders.Authorization, "Bearer : $token")
-            }
-                .apply {
-                    assertEquals(HttpStatusCode.OK, response.status())
-                    val user1 = objectMapper.readValue(response.content, User.Detail::class.java)
-
-                    assertEquals(userUtil.getTestUser().id, user1.id)
+                //get user
+                handleRequest(HttpMethod.Get, "/user/${userUtil.getTestUser().id}") {
+                    addHeader(HttpHeaders.Authorization, "Bearer $token")
                 }
+                    .apply {
+                        assertEquals(HttpStatusCode.OK, response.status())
+                        val user1 = objectMapper.readValue(response.content, User.Detail::class.java)
+
+                        assertEquals(userUtil.getTestUser().id, user1.id)
+                    }
+            }
         }
     }
 

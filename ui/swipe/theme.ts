@@ -75,13 +75,15 @@ export namespace BingeMatch {
 
         drawer: {
             text: TextStyle
+            categoryText: TextStyle
         }
 
         likes: {
             title: TextStyle,
             actions: {
                 text: TextStyle
-                remColor: ColorValue
+                removeColor: ColorValue
+                moreColor: ColorValue
             }
         }
     }
@@ -219,6 +221,11 @@ export namespace BingeMatch {
             text: {
                 fontSize: 19,
                 fontWeight: '400',
+            },
+            categoryText: {
+                fontSize: 20,
+                fontWeight: '500',
+                color: BingeMatch.colors.grey,
             }
         },
 
@@ -232,7 +239,8 @@ export namespace BingeMatch {
                     fontWeight: '600',
                     color: colors.bg,
                 },
-                remColor:  colors.error
+                removeColor:  colors.error,
+                moreColor:  colors.blue
             }
         }
     }

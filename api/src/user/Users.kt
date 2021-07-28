@@ -52,6 +52,7 @@ class UserStore(private val passwordUtil: PasswordUtil, private val genres : Gen
             .map { genres.getGenre(it.asInt()) }
 
         return User.Detail.newBuilder()
+            .setId(dbuser.id)
             .setEmail(dbuser.email)
             .setFirst(dbuser.first)
             .setLast(dbuser.last)

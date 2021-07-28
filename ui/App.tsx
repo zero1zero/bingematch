@@ -13,13 +13,18 @@ import {SignUp} from "./swipe/onboard/SignUp";
 import {Login} from "./swipe/onboard/Login";
 import {ForgotPassword} from "./swipe/onboard/ForgotPassword";
 import {Detail} from "./swipe/detail/Detail";
-import {useWindowDimensions} from "react-native";
+import {LogBox, useWindowDimensions} from "react-native";
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {CustomDrawerContent} from "./swipe/drawer/CustomDrawerContent";
 import {Likes} from "./swipe/likes/Likes";
 import {LikeAction} from "./swipe/likes/LikeAction";
 import {RootStackParamList} from "./swipe/etc/RootStackParamList";
 import {AddGenres} from "./swipe/genres/AddGenres";
+
+//can remove with upgrade of react-native-draggable-flatlist above ^2.6.2
+LogBox.ignoreLogs([
+    'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
+]);
 
 export default function App() {
     //for expo setup https://reactnavigation.org/docs/react-native-screens
@@ -52,7 +57,6 @@ export default function App() {
     if (state == AuthState.Loading) {
         return <Splash/>
     }
-
     const Stack = createStackNavigator<RootStackParamList>();
     const Drawer = createDrawerNavigator<RootStackParamList>();
 
@@ -74,7 +78,7 @@ export default function App() {
         },
     })
 
-    const homeNav = () => (
+    const HomeNav = () => (
         <Stack.Navigator initialRouteName='Home' mode={'modal'}>
             <Stack.Screen name='Home' component={home} options={{headerShown: false}}/>
 
@@ -132,12 +136,22 @@ export default function App() {
             drawerType={'slide'}
             drawerContent={props => <CustomDrawerContent {...props} />}
             drawerStyle={{width: '53%'}}>
+
             <Stack.Screen name='Queue' component={Queue}/>
-            <Stack.Screen name='Likes' component={Likes}/>
+
+            <Stack.Screen name='Likes' component={Likes} initialParams={{
+                list: 'Likes'
+            }}/>
+            <Stack.Screen name='Watched' component={Likes} initialParams={{
+                list: 'Watched'
+            }}/>
+            <Stack.Screen name='Matched' component={Likes} initialParams={{
+                list: 'Matched'
+            }}/>
         </Drawer.Navigator>
     )
 
-    const onboardNav = () => (
+    const OnBoardNav = () => (
         <Stack.Navigator initialRouteName={'SignUp'} mode={'modal'}>
             <Stack.Screen name='SignUp' component={SignUp}/>
             <Stack.Screen name='Login' component={Login} options={{
@@ -153,13 +167,13 @@ export default function App() {
                 animationTypeForReplace: 'push'
             }}/>
         </Stack.Navigator>
-)
+    )
 
     return (
         <AuthContext.Provider value={authContext}>
             <NavigationContainer theme={BingeMatch.navigation}>
                 <RootSiblingParent>
-                    {state != AuthState.Authenticated ? onboardNav() : homeNav()}
+                    {state != AuthState.Authenticated ? OnBoardNav() : HomeNav()}
                 </RootSiblingParent>
             </NavigationContainer>
         </AuthContext.Provider>

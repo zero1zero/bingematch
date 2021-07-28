@@ -55,7 +55,7 @@ fun Routing.user(userStore : UserStore) {
                         .build())
                 }
                 .onSuccess {
-                    //user is found, no duplicates
+                    //user is found, this means they exist
                     call.respond(HttpStatusCode.BadRequest, UserAlreadyExists().message!!)
                 }
         }

@@ -34,7 +34,7 @@ export default class Storage {
         return decoded.id
     }
 
-    getUser = async (): Promise<string | void> => {
+    getUserId = async (): Promise<string | void> => {
         let token = await this.getToken()
 
         if (!token) {

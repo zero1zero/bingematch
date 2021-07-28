@@ -90,7 +90,7 @@ export const Detail: React.FC<BaseNavigationProps<'Detail'>> = (props) => {
                                  source={{uri: `https://image.tmdb.org/t/p/w500${detail.backdropPath}`}}>
                     <Text style={styles.title}>{detail.title} ({date.getFullYear()})</Text>
                     <Text style={styles.tagline}>{detail.tagline}</Text>
-                    <ScrollView style={styles.content} alwaysBounceVertical={false}>
+                    <ScrollView style={styles.content}>
 
                         {trailerBlock()}
 
