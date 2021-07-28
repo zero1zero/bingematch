@@ -1,5 +1,5 @@
 import React from "react";
-import {DrawerContentScrollView, DrawerItem} from "@react-navigation/drawer";
+import {DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
 import {DrawerContentComponentProps} from "@react-navigation/drawer/src/types";
 import {StyleSheet, Text, View} from "react-native";
 import {BingeMatch} from "../theme";

@@ -26,6 +26,11 @@ LogBox.ignoreLogs([
     'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
 ]);
 
+//can remove with upgrade of react-native-draggable-flatlist above ^2.6.2
+LogBox.ignoreLogs([
+    'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
+]);
+
 export default function App() {
     //for expo setup https://reactnavigation.org/docs/react-native-screens
     enableScreens();
