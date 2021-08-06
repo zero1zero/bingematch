@@ -1,6 +1,6 @@
-import React, {useEffect, useLayoutEffect, useReducer} from 'react';
+import React, {createContext, Dispatch, useContext, useEffect, useLayoutEffect, useReducer} from 'react';
 
-import {StyleSheet, Text, View} from "react-native";
+import {SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {queue} from "../model/compiled";
 import {DrawerNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
@@ -9,208 +9,59 @@ import {
     beforeHeadExclusive,
     countAfterHeadInclusive,
     getHead,
-    getItem,
+    getItem, headIndex,
     nextHead,
     previous,
     previousHead,
     removeFinishedAfterBacks,
     updateInPlace
 } from "./QueueUtils";
-import {InteractionName, Item, Sentiment, StateChange, SyncStatus} from "./QueueEvents";
+import {
+    activeCardMax,
+    InteractionName,
+    queueReducer,
+    QueueReducer, queueReducerDefaults,
+    StateChange,
+} from "./QueueReducer";
+import {Item, Sentiment, SyncStatus} from "./QueueEvents";
 import QueueActions from "./Actions";
 import {BingeMatch} from "../theme";
 import {BarsIcon, SettingsIcon} from "../components/Icons";
 import {Button} from "../components/Button";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {DrawerNavigationProp} from "@react-navigation/drawer";
+import {DrawerNavProp, RootStackParamList} from "../etc/RootStackParamList";
+import {increment, useAppDispatch, useAppSelector} from "../redux/split";
 
-interface QueueState {
-    cacheItems: queue.QueuedItem[]
-    cardItems: Item[]
-
-    head: string
-}
-
-const activeCardMax = 6
-const moreActiveAt = 3
-const backBuffer = 2
-
-type Reducer = (state: QueueState, change: StateChange) => QueueState
-const reducer = (state: QueueState, change: StateChange): QueueState => {
-
-    if (change.addToCache) {
-        state.cacheItems = state.cacheItems.concat(change.addToCache)
-    }
-
-    state = checkForCardHydrate(state)
-
-    if (change.interaction) {
-        //if back, lets act on the previous item instead of current
-        const item = (change.interaction.name == InteractionName.ButtonBackPress
-            ? previous(state.cardItems, change.interaction.item.data.id)
-            : getItem(state.cardItems, change.interaction.item.data.id))
-
-        switch (change.interaction.name) {
-            case InteractionName.ButtonLikePress:
-            case InteractionName.SwipeLike:
-                item.sentiment = Sentiment.Like
-                break
-            case InteractionName.ButtonDislikePress:
-            case InteractionName.SwipeDislike:
-                item.sentiment = Sentiment.Dislike
-                break
-            case InteractionName.ButtonBackPress:
-                item.sentiment = Sentiment.Unknown
-                break;
-        }
-
-        //remove any synced items after back queue
-        state.cardItems = removeFinishedAfterBacks(state.cardItems, state.head, backBuffer)
-
-        //we set sentiment above, still propagate new state
-        updateInPlace(state.cardItems, item)
-
-        //if we swiped, we can do this right away
-        if (change.interaction.name == InteractionName.SwipeLike
-            || change.interaction.name == InteractionName.SwipeDislike) {
-
-            //everything but the buttons should advance head
-            state.head = nextHead(state.cardItems, state.head)
-        }
-    }
-
-    if (change.advanceHead) {
-        //short circuit if we are trying to move away from not the current
-        if (state.head != change.advanceHead) {
-            return state
-        }
-
-        state.head = nextHead(state.cardItems, state.head)
-    }
-
-    //on back, we move the pointer back and set the sentiment to undefined
-    if (change.regressHead) {
-        //short circuit if we are trying to regress to anything other than one above current
-        if (previousHead(state.cardItems, state.head) != change.regressHead) {
-            return state
-        }
-
-        const prev = previous(state.cardItems, state.head)
-        prev.synced = SyncStatus.UnSynced
-
-        updateInPlace(state.cardItems, prev)
-
-        state.head = prev.data.id
-    }
-
-    if (change.setOnscreen) {
-        const item = getItem(state.cardItems, change.setOnscreen)
-
-        item.onscreen = true
-
-        updateInPlace(state.cardItems, item)
-    }
-
-    if (change.setOffscreen) {
-        const item = getItem(state.cardItems, change.setOffscreen)
-
-        item.onscreen = false
-
-        updateInPlace(state.cardItems, item)
-    }
-
-    if (change.setSync) {
-        const item = getItem(state.cardItems, change.setSync.id)
-
-        item.synced = change.setSync.sync
-
-        updateInPlace(state.cardItems, item)
-    }
-
-    if (state.cardItems) {
-        console.debug('====== Queue =======')
-        state.cardItems.map(item => {
-            let msg = '⇨ ' + item.data.show.title + (item.data.id == state.head ? ' - 🎥' : '')
-            switch (item.synced) {
-                case SyncStatus.Syncing:
-                    msg += ' 🔄'
-                    break;
-                case SyncStatus.Synced:
-                    msg += ' ✅'
-                    break;
-
-            }
-            console.debug(msg)
-        })
-        console.debug('====== /Queue =======')
-    }
-
-    return Object.assign({}, state)
-}
-
-const checkForCardHydrate = (state: QueueState): QueueState => {
-
-    //only try if we have cache items
-    if (state.cacheItems.length == 0) {
-        return state
-    }
-
-    //if less cards than we want, load more cards
-    const activeCardCount = countAfterHeadInclusive(state.cardItems, state.head)
-    if (activeCardCount <= moreActiveAt) {
-
-        const cardsToPullFromCache = activeCardMax - activeCardCount
-
-        const remainingCache = state.cacheItems.slice(cardsToPullFromCache)
-        const forCards = state.cacheItems.slice(0, cardsToPullFromCache)
-
-        const loaded: Item[] = state.cardItems
-            .concat(forCards
-                .map(raw => {
-                        return {
-                            onscreen: true,
-                            data: raw,
-                            sentiment: Sentiment.Unknown,
-                            synced: SyncStatus.UnSynced
-                        }
-                    }
-                ))
-
-        if (!state.head) {
-            state.head = loaded[0].data.id
-        }
-
-        return {
-            ...state,
-            cacheItems: remainingCache,
-            cardItems: loaded,
-        }
-    }
-
-    return state
-}
-
-const Queue: React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
+const Queue: React.FC = (props) => {
 
     const api = Dependencies.instance.api
-    const [state, dispatch] = useReducer<Reducer>(reducer, {
+    const [state, dispatch] = useReducer<QueueReducer>(queueReducer, {
         cardItems: [], cacheItems: [], head: undefined
     })
 
+    const count = useAppSelector(state => state.counter.value)
+    const dis = useAppDispatch()
+
+    const navigation = useNavigation<DrawerNavProp<'Queue'>>()
+    const route = useRoute<RouteProp<RootStackParamList, 'Queue'>>()
+
     useLayoutEffect(() => {
-        props.navigation.dangerouslyGetParent().setOptions({
+        navigation.dangerouslyGetParent().setOptions({
             headerStyle: BingeMatch.theme.nav.bar,
-            headerTitle: () => (<Text style={BingeMatch.theme.nav.title}>BingeMatch</Text>),
+            headerTitle: () => (<Text style={BingeMatch.theme.nav.title}>NightIn</Text>),
             headerRight: () => (
-                <Button style={styles.buttons} onPress={() => props.navigation.navigate('Profile')}>
+                <Button style={styles.buttons} onPress={() => navigation.navigate('Profile')}>
                     <SettingsIcon style={BingeMatch.theme.nav.icons} size={30}/>
                 </Button>
             ),
             headerLeft: () => (
-                <Button style={styles.buttons} onPress={() => props.navigation.toggleDrawer()}>
+                <Button style={styles.buttons} onPress={() => navigation.toggleDrawer()}>
                     <BarsIcon style={BingeMatch.theme.nav.icons} size={30}/>
                 </Button>
             ),
         });
-    }, [props.navigation]);
+    }, [navigation]);
 
     useEffect(() => {
         if (state.cacheItems.length < activeCardMax) {
@@ -225,6 +76,8 @@ const Queue: React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
         beforeHeadExclusive(state.cardItems, state.head)
             .filter(item => item.synced == SyncStatus.UnSynced)
             .forEach(item => {
+                console.log("dis")
+                dis(increment())
                 dispatch({setSync: {sync: SyncStatus.Syncing, id: item.data.id}})
 
                 api.setQueueState(item.data.id, item.sentiment.valueOf())
@@ -236,7 +89,8 @@ const Queue: React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
     }, [state.head])
 
     return (
-        <View style={styles.home}>
+        <SafeAreaView style={styles.home}>
+            <Text>c: {count}</Text>
             <Deck
                 items={state.cardItems}
                 dispatch={dispatch}
@@ -244,7 +98,7 @@ const Queue: React.FC<DrawerNavigationProps<'Queue'>> = (props) => {
             <QueueActions
                 head={getHead(state.cardItems, state.head)}
                 dispatch={dispatch}/>
-        </View>
+        </SafeAreaView>
     );
 }
 

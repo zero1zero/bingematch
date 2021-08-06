@@ -1,36 +1,12 @@
 import {queue} from "../model/compiled";
 
-export enum InteractionName {
-    SwipeLike,
-    SwipeDislike,
-    Report,
-    ButtonLikePress,
-    ButtonDislikePress,
-    ButtonBackPress,
+export enum SyncStatus {
+    UnSynced, Syncing, Synced
 }
 
 //throwing in bad in case we want to report
 export enum Sentiment {
-    Unknown, Like, Dislike, Report
-}
-
-export interface StateChange {
-    interaction?: { name: InteractionName, item: Item }
-
-    addToCache?: queue.QueuedItem[]
-    addToCardItems?: Item[]
-
-    regressHead?: string //from
-    advanceHead?: string //to
-
-    setOnscreen?: string
-    setOffscreen?: string
-
-    setSync?: { sync: SyncStatus, id: string }
-}
-
-export enum SyncStatus {
-    UnSynced, Syncing, Synced
+    Unknown, Like, Dislike,
 }
 
 export interface Item {

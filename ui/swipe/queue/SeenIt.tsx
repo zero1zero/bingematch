@@ -1,18 +1,27 @@
-import React from "react";
-import {BaseNavigationProps} from "../etc/BaseNavigationProps";
+import React, {useContext} from "react";
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {BingeMatch} from "../theme";
 import {Button} from "../components/Button";
 import {BackIcon} from "../components/Icons";
+import {Item, Sentiment, SyncStatus} from "./QueueEvents";
+import {useNavigation} from "@react-navigation/native";
+import {DrawerNavigationProp} from "@react-navigation/drawer";
+import {RootStackParamList} from "../etc/RootStackParamList";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {InteractionName} from "./QueueReducer";
 
-export const LikeAction: React.FC<BaseNavigationProps<'LikeAction'>> = (props) => {
+export const SeenIt : React.FC = (props) => {
+
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'SeenIt'>>()
 
     const close = () => {
-        props.navigation.goBack()
+        navigation.goBack()
     }
 
     const watched = () => {
-        props.navigation.goBack()
+        navigation.navigate('Queue', {
+            advanceHead: InteractionName.ButtonLikePress, //todo pull
+        })
     }
 
     return (
@@ -20,9 +29,9 @@ export const LikeAction: React.FC<BaseNavigationProps<'LikeAction'>> = (props) =
             <Pressable style={{flex: 5}} onPress={close}>
             </Pressable>
             <View style={styles.actions}>
-                    <Button style={styles.button} onPress={watched}>
-                    <BackIcon size={20} style={{marginRight: 8}}/>
-                        <Text style={BingeMatch.theme.button.text}>
+                <Button style={styles.button} onPress={watched}>
+                    <BackIcon size={20} style={{marginRight: 8}} />
+                    <Text style={BingeMatch.theme.button.text}>
                         I Watched
                     </Text>
                 </Button>
@@ -30,7 +39,6 @@ export const LikeAction: React.FC<BaseNavigationProps<'LikeAction'>> = (props) =
         </View>
     )
 }
-
 
 const styles = StyleSheet.create({
 

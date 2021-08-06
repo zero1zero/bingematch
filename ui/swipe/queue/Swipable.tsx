@@ -9,8 +9,9 @@ import {
     useWindowDimensions,
     ViewStyle
 } from "react-native";
-import {InteractionName, Item, Sentiment, StateChange} from "./QueueEvents";
+import {InteractionName, StateChange} from "./QueueReducer";
 import {useNavigation} from "@react-navigation/native";
+import {Item, Sentiment, SyncStatus} from "./QueueEvents";
 
 export interface Props {
     style: ViewStyle

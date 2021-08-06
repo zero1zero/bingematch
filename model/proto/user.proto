@@ -36,3 +36,24 @@ message DetailAndToken {
     string token = 1;
     Detail detail = 2;
 }
+
+message Lists {
+    repeated Liked liked = 1;
+    repeated Matched matched = 2;
+    repeated Watched watched = 3;
+}
+
+message Liked {
+    string show = 1;
+    string order = 2;
+}
+
+message Matched {
+    string show = 1;
+    string user = 2;
+}
+
+message Watched {
+    string show = 1;
+    int32 rating = 2;
+}

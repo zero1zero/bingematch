@@ -8,6 +8,7 @@ import {
     shouldValidate,
     verifyCheck
 } from "../onboard/SignUpReducer";
+import {Profile} from "./Profile";
 
 export interface StateChange {
     email?: InputState
@@ -27,8 +28,8 @@ export interface UserState {
     submit?: boolean
 }
 
-export type Reducer = (state: UserState, change: StateChange) => UserState
-export const reducer = (state: UserState, change: StateChange): UserState => {
+export type ProfileReducer = (state: UserState, change: StateChange) => UserState
+export const profileReducer = (state: UserState, change: StateChange): UserState => {
     state = _.merge({}, state, change)
 
     if (state.email && shouldValidate(state.email.validation.status)) {

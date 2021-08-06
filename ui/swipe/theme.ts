@@ -126,7 +126,7 @@ export namespace BingeMatch {
                 color: colors.error,
             },
             back: {
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: '700',
 
                 color: colors.grey
@@ -278,6 +278,7 @@ export namespace BingeMatch {
         },
     })
 
+    //todo strong typing of Theme and set background color and such
     export const navigation = {
         ...DefaultTheme,
 

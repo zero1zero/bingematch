@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {createContext, useEffect, useMemo, useReducer, useState} from 'react';
 import Queue from "./swipe/queue/Queue";
 import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
@@ -7,7 +7,6 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import Splash from "./swipe/Splash";
 import {BingeMatch} from "./swipe/theme";
 import Dependencies from "./swipe/Dependencies";
-import {AuthContext, AuthState} from "./swipe/api/Auth";
 import {Profile} from "./swipe/user/Profile";
 import {SignUp} from "./swipe/onboard/SignUp";
 import {Login} from "./swipe/onboard/Login";
@@ -17,19 +16,33 @@ import {LogBox, useWindowDimensions} from "react-native";
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {CustomDrawerContent} from "./swipe/drawer/CustomDrawerContent";
 import {Likes} from "./swipe/likes/Likes";
-import {LikeAction} from "./swipe/likes/LikeAction";
+import {ListAction} from "./swipe/likes/ListAction";
 import {RootStackParamList} from "./swipe/etc/RootStackParamList";
 import {AddGenres} from "./swipe/genres/AddGenres";
+import {SeenIt} from "./swipe/queue/SeenIt";
+import {InteractionName, QueueReducer, queueReducer, queueReducerDefaults} from "./swipe/queue/QueueReducer";
+import {Provider} from "react-redux";
+import {store} from "./swipe/redux/split";
 
 //can remove with upgrade of react-native-draggable-flatlist above ^2.6.2
 LogBox.ignoreLogs([
     'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
 ]);
 
-//can remove with upgrade of react-native-draggable-flatlist above ^2.6.2
-LogBox.ignoreLogs([
-    'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
-]);
+
+export enum AuthState {
+    Loading, Authenticated, Unauthenticated
+}
+
+export interface AuthContext {
+    login: () => void
+    signOut: () => void
+}
+
+export const AuthContext = createContext<AuthContext>({
+    login: () => {},
+    signOut: () => {}
+})
 
 export default function App() {
     //for expo setup https://reactnavigation.org/docs/react-native-screens
@@ -39,14 +52,15 @@ export default function App() {
 
     const window = useWindowDimensions()
 
-    const [state, setState] = useState<AuthState>(AuthState.Loading)
-    const authContext = React.useMemo(
+    const [authState, setAuthState] = useState<AuthState>(AuthState.Loading)
+
+    const authContext : AuthContext = useMemo(
         () => ({
             login: () => {
-                setState(AuthState.Authenticated)
+                setAuthState(AuthState.Authenticated)
             },
             signOut: () => {
-                setState(AuthState.Unauthenticated)
+                setAuthState(AuthState.Unauthenticated)
             },
         }),
         []
@@ -55,11 +69,13 @@ export default function App() {
     useEffect(() => {
         deps.storage.isLoggedIn()
             .then(authd => {
-                setState(authd ? AuthState.Authenticated : AuthState.Unauthenticated)
+                //todo we should make the state object here more complex to effectively casche the user
+                setAuthState(authd ? AuthState.Authenticated : AuthState.Unauthenticated)
             })
     }, [])
 
-    if (state == AuthState.Loading) {
+    //todo replace with expo splash loading screen
+    if (authState == AuthState.Loading) {
         return <Splash/>
     }
     const Stack = createStackNavigator<RootStackParamList>();
@@ -71,7 +87,7 @@ export default function App() {
                 translateY: progress.interpolate({
                     inputRange: [0, 1],
                     outputRange: [window.height, 0]
-                }),
+                })
             }],
         },
         overlayStyle: {
@@ -83,29 +99,23 @@ export default function App() {
         },
     })
 
+    const modalScreenOptions = () => ({
+        headerShown: false,
+        cardStyle: {
+            backgroundColor: 'transparent',
+        },
+        cardOverlayEnabled: true,
+            cardStyleInterpolator: cardInterpolator,
+            gestureResponseDistance: {vertical: 1000},
+    })
+
     const HomeNav = () => (
         <Stack.Navigator initialRouteName='Home' mode={'modal'}>
             <Stack.Screen name='Home' component={home} options={{headerShown: false}}/>
 
-            <Stack.Screen name='Detail' component={Detail} options={{
-                headerShown: false,
-                cardStyle: {
-                    backgroundColor: 'transparent',
-                },
-                cardOverlayEnabled: true,
-                cardStyleInterpolator: cardInterpolator,
-                gestureResponseDistance: {vertical: 1000},
-            }}/>
+            <Stack.Screen name='Detail' component={Detail} options={modalScreenOptions}/>
 
-            <Stack.Screen name='LikeAction' component={LikeAction} options={{
-                headerShown: false,
-                cardOverlayEnabled: true,
-                cardStyle: {
-                    backgroundColor: 'transparent',
-                },
-                cardStyleInterpolator: cardInterpolator,
-                gestureResponseDistance: {vertical: 1000},
-            }} />
+            <Stack.Screen name='SeenIt' component={SeenIt} options={modalScreenOptions}/>
 
         </Stack.Navigator>
     )
@@ -121,18 +131,13 @@ export default function App() {
     )
 
     const profile = () => (
-        <Stack.Navigator initialRouteName='Profile' mode={'modal'}>
+        <Stack.Navigator initialRouteName='Profile' mode={'modal'}  screenOptions={{
+            cardStyle: {
+                backgroundColor: BingeMatch.colors.bg
+            }
+        }}>
             <Stack.Screen name='Profile' component={Profile}/>
-            <Stack.Screen name='AddGenres' component={AddGenres} options={{
-                headerShown: false,
-                cardOverlayEnabled: true,
-                cardStyle: {
-                    backgroundColor: 'transparent',
-                },
-                cardStyleInterpolator: cardInterpolator,
-                gestureResponseDistance: {vertical: 1000},
-            }}
-            />
+            <Stack.Screen name='AddGenres' component={AddGenres} options={modalScreenOptions} />
         </Stack.Navigator>
     )
 
@@ -142,11 +147,13 @@ export default function App() {
             drawerContent={props => <CustomDrawerContent {...props} />}
             drawerStyle={{width: '53%'}}>
 
-            <Stack.Screen name='Queue' component={Queue}/>
+            <Stack.Screen name='Queue' initialParams={{advanceHead: InteractionName.SwipeLike}} component={Queue}/>
 
+            <Stack.Screen name='ListAction' component={ListAction} options={modalScreenOptions} />
             <Stack.Screen name='Likes' component={Likes} initialParams={{
                 list: 'Likes'
             }}/>
+
             <Stack.Screen name='Watched' component={Likes} initialParams={{
                 list: 'Watched'
             }}/>
@@ -159,15 +166,7 @@ export default function App() {
     const OnBoardNav = () => (
         <Stack.Navigator initialRouteName={'SignUp'} mode={'modal'}>
             <Stack.Screen name='SignUp' component={SignUp}/>
-            <Stack.Screen name='Login' component={Login} options={{
-                headerShown: false,
-                cardOverlayEnabled: true,
-                cardStyle: {
-                    backgroundColor: 'transparent',
-                },
-                cardStyleInterpolator: cardInterpolator,
-                gestureResponseDistance: {vertical: 1000},
-            }}/>
+            <Stack.Screen name='Login' component={Login} options={modalScreenOptions} />
             <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{
                 animationTypeForReplace: 'push'
             }}/>
@@ -175,12 +174,14 @@ export default function App() {
     )
 
     return (
+        <Provider store={store}>
         <AuthContext.Provider value={authContext}>
             <NavigationContainer theme={BingeMatch.navigation}>
                 <RootSiblingParent>
-                    {state != AuthState.Authenticated ? OnBoardNav() : HomeNav()}
+                    {authState != AuthState.Authenticated ? OnBoardNav() : HomeNav()}
                 </RootSiblingParent>
             </NavigationContainer>
         </AuthContext.Provider>
+        </Provider>
     );
 }

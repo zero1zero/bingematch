@@ -8,6 +8,8 @@
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
+    "@reduxjs/toolkit": "^1.6.1",
+    "@types/react-redux": "^7.1.18",
     "axios": "^0.21.1",
     "expo": "~41.0.0",
     "expo-constants": "~10.1.3",
@@ -31,7 +33,8 @@
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-web-webview": "^1.0.2",
     "react-native-webview": "11.2.3",
-    "react-native-youtube-iframe": "^2.1.0"
+    "react-native-youtube-iframe": "^2.1.0",
+    "react-redux": "^7.2.4"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
@@ -56,6 +59,7 @@
     "ios": "expo start --lan --ios",
     "web": "expo start --web",
     "eject": "expo eject",
+    "compile": "tsc",
     "test": "tsc && jest --verbose --coverage",
     "test:update": "jest --verbose --coverage --updateSnapshot",
     "test:watch": "jest --verbose --watch",

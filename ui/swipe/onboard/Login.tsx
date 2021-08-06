@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useReducer, useState} from 'react';
+import React, {useContext, useEffect, useLayoutEffect, useReducer, useState} from 'react';
 import {ActivityIndicator, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import Social from "./components/Social";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
@@ -8,10 +8,11 @@ import {Button} from "../components/Button";
 import {BingeMatch} from "../theme";
 import {PasswordInput} from "./components/PasswordInput";
 import {EmailInput} from "./components/EmailInput";
-import {AuthContext} from "../api/Auth";
+import {AuthContext} from "../../App";
 
 export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
+    const auth = useContext(AuthContext)
     const api = Dependencies.instance.api
 
     const [serverMessage, setServerMessage] = useState('')
@@ -37,7 +38,7 @@ export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
         })
     };
 
-    const {login} = React.useContext(AuthContext);
+    const {login} = auth
 
     useEffect(() => {
 

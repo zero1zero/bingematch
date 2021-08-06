@@ -12,10 +12,10 @@ import {
     faHistory,
     faLock,
     faMinus,
-    faPlus,
+    faPlus, faTheaterMasks,
     faThumbsUp,
     faTimes,
-    faUserCog,
+    faUserCog, faUserPlus,
     faVideo
 } from '@fortawesome/free-solid-svg-icons'
 import {faFacebook, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons"
@@ -113,4 +113,12 @@ export const ThumbsUpIcon = (props: Props): JSX.Element => (
 
 export const BackIcon = (props: Props): JSX.Element => (
     <FontAwesomeIcon {...props} icon={faHistory}/>
+);
+
+export const UserPlus = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faUserPlus}/>
+);
+
+export const TheatreMasks = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faTheaterMasks}/>
 );

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
     ActivityIndicator,
     Image,
@@ -14,17 +14,24 @@ import Dependencies from "../Dependencies";
 import {show} from "../model/compiled";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import YoutubeIframe from "react-native-youtube-iframe";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {DrawerNavigationProp} from "@react-navigation/drawer";
+import {RootStackParamList} from "../etc/RootStackParamList";
+import {Sentiment} from "../queue/QueueEvents";
 
-export const Detail: React.FC<BaseNavigationProps<'Detail'>> = (props) => {
+export const Detail: React.FC = (props) => {
 
     const api = Dependencies.instance.api
+
+    const navigation = useNavigation()
+    const route = useRoute<RouteProp<RootStackParamList, 'Detail'>>()
 
     const window = useWindowDimensions()
 
     const [detail, setDetail] = useState<show.Detail>()
 
     useEffect(() => {
-        api.getShow(props.route.params.id)
+        api.getShow(route.params.id)
             .then(show => {
                 setDetail(show)
             })
@@ -121,7 +128,7 @@ export const Detail: React.FC<BaseNavigationProps<'Detail'>> = (props) => {
     }
 
     const close = () => {
-        props.navigation.goBack()
+        navigation.goBack()
     }
 
     return (

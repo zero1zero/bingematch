@@ -1,9 +1,10 @@
 import {Image, ImageBackground, ScrollView, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import React from "react";
-import {Item, StateChange} from "./QueueEvents";
+import {StateChange} from "./QueueReducer";
 import {BingeMatch} from "../theme";
 import {Swipable} from "./Swipable";
 import {useNavigation} from "@react-navigation/native";
+import {Item} from "./QueueEvents";
 
 interface Props {
     items: Item[]

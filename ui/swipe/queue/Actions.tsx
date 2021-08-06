@@ -1,9 +1,16 @@
-import {InteractionName, Item, StateChange} from "./QueueEvents";
-import React, {useRef} from "react";
+import {InteractionName, StateChange} from "./QueueReducer";
+import React, {createContext, Dispatch, useRef} from "react";
 import {Animated, StyleSheet, Text, View} from "react-native";
 import {BingeMatch} from "../theme";
-import {BackIcon, PlusIcon, XIcon} from "../components/Icons";
+import {BackIcon, EyeIcon, PlusIcon, XIcon} from "../components/Icons";
 import {Button} from "../components/Button";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {RootStackParamList} from "../etc/RootStackParamList";
+import {DrawerNavigationProps} from "../etc/BaseNavigationProps";
+import {DrawerNavigationProp} from "@react-navigation/drawer";
+import {getHead} from "./QueueUtils";
+import {useNavigation} from "@react-navigation/native";
+import {Item, SyncStatus} from "./QueueEvents";
 
 interface Props {
     head: Item
@@ -12,10 +19,13 @@ interface Props {
 
 const QueueActions: React.FC<Props> = (props) => {
 
+    const navigation = useNavigation()
+
     const buttonStates: Map<InteractionName, Animated.Value> = new Map([
         [InteractionName.ButtonLikePress, useRef(new Animated.Value(1)).current],
         [InteractionName.ButtonDislikePress, useRef(new Animated.Value(1)).current],
         [InteractionName.ButtonBackPress, useRef(new Animated.Value(1)).current],
+        [InteractionName.ButtonSeenItPress, useRef(new Animated.Value(1)).current],
     ]);
 
     const buttonAnimate = (event: InteractionName) => {
@@ -45,7 +55,7 @@ const QueueActions: React.FC<Props> = (props) => {
     }
 
     return (
-        <View style={styles.actions}>
+            <View style={styles.actions}>
             <Animated.View
                 style={{
                     ...styles.buttonHolder,
@@ -64,8 +74,22 @@ const QueueActions: React.FC<Props> = (props) => {
                 }}>
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonBackPress)}>
-                    <BackIcon size={30} style={BingeMatch.theme.actions.backIcon}/>
+                    <BackIcon size={28} style={BingeMatch.theme.actions.backIcon}/>
                     <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.back}}>Back</Text>
+                </Button>
+            </Animated.View>
+            <Animated.View
+                style={{
+                    ...styles.buttonHolder,
+                    transform: [{scale: buttonStates.get(InteractionName.ButtonSeenItPress)}],
+                }}>
+                <Button style={styles.button}
+                        onPress={() => {
+                            navigation.navigate('SeenIt')
+                            // press(InteractionName.ButtonSeenItPress)
+                        }}>
+                    <EyeIcon size={28} style={BingeMatch.theme.actions.backIcon}/>
+                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.back}}>Seen It</Text>
                 </Button>
             </Animated.View>
             <Animated.View
@@ -76,7 +100,7 @@ const QueueActions: React.FC<Props> = (props) => {
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonLikePress)}>
                     <PlusIcon size={30} style={BingeMatch.theme.actions.watchIcon}/>
-                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.watch}}>I'd Watch</Text>
+                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.watch}}>Watch</Text>
                 </Button>
             </Animated.View>
         </View>
@@ -90,7 +114,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         height: 63,
         marginTop: 8,
-        marginBottom: 20
     },
     buttonHolder: {
         flex: 1,

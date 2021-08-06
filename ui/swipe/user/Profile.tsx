@@ -1,11 +1,10 @@
-import React, {useEffect, useLayoutEffect, useReducer, useState} from 'react';
+import React, {useContext, useEffect, useLayoutEffect, useReducer, useState} from 'react';
 import {KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
-import {reducer, Reducer} from "./ProfileReducer";
+import {profileReducer, ProfileReducer} from "./ProfileReducer";
 import {BingeMatch} from "../theme";
 import {Button} from "../components/Button";
-import {AuthContext} from "../api/Auth";
 import {EmailInput} from "../onboard/components/EmailInput";
 import {PasswordInput} from "../onboard/components/PasswordInput";
 import {VerifyInput} from "../onboard/components/VerifyPassword";
@@ -14,16 +13,18 @@ import {defaultReducer, isReadyToValidate, isValid, verify} from "../onboard/Sig
 import Toast from 'react-native-root-toast';
 import {FirstInput} from "../onboard/components/FirstInput";
 import {LastInput} from "../onboard/components/LastInput";
-import {PlusIcon} from "../components/Icons";
+import {PlusIcon, TheatreMasks, UserPlus} from "../components/Icons";
+import {AuthContext} from "../../App";
 
 export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
 
+    const auth = useContext(AuthContext)
     const api = Dependencies.instance.api
     const storage = Dependencies.instance.storage
 
     //this should be immutable after initial set
     const [userGenres, setUserGenres] = useState<show.IGenre[]>([])
-    const [state, dispatch] = useReducer<Reducer>(reducer, defaultReducer)
+    const [state, dispatch] = useReducer<ProfileReducer>(profileReducer, defaultReducer)
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -75,7 +76,7 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
         })
     };
 
-    const {signOut} = React.useContext(AuthContext);
+    const {signOut} = auth
 
     const onLogoutPress = (): void => {
         storage.clearToken()
@@ -130,14 +131,6 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
         })
     }
 
-    const toGenreBlob = (genre: show.Genre) => (
-        <View style={styles.detailsGenresName}>
-            <Text key={`genre-${genre.id}`} style={BingeMatch.theme.profile.genres}>
-                {genre.name}
-            </Text>
-        </View>
-    )
-
     return (
         <ScrollView>
             <SafeAreaView style={styles.container}>
@@ -145,19 +138,23 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
 
                     <View style={styles.formContainer}>
 
-                        <View>
-                            <Text style={styles.label}>Your Genres</Text>
-
-                            <View style={styles.detailsGenres}>
-                                {userGenres.map(toGenreBlob)}
-                            </View>
+                        <View style={styles.profileActions}>
+                            {/*<Text style={styles.label}></Text>*/}
+                            <Button
+                                style={styles.addFriends}
+                                onPress={addGenres}>
+                                <View style={{alignItems: "center", flexDirection: "row"}}>
+                                    <UserPlus size={25} style={{marginRight: 5}}/>
+                                    <Text style={styles.addGenresText}>Your Friends</Text>
+                                </View>
+                            </Button>
 
                             <Button
                                 style={styles.addGenres}
                                 onPress={addGenres}>
                                 <View style={{alignItems: "center", flexDirection: "row"}}>
-                                    <PlusIcon style={{marginRight: 5}}/>
-                                    <Text style={styles.addGenresText}>Add Genres You Like</Text>
+                                    <TheatreMasks size={25} style={{marginRight: 5}}/>
+                                    <Text style={styles.addGenresText}>Your Genres</Text>
                                 </View>
                             </Button>
                         </View>
@@ -243,25 +240,22 @@ const styles = StyleSheet.create({
         ...BingeMatch.theme.button.button
     },
 
+    profileActions: {
+        flexDirection: "row",
+        marginTop: 5
+    },
+
+    addFriends: {
+        alignSelf: "flex-start",
+
+        marginRight: 10,
+
+        ...BingeMatch.theme.button.button
+    },
+
     addGenresText: {
         ...BingeMatch.theme.button.text,
 
         fontSize: 18,
-    },
-
-    detailsGenres: {
-        flexDirection: 'row',
-        flexWrap: "wrap",
-        marginVertical: 4,
-    },
-
-    detailsGenresName: {
-        padding: 4,
-        marginVertical: 2,
-        marginRight: 4,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: BingeMatch.colors.grey,
-        backgroundColor: "#EAE2B7",
     },
 });
