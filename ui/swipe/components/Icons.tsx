@@ -7,15 +7,20 @@ import {
     faEnvelope,
     faEye,
     faFlag,
+    faGrinHearts,
     faHeart,
     faHeartBroken,
     faHistory,
     faLock,
+    faMeh,
     faMinus,
-    faPlus, faTheaterMasks,
+    faPlus,
+    faTheaterMasks,
     faThumbsUp,
     faTimes,
-    faUserCog, faUserPlus,
+    faTired,
+    faUserCog,
+    faUserPlus,
     faVideo
 } from '@fortawesome/free-solid-svg-icons'
 import {faFacebook, faGoogle, faTwitter} from "@fortawesome/free-brands-svg-icons"
@@ -121,4 +126,16 @@ export const UserPlus = (props: Props): JSX.Element => (
 
 export const TheatreMasks = (props: Props): JSX.Element => (
     <FontAwesomeIcon {...props} icon={faTheaterMasks}/>
+);
+
+export const LovedIt = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faGrinHearts}/>
+);
+
+export const Meh = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faMeh}/>
+);
+
+export const HatedIt = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faTired}/>
 );

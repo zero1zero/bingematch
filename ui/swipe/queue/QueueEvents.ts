@@ -10,7 +10,7 @@ export enum Sentiment {
 }
 
 export interface Item {
-    data: queue.QueuedItem
+    data: queue.IQueuedItem
     sentiment: Sentiment
     onscreen: boolean
     synced: SyncStatus

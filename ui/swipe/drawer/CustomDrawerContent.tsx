@@ -1,7 +1,7 @@
 import React from "react";
-import {DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
+import {DrawerContentScrollView, DrawerItem} from "@react-navigation/drawer";
 import {DrawerContentComponentProps} from "@react-navigation/drawer/src/types";
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet} from "react-native";
 import {BingeMatch} from "../theme";
 import {FlagIcon, HeartIcon, MovieIcon} from "../components/Icons";
 
@@ -59,9 +59,9 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props
                 labelStyle={styles.label}
                 onPress={() => props.navigation.navigate('Queue')} />
 
-            <View style={styles.yourLists}>
-                <Text style={styles.yourListsText}>Your Lists</Text>
-            </View>
+            {/*<View style={styles.yourLists}>*/}
+            {/*    <Text style={styles.yourListsText}>Your Lists</Text>*/}
+            {/*</View>*/}
 
             {lists()}
 
@@ -112,6 +112,6 @@ const styles = StyleSheet.create({
     },
 
     yourListsDrawerItem: {
-        paddingLeft: 10
+        // paddingLeft: 10
     }
 })

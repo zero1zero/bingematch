@@ -1,4 +1,4 @@
-import React, {useContext, useLayoutEffect, useState} from "react";
+import React, {useLayoutEffect, useState} from "react";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import {Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {BingeMatch} from "../theme";

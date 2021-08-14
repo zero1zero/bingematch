@@ -23,10 +23,11 @@ export default class API {
         await this.cancelSource.cancel("Manually aborted by application")
     }
 
-    signup = async (signup: user.IRegister): Promise<user.DetailAndToken> => {
+    signup = async (signup: user.IRegister): Promise<user.IDetailAndToken> => {
         let response = await this.post('/user/', signup)
 
-        let dat = user.DetailAndToken.fromObject(response.data)
+        // let dat = user.DetailAndToken.fromObject(response.data).toJSON()
+        const dat = response.data
         await this.storage.setToken(dat.token)
         console.log(dat.token)
 
@@ -83,32 +84,32 @@ export default class API {
             })
     }
 
-    getUser = async (): Promise<user.Detail> => {
+    getUser = async (): Promise<user.IDetail> => {
         return this.storage.getUserId()
             .then(id => (
                 this.get('/user/' + id)
                     .then(r => r.data)
-                    .then(json => user.Detail.fromObject(json))
+                    // .then(json => user.Detail.fromObject(json).toJSON())
             ))
     }
 
-    getQueue = async (): Promise<queue.QueuedItems> => {
+    getQueue = async (): Promise<queue.IQueuedItems> => {
         return this.get('/queue/')
             .then(r => r.data)
-            .then(json => queue.QueuedItems.fromObject(json))
+            // .then(json => queue.QueuedItems.fromObject(json).toJSON())
     }
 
-    getLikes = async (): Promise<queue.QueuedItems> => {
+    getLikes = async (): Promise<queue.IQueuedItems> => {
         return this.get('/queue/likes')
             .then(r => r.data)
-            .then(json => queue.QueuedItems.fromObject(json))
+            // .then(json => queue.QueuedItems.fromObject(json).toJSON())
     }
 
-    getShow = async (id: string): Promise<show.Detail> => {
-        return this.get(`/show/${id}`)
+    getShow = async (id: string): Promise<show.IDetail> => (
+        this.get(`/show/${id}`)
             .then(r => r.data)
-            .then(json => show.Detail.fromObject(json))
-    }
+            // .then(json => show.Detail.fromObject(json).toJSON())
+    )
 
     setQueueState = async (id: string, state: number): Promise<void> => {
         return this.put(`/queue/set/${id}/${state}`)
@@ -120,10 +121,7 @@ export default class API {
     getGenres = async (): Promise<show.Genre[]> => (
         this.get(`/genres`)
             .then(r => r.data)
-            .then(json => (
-                    json.map(genre => show.Genre.fromObject(genre))
-                )
-            )
+            // .then(json => json.map(genre => show.Genre.fromObject(genre).toJSON()))
     )
 
     setGenres = async (genres : show.IGenre[]): Promise<void> => (

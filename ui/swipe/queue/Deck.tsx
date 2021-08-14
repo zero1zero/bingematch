@@ -1,14 +1,11 @@
 import {Image, ImageBackground, ScrollView, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import React from "react";
-import {StateChange} from "./QueueReducer";
 import {BingeMatch} from "../theme";
 import {Swipable} from "./Swipable";
-import {useNavigation} from "@react-navigation/native";
 import {Item} from "./QueueEvents";
 
 interface Props {
     items: Item[]
-    dispatch: React.Dispatch<StateChange>
 }
 
 //pulled from tmdb configuration
@@ -20,8 +17,6 @@ const sizes = [92,
     780]
 
 export const Deck: React.FC<Props> = (props) => {
-
-    const navigation = useNavigation();
 
     const window = useWindowDimensions()
     const cardWidth = window.width * .86
@@ -42,8 +37,7 @@ export const Deck: React.FC<Props> = (props) => {
         <Swipable
             style={{...styles.card, width: cardWidth}}
             item={item}
-            key={`card-${item.data.id}`}
-            dispatch={props.dispatch}>
+            key={`card-${item.data.id}`}>
             {/*<HeartIcon {...styles.reportIcon} /> <Text>Liked by Ruoxi, Ajay and Jesi</Text>*/}
             <View>
                 <View style={{...styles.image}}>
@@ -64,7 +58,7 @@ export const Deck: React.FC<Props> = (props) => {
                 <Text style={styles.detailsText} numberOfLines={4}>{item.data.show.overview}</Text>
 
                 <ScrollView style={styles.detailsGenres} horizontal={true}>
-                    {item.data.show.genres
+                    {(item.data.show.genres || []) //todo i think we can remove once we filter by more than 1 genre
                         .filter(genre => genre.name != null)
                         .map(genre => (
                             <Text style={styles.detailsGenresName}

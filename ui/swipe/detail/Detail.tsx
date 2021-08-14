@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     ActivityIndicator,
     Image,
@@ -12,12 +12,9 @@ import {
 } from "react-native";
 import Dependencies from "../Dependencies";
 import {show} from "../model/compiled";
-import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import YoutubeIframe from "react-native-youtube-iframe";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
-import {DrawerNavigationProp} from "@react-navigation/drawer";
 import {RootStackParamList} from "../etc/RootStackParamList";
-import {Sentiment} from "../queue/QueueEvents";
 
 export const Detail: React.FC = (props) => {
 
@@ -28,7 +25,7 @@ export const Detail: React.FC = (props) => {
 
     const window = useWindowDimensions()
 
-    const [detail, setDetail] = useState<show.Detail>()
+    const [detail, setDetail] = useState<show.IDetail>()
 
     useEffect(() => {
         api.getShow(route.params.id)
@@ -42,7 +39,7 @@ export const Detail: React.FC = (props) => {
             return <></>
         }
 
-        const trailer = detail.videos
+        const trailer = detail.videos || []
             .filter(video => video.type == show.Video.Type.Trailer)
             .filter(video => video.site == 'YouTube')
 

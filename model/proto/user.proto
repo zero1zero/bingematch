@@ -51,9 +51,10 @@ message Liked {
 message Matched {
     string show = 1;
     string user = 2;
+    string order = 3;
 }
 
 message Watched {
     string show = 1;
-    int32 rating = 2;
+    double rating = 2;
 }

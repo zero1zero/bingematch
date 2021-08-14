@@ -8,7 +8,6 @@ import {
     shouldValidate,
     verifyCheck
 } from "../onboard/SignUpReducer";
-import {Profile} from "./Profile";
 
 export interface StateChange {
     email?: InputState

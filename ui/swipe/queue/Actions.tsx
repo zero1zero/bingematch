@@ -1,24 +1,20 @@
-import {InteractionName, StateChange} from "./QueueReducer";
-import React, {createContext, Dispatch, useRef} from "react";
+import {interaction, InteractionName} from "./reducer";
+import React, {useRef} from "react";
 import {Animated, StyleSheet, Text, View} from "react-native";
 import {BingeMatch} from "../theme";
 import {BackIcon, EyeIcon, PlusIcon, XIcon} from "../components/Icons";
 import {Button} from "../components/Button";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "../etc/RootStackParamList";
-import {DrawerNavigationProps} from "../etc/BaseNavigationProps";
-import {DrawerNavigationProp} from "@react-navigation/drawer";
-import {getHead} from "./QueueUtils";
 import {useNavigation} from "@react-navigation/native";
-import {Item, SyncStatus} from "./QueueEvents";
+import {Item} from "./QueueEvents";
+import {useAppDispatch} from "../redux/hooks";
 
 interface Props {
     head: Item
-    dispatch: React.Dispatch<StateChange>
 }
 
 const QueueActions: React.FC<Props> = (props) => {
 
+    const dispatch = useAppDispatch()
     const navigation = useNavigation()
 
     const buttonStates: Map<InteractionName, Animated.Value> = new Map([
@@ -46,12 +42,10 @@ const QueueActions: React.FC<Props> = (props) => {
     const press = (name: InteractionName) => {
 
         buttonAnimate(name)
-        props.dispatch({
-            interaction: {
-                name: name,
-                item: props.head
-            }
-        })
+        dispatch(interaction( {
+            name: name,
+            item: props.head
+        }))
     }
 
     return (
@@ -85,11 +79,13 @@ const QueueActions: React.FC<Props> = (props) => {
                 }}>
                 <Button style={styles.button}
                         onPress={() => {
-                            navigation.navigate('SeenIt')
+                            navigation.navigate('SeenIt', {
+                                item: props.head
+                            })
                             // press(InteractionName.ButtonSeenItPress)
                         }}>
-                    <EyeIcon size={28} style={BingeMatch.theme.actions.backIcon}/>
-                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.back}}>Seen It</Text>
+                    <EyeIcon size={28} style={BingeMatch.theme.actions.seenItIcon}/>
+                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.seenIt}}>Seen It</Text>
                 </Button>
             </Animated.View>
             <Animated.View

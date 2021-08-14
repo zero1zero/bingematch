@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useLayoutEffect, useReducer, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useReducer, useState} from 'react';
 import {ActivityIndicator, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import Social from "./components/Social";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
@@ -8,11 +8,12 @@ import {Button} from "../components/Button";
 import {BingeMatch} from "../theme";
 import {PasswordInput} from "./components/PasswordInput";
 import {EmailInput} from "./components/EmailInput";
-import {AuthContext} from "../../App";
+import {useAppDispatch} from "../redux/hooks";
+import {login} from "../auth/auth";
 
 export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
-    const auth = useContext(AuthContext)
+    const dispatch = useAppDispatch()
     const api = Dependencies.instance.api
 
     const [serverMessage, setServerMessage] = useState('')
@@ -24,21 +25,19 @@ export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
         });
     }, [props.navigation]);
 
-    const [state, dispatch] = useReducer<LoginEvents>(loginReduder, {
+    const [state, olddispatch] = useReducer<LoginEvents>(loginReduder, {
         email: {validation: {status: ValidationStatus.Input}},
         password: {validation: {status: ValidationStatus.Input}},
     })
 
     const onLoginButtonPress = (): void => {
 
-        dispatch({
+        olddispatch({
             email: {validation: {status: ValidationStatus.Verify}},
             password: {validation: {status: ValidationStatus.Verify}},
             submit: true
         })
     };
-
-    const {login} = auth
 
     useEffect(() => {
 
@@ -50,11 +49,11 @@ export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
         //ready to submit, abort if not valid
         if (!isValid(state)) {
-            dispatch({submit: false})
+            olddispatch({submit: false})
             return
         }
 
-        dispatch({submit: false})
+        olddispatch({submit: false})
 
         setCalling(true)
 
@@ -63,7 +62,7 @@ export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
             password: state.password.value
         })
             .then(() => {
-                login()
+                dispatch(login())
                 props.navigation.navigate('Queue');
             })
             .catch((e) => {
@@ -98,11 +97,11 @@ export const Login: React.FC<BaseNavigationProps<'Login'>> = (props) => {
                         style={{marginBottom: 20}}
                         message={state.email.validation.message}
                         value={state.email.value}
-                        dispatch={dispatch}/>
+                        dispatch={olddispatch}/>
                     <PasswordInput
                         message={state.password.validation.message}
                         value={state.password.value}
-                        dispatch={dispatch}/>
+                        dispatch={olddispatch}/>
                 </KeyboardAvoidingView>
 
                 <View style={styles.forgotPasswordContainer}>

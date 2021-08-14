@@ -220,7 +220,7 @@ class Catalog(private val metadataSource: MetadataSource) {
             }
             .toList()
 
-        return (movies + tv).shuffled()
+        return (movies + tv)
     }
 }
 

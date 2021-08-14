@@ -1,5 +1,4 @@
 import {expect, test} from "@jest/globals";
-import {queue} from "../../model/compiled";
 import {
     afterHeadInclusive,
     beforeHeadExclusive,
@@ -28,9 +27,9 @@ const items: Item[] = [
         sentiment: Sentiment.Unknown,
         onscreen: true,
         synced: idx < 2 ? SyncStatus.Synced : idx == 2 ? SyncStatus.Syncing : SyncStatus.UnSynced,
-        data: queue.QueuedItem.create({
+        data: {
             id: str
-        })
+        }
     }
 })
 
@@ -82,9 +81,9 @@ test('correctly get head item', async () => {
         sentiment: Sentiment.Unknown,
         synced: SyncStatus.UnSynced,
         onscreen: true,
-        data: queue.QueuedItem.create({
+        data: {
             id: 'ars'
-        }),
+        }
     })
 })
 

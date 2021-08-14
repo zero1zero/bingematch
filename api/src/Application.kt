@@ -172,6 +172,9 @@ class ListProtoDeserializer<T>(private val clazz : Class<out Message>) : StdDese
 class ProtoSerializer : JsonSerializer<Message>() {
 
     private val printer = JsonFormat.printer()
+        .includingDefaultValueFields()
+        .omittingInsignificantWhitespace()
+        .printingEnumsAsInts()
 
     override fun serialize(value: Message, gen: JsonGenerator, serializers: SerializerProvider) {
         gen.writeRawValue(printer.print(value))

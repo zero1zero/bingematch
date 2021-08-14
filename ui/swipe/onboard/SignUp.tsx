@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useLayoutEffect, useReducer, useState} from "react";
+import React, {useEffect, useLayoutEffect, useReducer, useState} from "react";
 import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import Social from "./components/Social";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
@@ -11,11 +11,12 @@ import {VerifyInput} from "./components/VerifyPassword";
 import {EmailInput} from "./components/EmailInput";
 import {FirstInput} from "./components/FirstInput";
 import {LastInput} from "./components/LastInput";
-import {AuthContext} from "../../App";
+import {useAppDispatch} from "../redux/hooks";
+import {login} from "../auth/auth";
 
 export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
-    const auth = useContext(AuthContext)
+    const dispatch = useAppDispatch()
     const api = Dependencies.instance.api
 
     const [serverMessage, setServerMessage] = useState('')
@@ -26,10 +27,10 @@ export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
         });
     }, [props.navigation]);
 
-    const [state, dispatch] = useReducer<UserEvents>(userReduder, defaultReducer)
+    const [state, olddispatch] = useReducer<UserEvents>(userReduder, defaultReducer)
 
     const onSignUpButtonPress = (): void => {
-        dispatch({
+        olddispatch({
             email: verify,
             first: verify,
             last: verify,
@@ -38,8 +39,6 @@ export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
             submit: true
         })
     };
-
-    const {login} = auth
 
     useEffect(() => {
         setServerMessage('')
@@ -50,11 +49,11 @@ export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
         //ready to submit, abort if not valid
         if (!isValid(state)) {
-            dispatch({submit: false})
+            olddispatch({submit: false})
             return
         }
 
-        dispatch({submit: false})
+        olddispatch({submit: false})
 
         api.signup({
             email: state.email.value,
@@ -62,7 +61,7 @@ export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
             last: state.last.value,
             password: state.password.value
         }).then(() => {
-            login()
+            dispatch(login())
             props.navigation.navigate('Queue');
         })
             .catch((e) => {
@@ -94,27 +93,27 @@ export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
                         style={{marginBottom: 10}}
                         message={state.first.validation.message}
                         value={state.first.value}
-                        dispatch={dispatch}/>
+                        dispatch={olddispatch}/>
                     <LastInput
                         style={{marginBottom: 30}}
                         message={state.last.validation.message}
                         value={state.last.value}
-                        dispatch={dispatch}/>
+                        dispatch={olddispatch}/>
 
                     <EmailInput
                         style={{marginBottom: 10}}
                         message={state.email.validation.message}
                         value={state.email.value}
-                        dispatch={dispatch}/>
+                        dispatch={olddispatch}/>
 
                     <PasswordInput
                         style={{marginBottom: 6}}
                         message={state.password.validation.message}
                         value={state.password.value}
-                        dispatch={dispatch}/>
+                        dispatch={olddispatch}/>
                     <VerifyInput
                         value={state.verify.value}
-                        dispatch={dispatch}/>
+                        dispatch={olddispatch}/>
                 </KeyboardAvoidingView>
                 <Button
                     style={styles.signUpButton}

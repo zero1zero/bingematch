@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useLayoutEffect, useReducer, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useReducer, useState} from 'react';
 import {KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
@@ -8,23 +8,25 @@ import {Button} from "../components/Button";
 import {EmailInput} from "../onboard/components/EmailInput";
 import {PasswordInput} from "../onboard/components/PasswordInput";
 import {VerifyInput} from "../onboard/components/VerifyPassword";
-import {show, user} from "../model/compiled";
+import {show} from "../model/compiled";
 import {defaultReducer, isReadyToValidate, isValid, verify} from "../onboard/SignUpReducer";
 import Toast from 'react-native-root-toast';
 import {FirstInput} from "../onboard/components/FirstInput";
 import {LastInput} from "../onboard/components/LastInput";
-import {PlusIcon, TheatreMasks, UserPlus} from "../components/Icons";
-import {AuthContext} from "../../App";
+import {TheatreMasks, UserPlus} from "../components/Icons";
+import {useAppDispatch} from "../redux/hooks";
+import {logout} from "../auth/auth";
 
 export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
 
-    const auth = useContext(AuthContext)
+    const dispatch = useAppDispatch()
+
     const api = Dependencies.instance.api
     const storage = Dependencies.instance.storage
 
     //this should be immutable after initial set
     const [userGenres, setUserGenres] = useState<show.IGenre[]>([])
-    const [state, dispatch] = useReducer<ProfileReducer>(profileReducer, defaultReducer)
+    const [state, olddispatch] = useReducer<ProfileReducer>(profileReducer, defaultReducer)
 
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -53,7 +55,7 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
                 api.getUser()
                     .then((user) => {
                         setUserGenres(user.genres)
-                        dispatch({
+                        olddispatch({
                             email: {value: user.email},
                             first: {value: user.first},
                             last: {value: user.last},
@@ -66,7 +68,7 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
 
 
     const onSavePress = (): void => {
-        dispatch({
+        olddispatch({
             email: verify,
             first: verify,
             last: verify,
@@ -76,11 +78,11 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
         })
     };
 
-    const {signOut} = auth
-
     const onLogoutPress = (): void => {
         storage.clearToken()
-            .then(signOut)
+            .then(() => {
+                dispatch(logout())
+            })
     }
 
     useEffect(() => {
@@ -91,12 +93,12 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
 
         //ready to submit, abort if not valid
         if (!isValid(state)) {
-            dispatch({submit: false})
+            olddispatch({submit: false})
             return
         }
 
         //we are submitting now
-        dispatch({submit: false})
+        olddispatch({submit: false})
 
         const restParams = {
             email: state.email.value,
@@ -105,7 +107,7 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
         }
 
         //if just the junk password, dont send
-        const updated = user.Update.create(state.password.value == 'stopnow1!' ? restParams : {
+        const updated = (state.password.value == 'stopnow1!' ? restParams : {
             ...restParams,
             password: state.password.value
         })
@@ -163,29 +165,29 @@ export const Profile: React.FC<BaseNavigationProps<'Profile'>> = (props) => {
                         <FirstInput
                             message={state.first.validation.message}
                             value={state.first.value}
-                            dispatch={dispatch}/>
+                            dispatch={olddispatch}/>
 
                         <Text style={styles.label}>Last</Text>
                         <LastInput
                             message={state.last.validation.message}
                             value={state.last.value}
-                            dispatch={dispatch}/>
+                            dispatch={olddispatch}/>
 
                         <Text style={styles.label}>Email</Text>
                         <EmailInput
                             message={state.email.validation.message}
                             value={state.email.value}
-                            dispatch={dispatch}/>
+                            dispatch={olddispatch}/>
 
                         <Text style={styles.label}>Password</Text>
                         <PasswordInput
                             message={state.password.validation.message}
                             style={{marginBottom: 12}}
                             value={state.password.value}
-                            dispatch={dispatch}/>
+                            dispatch={olddispatch}/>
                         <VerifyInput
                             value={state.verify.value}
-                            dispatch={dispatch}/>
+                            dispatch={olddispatch}/>
                         <Button
                             style={styles.saveButton}
                             onPress={onSavePress}>

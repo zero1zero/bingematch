@@ -1,10 +1,8 @@
 import {show} from "../model/compiled";
-import {InteractionName, StateChange} from "../queue/QueueReducer";
-import React from "react";
-import {Item, Sentiment, SyncStatus} from "../queue/QueueEvents";
+import {Item} from "../queue/QueueEvents";
 import {DrawerNavigationProp} from "@react-navigation/drawer";
 import {StackNavigationProp} from "@react-navigation/stack";
-import {RouteProp, useRoute} from "@react-navigation/native";
+import {RouteProp} from "@react-navigation/native";
 
 export type RootStackParamList = {
     Splash: undefined
@@ -13,10 +11,10 @@ export type RootStackParamList = {
     ForgotPassword: undefined
 
     Home: undefined
-    Queue: {
-        advanceHead?: InteractionName
+    Queue: undefined
+    SeenIt: {
+        item: Item
     }
-    SeenIt: {}
     Detail: {
         id: string //show id
     }

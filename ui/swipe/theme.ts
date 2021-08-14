@@ -37,6 +37,8 @@ export namespace BingeMatch {
             nopeIcon: FontAwesomeIconStyle
             back: TextStyle
             backIcon: FontAwesomeIconStyle
+            seenItIcon: FontAwesomeIconStyle
+            seenIt: TextStyle
         }
 
         error: ColorValue
@@ -85,6 +87,10 @@ export namespace BingeMatch {
                 removeColor: ColorValue
                 moreColor: ColorValue
             }
+        }
+
+        seenit: {
+            sliderLabel: TextStyle
         }
     }
 
@@ -142,6 +148,17 @@ export namespace BingeMatch {
             },
             watchIcon: {
                 color: colors.success
+            },
+
+            seenItIcon: {
+                color: colors.blue
+            },
+
+            seenIt: {
+                fontSize: 18,
+                fontWeight: '700',
+
+                color: colors.grey
             }
         },
 
@@ -241,6 +258,13 @@ export namespace BingeMatch {
                 },
                 removeColor:  colors.error,
                 moreColor:  colors.blue
+            }
+        },
+
+        seenit: {
+            sliderLabel: {
+                fontSize: 14,
+                fontWeight: '600',
             }
         }
     }

@@ -6,7 +6,7 @@ export const getItem = (items: Item[], id: string): Item => {
 }
 
 export const updateInPlace = (items: Item[], item: Item): Item[] => {
-    items[headIndex(items, item.data.id)] = Object.assign({}, item)
+    items[headIndex(items, item.data.id)] = item
 
     return items
 }
