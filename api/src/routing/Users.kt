@@ -11,9 +11,9 @@ import principalNoMatch
 import routing.etc.SharedSqlSession
 import user.User
 import user.UserAlreadyExists
-import user.UserStore
+import user.Users
 
-fun Routing.user(userStore : UserStore) {
+fun Routing.user(users : Users) {
 
     route("/user") {
 
@@ -24,7 +24,7 @@ fun Routing.user(userStore : UserStore) {
             val session = call.attributes[SharedSqlSession.session]
 
             val credentials = call.receive<User.Login>()
-            val user = userStore.getUserByLogin(credentials.email, credentials.password, session)
+            val user = users.getUserByLogin(credentials.email, credentials.password, session)
 
             user
                 .onFailure {
@@ -43,10 +43,10 @@ fun Routing.user(userStore : UserStore) {
             val newUser = call.receive<User.Register>()
             val session = call.attributes[SharedSqlSession.session]
 
-            userStore.getUserByEmail(newUser.email, session)
+            users.getUserByEmail(newUser.email, session)
                 .onFailure {
                     //user is not found, we're good to create
-                    val user = userStore.createUser(newUser, session)
+                    val user = users.createUser(newUser, session)
                     val token: String = JwtConfig.makeToken(user)
 
                     call.respond(User.DetailAndToken.newBuilder()
@@ -72,7 +72,7 @@ fun Routing.user(userStore : UserStore) {
                 //check principal
                 if (principalNoMatch(id, call)) return@get
 
-                userStore.getUser(id, session)
+                users.getUser(id, session)
                     .onFailure {
                         call.respond(HttpStatusCode.NotFound)
                     }.onSuccess {
@@ -98,7 +98,7 @@ fun Routing.user(userStore : UserStore) {
                     .setLast(updateUser.last)
                     .build()
 
-                userStore.updateUser(user, updateUser.password, session)
+                users.updateUser(user, updateUser.password, session)
 
                 call.respond(HttpStatusCode.OK)
             }
@@ -112,7 +112,7 @@ fun Routing.user(userStore : UserStore) {
 
                 if (principalNoMatch(id, call)) return@put
 
-                userStore.updateGenres(id, genres, session)
+                users.updateGenres(id, genres, session)
 
                 call.respond(HttpStatusCode.OK)
             }
@@ -127,7 +127,7 @@ fun Routing.user(userStore : UserStore) {
                 //check principal
                 if (principalNoMatch(id, call)) return@delete
 
-                userStore.delUser(id, session)
+                users.delUser(id, session)
 
                 call.respond(HttpStatusCode.Accepted)
             }

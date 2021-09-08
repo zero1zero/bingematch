@@ -20,6 +20,7 @@ import {
     faTimes,
     faTired,
     faUserCog,
+    faUserFriends,
     faUserPlus,
     faVideo
 } from '@fortawesome/free-solid-svg-icons'
@@ -138,4 +139,8 @@ export const Meh = (props: Props): JSX.Element => (
 
 export const HatedIt = (props: Props): JSX.Element => (
     <FontAwesomeIcon {...props} icon={faTired}/>
+);
+
+export const Friends = (props: Props): JSX.Element => (
+    <FontAwesomeIcon {...props} icon={faUserFriends}/>
 );

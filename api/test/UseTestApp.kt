@@ -33,11 +33,11 @@ class UseTestApp: BeforeAllCallback, CloseableResource {
                 version.next()
 
                 //lets just be triple sure we only truncate my local machine
-                assertEquals("PostgreSQL 13.3 on x86_64-apple-darwin20.4.0, compiled by Apple clang version 12.0.5 (clang-1205.0.22.9), 64-bit", version.getString(1))
+                assertEquals("PostgreSQL 13.4 on x86_64-apple-darwin20.4.0, compiled by Apple clang version 12.0.5 (clang-1205.0.22.9), 64-bit", version.getString(1))
 
                 //clear all tables
                 try {
-                    statement.execute("truncate table users, catalog_sync, queue")
+                    statement.execute("truncate table users, catalog_sync")
                 } catch (e : Exception) {
                     println(e)
                 }

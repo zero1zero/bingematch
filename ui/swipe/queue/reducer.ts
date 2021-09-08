@@ -1,4 +1,3 @@
-import {queue} from "../model/compiled";
 import {
     countAfterHeadInclusive,
     getItem,
@@ -10,6 +9,7 @@ import {
 } from "./QueueUtils";
 import {Item, Sentiment, SyncStatus} from "./QueueEvents";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {show} from "../model/compiled";
 
 export enum InteractionName {
     SwipeLike,
@@ -22,10 +22,12 @@ export enum InteractionName {
 }
 
 export type QueueState = {
-    cacheItems: queue.IQueuedItem[]
+    cacheItems: show.IDetail[]
     cardItems: Item[]
 
     head: string
+
+    lastAddedCount: number
 }
 
 export const activeCardMax = 6
@@ -33,7 +35,7 @@ const moreActiveAt = 3
 const backBuffer = 2
 
 export const queueStateDefault : QueueState = {
-    cardItems: [], cacheItems: [], head: undefined
+    cardItems: [], cacheItems: [], head: undefined, lastAddedCount: 1000
 }
 
 export const queueSlice = createSlice({
@@ -41,23 +43,22 @@ export const queueSlice = createSlice({
     initialState: queueStateDefault,
     reducers: {
 
-        addToCache: (state, action: PayloadAction<queue.IQueuedItem[]>) => {
-            state.cacheItems = state.cacheItems.concat(action.payload)
+        addToCache: (state, action: PayloadAction<show.IDetail[]>) => {
+            const uniqueNew = action.payload.filter(item => state.cacheItems.find(d => d.id == item.id) == undefined)
+
+            state.cacheItems = state.cacheItems.concat(uniqueNew)
+            state.lastAddedCount = uniqueNew.length
 
             //this is the only reducer that hydrates after we set cache items. this happens on first run.
             checkForCardHydrate(state)
         },
 
+        resetLastAddedCount: (state) => {
+            state.lastAddedCount = 1000
+        },
+
         interaction: (state, action: PayloadAction<{ name: InteractionName, item: Item }>) => {
             doInteraction(state, action.payload)
-        },
-
-        advanceHead: (state, action: PayloadAction<string>) => {
-            doAdvanceHead(state, action.payload)
-        },
-
-        regressHead: (state, action: PayloadAction<string>) => {
-            doRegressHead(state, action.payload)
         },
 
         setOnscreen: (state, action: PayloadAction<string>) => {
@@ -77,58 +78,39 @@ export const queueSlice = createSlice({
 
             state.cardItems = updateInPlace(state.cardItems, item)
         },
-
-        swipe: (state, action: PayloadAction<string>) => {
-            setScreenLocation(state, action.payload, true)
-
-            doAdvanceHead(state, action.payload)
-        },
-
-        backSwipe: (state, action: PayloadAction<string>) => {
-            setScreenLocation(state, action.payload, true)
-
-            doRegressHead(state, action.payload)
-        },
-
-        triggerSwipe: (state, action: PayloadAction<{ name: InteractionName, item: Item }>) => {
-            setScreenLocation(state, action.payload.item.data.id, false)
-
-            doInteraction(state, {
-                name: action.payload.name,
-                item: action.payload.item
-            })
-        }
-
-
     }
 })
-export const { addToCache, interaction, regressHead, setOffscreen, setOnscreen, setSync, advanceHead, swipe, backSwipe, triggerSwipe } = queueSlice.actions
+export const { addToCache, interaction, setSync, setOffscreen, setOnscreen, resetLastAddedCount } = queueSlice.actions
 
-const setScreenLocation = (state: QueueState, id : string, onscreen : boolean) => {
+const setScreenLocation = (state: QueueState, show : string, onscreen : boolean) => {
+    console.debug(`setting screen location ${show} -> ${onscreen}`)
 
-    checkForCardHydrate(state)
-
-    const item = getItem(state.cardItems, id)
+    const item = getItem(state.cardItems, show)
 
     item.onscreen = onscreen
 
     state.cardItems = updateInPlace(state.cardItems, item)
 }
 
-const doAdvanceHead = (state: QueueState, id : string) => {
-
-    checkForCardHydrate(state)
+const doAdvanceHead = (state: QueueState, show : string) => {
 
     //short circuit if we are trying to move away from not the current
-    if (state.head != id) {
+    if (state.head != show) {
         return
     }
 
     state.head = nextHead(state.cardItems, state.head)
 
+    if (!state.head) {
+        console.debug("No next! Get more in queue")
+        return
+    }
+
+    console.debug(`advancing head from ${show} to ${state.head}`)
+
     console.debug('====== Queue =======')
     state.cardItems.map(item => {
-        let msg = '⇨ ' + item.data.show.title + (item.data.id == state.head ? ' - 🎥' : '')
+        let msg = '⇨ ' + item.show.title + (item.show.id == state.head ? ' - 🎥' : '')
         switch (item.synced) {
             case SyncStatus.Syncing:
                 msg += ' 🔄'
@@ -142,29 +124,29 @@ const doAdvanceHead = (state: QueueState, id : string) => {
     console.debug('====== /Queue =======')
 }
 
-const doRegressHead = (state: QueueState, id : string) => {
-    checkForCardHydrate(state)
+const doRegressHead = (state: QueueState, show : string) => {
+
+    const prev = previousHead(state.cardItems, state.head)
 
     //short circuit if we are trying to regress to anything other than one above current
-    if (previousHead(state.cardItems, state.head) != id) {
+    if (prev != show) {
         return
     }
 
-    const prev = previous(state.cardItems, state.head)
-    prev.synced = SyncStatus.UnSynced
+    console.debug(`regressing head from ${show} to ${prev}`)
 
-    state.cardItems = updateInPlace(state.cardItems, prev)
-
-    state.head = prev.data.id
+    state.head = prev
 }
 
 const doInteraction = (state: QueueState, payload : { name: InteractionName, item: Item }) => {
+    console.debug(`interaction of ${payload.name} with ${payload.item.show.id}`)
+
     checkForCardHydrate(state)
 
     //if back, lets act on the previous item instead of current
     const item = (payload.name == InteractionName.ButtonBackPress
-        ? previous(state.cardItems, payload.item.data.id)
-        : getItem(state.cardItems, payload.item.data.id))
+        ? previous(state.cardItems, payload.item.show.id)
+        : getItem(state.cardItems, payload.item.show.id))
 
     switch (payload.name) {
         case InteractionName.ButtonLikePress:
@@ -179,6 +161,7 @@ const doInteraction = (state: QueueState, payload : { name: InteractionName, ite
 
         case InteractionName.ButtonBackPress:
             item.sentiment = Sentiment.Unknown
+            item.synced = SyncStatus.DeSynced
             break;
 
         case InteractionName.ButtonSeenItPress:
@@ -187,19 +170,17 @@ const doInteraction = (state: QueueState, payload : { name: InteractionName, ite
             break;
     }
 
+    if (payload.name == InteractionName.ButtonBackPress) {
+        doRegressHead(state, item.show.id)
+    } else {
+        doAdvanceHead(state, item.show.id)
+    }
+
     //remove any synced items after back queue
     state.cardItems = removeFinishedAfterBacks(state.cardItems, state.head, backBuffer)
-
-    //we set sentiment above, still propagate new state
-    state.cardItems = updateInPlace(state.cardItems, item)
-
-    //if we swiped, we can do this right away
-    if (payload.name == InteractionName.SwipeLike
-        || payload.name == InteractionName.SwipeDislike) {
-
-        //everything but the buttons should advance head
-        state.head = nextHead(state.cardItems, state.head)
-    }
+    //
+    // //we set sentiment above, still propagate new state
+    // state.cardItems = updateInPlace(state.cardItems, item)
 }
 
 const checkForCardHydrate = (state: QueueState) => {
@@ -223,7 +204,7 @@ const checkForCardHydrate = (state: QueueState) => {
                 .map(raw => {
                         return {
                             onscreen: true,
-                            data: raw,
+                            show: raw,
                             sentiment: Sentiment.Unknown,
                             synced: SyncStatus.UnSynced
                         }
@@ -231,7 +212,7 @@ const checkForCardHydrate = (state: QueueState) => {
                 ))
 
         if (!state.head) {
-            state.head = loaded[0].data.id
+            state.head = loaded[0].show.id
         }
 
         state.cacheItems = remainingCache

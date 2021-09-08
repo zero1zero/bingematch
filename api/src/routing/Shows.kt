@@ -23,7 +23,21 @@ fun Routing.show(catalog : Catalog, genres : Genres) {
 
                 val id = call.parameters["id"]!!
 
-                call.respond(catalog.getShow(id, session))
+                val show = catalog.getShow(id, session)
+
+                call.respond(show)
+            }
+
+            get("/") {
+                val session = call.attributes[SharedSqlSession.session]
+
+                val shows = call.request.queryParameters["id"]!!.split(",")
+                    .map { id ->
+                        catalog.getShow(id, session)
+                    }
+                    .toList()
+
+                call.respond(shows)
             }
         }
     }

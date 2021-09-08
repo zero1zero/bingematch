@@ -17,6 +17,7 @@ module.exports = {
     + "|@fortawesome"
     + "|react-native-root-toast"
     + "|react-native-root-siblings"
+    + "|react-native-webview"
 
     //from https://docs.expo.io/guides/testing-with-jest/
     + "|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*"

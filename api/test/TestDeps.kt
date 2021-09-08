@@ -4,9 +4,10 @@ import catalog.MetadataSource
 import db.Database
 import db.Updater
 import etc.PasswordUtil
+import lists.Lists
 import org.apache.ibatis.datasource.pooled.PooledDataSource
-import queue.Queues
-import user.UserStore
+import queue.Queue
+import user.Users
 
 open class TestDeps : Dependencies {
     private val passwordUtil = PasswordUtil()
@@ -15,18 +16,19 @@ open class TestDeps : Dependencies {
     private val datasource = EmbeddedDataSource()
     private val database = Database(datasource)
     private val genres = Genres(metadata)
-    private val storage = UserStore(passwordUtil, genres)
+    private val storage = Users(passwordUtil, genres)
     private val updater = Updater(datasource)
 
     //test overrides
     private val catalog = Catalog(metadata)
-    private val queues = Queues(catalog)
+    private val lists = Lists()
+    private val queues = Queue(lists, catalog)
 
-    override fun userStore(): UserStore {
+    override fun userStore(): Users {
         return storage
     }
 
-    override fun queues(): Queues {
+    override fun queues(): Queue {
         return queues
     }
 
@@ -44,6 +46,10 @@ open class TestDeps : Dependencies {
 
     override fun genres(): Genres {
         return genres
+    }
+
+    override fun lists(): Lists {
+        return lists
     }
 }
 class EmbeddedDataSource : PooledDataSource (

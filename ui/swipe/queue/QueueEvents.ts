@@ -1,7 +1,7 @@
-import {queue} from "../model/compiled";
+import {show} from "../model/compiled";
 
 export enum SyncStatus {
-    UnSynced, Syncing, Synced
+    UnSynced, Syncing, Synced, DeSynced
 }
 
 //throwing in bad in case we want to report
@@ -10,7 +10,7 @@ export enum Sentiment {
 }
 
 export interface Item {
-    data: queue.IQueuedItem
+    show: show.IDetail
     sentiment: Sentiment
     onscreen: boolean
     synced: SyncStatus

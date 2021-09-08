@@ -11,11 +11,14 @@ import objectMapper
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import show.Show
+import user.User
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @ExtendWith(UseTestApp::class)
 class ShowsTest {
+
+    val showsType = objectMapper.typeFactory.constructCollectionType(List::class.java, Show.Detail::class.java)
 
     @Test
     fun testGetShow() {
@@ -34,6 +37,26 @@ class ShowsTest {
 
                         assertEquals(id, show.id)
                     }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun testGetShows() {
+        //mortal kombat
+        val gend = tmdbIdToInternalId(9312, Type.Movie)
+
+        withTestApplication({ module(TestDeps()) }) {
+            val ids = arrayOf(gend, "r9wf9pr3")
+            handleRequest(HttpMethod.Get, "/show?id=${ids.joinToString(separator = ",")}") {
+                addHeader(HttpHeaders.Authorization, "Bearer : ${UseTestApp.token()}")
+            }.apply {
+                assertEquals(HttpStatusCode.OK, response.status())
+                val shows : List<Show.Detail> = objectMapper.readValue(response.content, showsType)
+
+                shows.forEach {
+                    assertEquals(gend, it.id)
                 }
             }
         }

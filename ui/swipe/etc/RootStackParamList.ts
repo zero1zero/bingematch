@@ -1,5 +1,4 @@
 import {show} from "../model/compiled";
-import {Item} from "../queue/QueueEvents";
 import {DrawerNavigationProp} from "@react-navigation/drawer";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RouteProp} from "@react-navigation/native";
@@ -13,10 +12,10 @@ export type RootStackParamList = {
     Home: undefined
     Queue: undefined
     SeenIt: {
-        item: Item
+        show: string //show id
     }
     Detail: {
-        id: string //show id
+        show: string //show id
     }
 
     Likes: {

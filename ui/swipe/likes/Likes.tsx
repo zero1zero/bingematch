@@ -1,30 +1,74 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {DrawerNavigationProps} from "../etc/BaseNavigationProps";
+import React, {useCallback, useEffect, useLayoutEffect, useState} from "react";
 import {ActivityIndicator, Image, Pressable, StyleSheet, Text, View} from "react-native";
 import Dependencies from "../Dependencies";
-import {queue, show} from "../model/compiled";
+import {show, user} from "../model/compiled";
 import {BingeMatch} from "../theme";
 import DraggableFlatList, {RenderItemParams} from "react-native-draggable-flatlist";
 import {Swipeable} from "react-native-gesture-handler";
+import {useNavigation} from "@react-navigation/native";
+import {DrawerNavProp} from "../etc/RootStackParamList";
+import {useAppDispatch, useAppSelector} from "../redux/hooks";
+import {Button} from "../components/Button";
+import {BarsIcon} from "../components/Icons";
 
-export const Likes: React.FC<DrawerNavigationProps<'Likes'>> = (props) => {
+type LikeAndDetail = {
+    show: show.IDetail
+    like: user.ILikedShow
+}
+
+export const Likes: React.FC = (props) => {
 
     const api = Dependencies.instance.api
+    const dispatch = useAppDispatch()
+    const navigation = useNavigation<DrawerNavProp<'Likes'>>()
 
-    const [likes, setLikes] = useState<queue.QueuedItem[]>()
+    const listsState = useAppSelector(state => state.lists)
+
+    const [likes, setLikes] = useState<LikeAndDetail[]>()
+
+    useLayoutEffect(() => {
+        navigation.dangerouslyGetParent().setOptions({
+            headerStyle: BingeMatch.theme.nav.bar,
+            headerTitle: () => (<Text style={BingeMatch.theme.nav.title}>Your Likes</Text>),
+            headerLeft: () => (
+                <Button style={styles.buttons} onPress={() => navigation.toggleDrawer()}>
+                    <BarsIcon style={BingeMatch.theme.nav.icons} size={30}/>
+                </Button>
+            ),
+        });
+    }, [navigation]);
 
     useEffect(() => {
-        props.navigation.addListener('focus', () => {
-            setLikes(null)
+        setLikes(null)
+    }, [listsState.updated])
+
+    useEffect(() => {
+        navigation.addListener('focus', () => {
+
+            if (likes != null) {
+                return
+            }
+
             //hydrate if likes is empty
             api.getLikes()
-                .then(likes => {
-                    setLikes(likes.items as queue.QueuedItem[]) //reverse to put ~newest at top
+                .then(showLikes => {
+                    api.getShows(showLikes.map(like => like.show))
+                        .then(details => {
+
+                            //reverse to have newest at the top
+                            const lad = details
+                                .map((detail, index) => (
+                                    {show: detail, like: showLikes[index]} as LikeAndDetail
+                                ))
+                                .reverse()
+
+                            setLikes(lad)
+                        })
                 })
         })
-    }, [props.navigation])
+    }, [navigation])
 
-    const updateOrder = (likes : queue.QueuedItem[]) => {
+    const updateOrder = (from : number, to : number) => {
         //todo no backend support yet
 
         // api.setQueueState(item.id, queue.QueueItemState.Queued)
@@ -33,35 +77,35 @@ export const Likes: React.FC<DrawerNavigationProps<'Likes'>> = (props) => {
         //     })
     }
 
-    const onPress = (item: show.ThinDetail) => {
-        props.navigation.navigate('Detail', {
-            id: item.id
+    const onPress = (show: string) => {
+        navigation.navigate('Detail', {
+            show: show
         })
     }
 
-    const remove = (index : Number, item : queue.QueuedItem) => {
-        setLikes( likes.filter(item => item.id != item.id))
+    const remove = (index : Number, item : LikeAndDetail) => {
+        setLikes( likes.filter(remove => remove.show.id != item.show))
 
-        api.setQueueState(item.id, queue.QueueItemState.Queued)
-            .then(() => {
-                //todo no error handling for this
-            })
+        // api.setQueueState(item.id, queue.QueueItemState.Queued)
+        //     .then(() => {
+        //         //todo no error handling for this
+        //     })
     };
 
-    const toCard = useCallback(({ item, index, drag, isActive }: RenderItemParams<queue.QueuedItem>) => {
-        const show = item.show as show.ThinDetail
+    const toCard = useCallback(({ item, index, drag, isActive }: RenderItemParams<LikeAndDetail>) => {
+
         return <Swipeable
             renderRightActions={() => renderActions(index, item)}>
             <View style={styles.item}>
                 <Image
                     style={styles.poster}
                     resizeMode={"contain"}
-                    source={{uri: `https://image.tmdb.org/t/p/w92${show.posterPath}`}} />
+                    source={{uri: `https://image.tmdb.org/t/p/w92${item.show.posterPath}`}} />
                 <Pressable style={styles.title}
-                           onPress={() => onPress(show)}
+                           onPress={() => onPress(item.show.id)}
                            onLongPress={drag}>
-                    <Text key={show.id} style={styles.titleText}>
-                        {show.title}
+                    <Text key={item.show.id} style={styles.titleText}>
+                        {item.show.title}
                     </Text>
                     <View style={styles.detailsLastLineRating}>
                         <Image style={styles.detailsLastLineRatingIcon} source={require('../assets/rt_tomato.png')}/>
@@ -72,19 +116,25 @@ export const Likes: React.FC<DrawerNavigationProps<'Likes'>> = (props) => {
                         <Text style={styles.detailsLastLineRatingPerc}>89%</Text>
                     </View>
                     <Text numberOfLines={4} style={{marginBottom: 9}}>
-                        {show.overview}
+                        {item.show.overview}
                     </Text>
                 </Pressable>
             </View>
         </Swipeable>
         }, [])
 
-    const renderActions = (index : Number, item : queue.QueuedItem) => (
+    const watched = (index : number, item : LikeAndDetail) => {
+        navigation.navigate('SeenIt', {
+            show: item.show.id
+        })
+    }
+
+    const renderActions = (index : number, item : LikeAndDetail) => (
         <View style={styles.actionsRow}>
             <Pressable
                 style={[styles.actionsButton, styles.moreAction]}
-                onPress={() => alert(item.id)}>
-                <Text style={BingeMatch.theme.likes.actions.text}>More</Text>
+                onPress={() => watched(index, item)}>
+                <Text style={BingeMatch.theme.likes.actions.text}>Seen It</Text>
             </Pressable>
             <Pressable
                 style={[styles.actionsButton, styles.removeAction]}
@@ -94,21 +144,19 @@ export const Likes: React.FC<DrawerNavigationProps<'Likes'>> = (props) => {
         </View>
     );
 
-    if (!likes) {
-        return <View style={styles.loading}>
+    return !likes ?
+        <View style={styles.loading}>
             <ActivityIndicator size="large"/>
         </View>
-    }
-
-
-    return <DraggableFlatList
-        style={styles.likes}
-        data={likes}
-        renderItem={toCard}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => `list-item-${index}`}
-        onDragEnd={({ data }) => updateOrder(data)}
-    />
+        :
+        <DraggableFlatList
+            style={styles.likes}
+            data={likes}
+            renderItem={toCard}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item, index) => `list-item-${index}`}
+            onDragEnd={({ from, to}) => updateOrder(from, to)}
+        />
 }
 
 const styles = StyleSheet.create({
@@ -187,5 +235,9 @@ const styles = StyleSheet.create({
     moreAction: {
         backgroundColor: BingeMatch.theme.likes.actions.moreColor
     },
+
+    buttons: {
+        paddingHorizontal: 0
+    }
 })
 

@@ -7,7 +7,7 @@ import etc.PasswordUtil
 import etc.generateId
 import org.apache.ibatis.session.SqlSession
 
-class UserStore(private val passwordUtil: PasswordUtil, private val genres : Genres) {
+class Users(private val passwordUtil: PasswordUtil, private val genres : Genres) {
     private val mapper : ObjectMapper = ObjectMapper()
 
     fun getUserByLogin(email: String, password: String, session : SqlSession): Result<User.Detail> {

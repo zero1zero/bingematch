@@ -4,6 +4,7 @@ import {
     Image,
     ImageBackground,
     Pressable,
+    SafeAreaView,
     ScrollView,
     StyleSheet,
     Text,
@@ -15,6 +16,10 @@ import {show} from "../model/compiled";
 import YoutubeIframe from "react-native-youtube-iframe";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamList} from "../etc/RootStackParamList";
+import {Button} from "../components/Button";
+import {EyeIcon} from "../components/Icons";
+import {BingeMatch} from "../theme";
+import {useAppDispatch, useAppSelector} from "../redux/hooks";
 
 export const Detail: React.FC = (props) => {
 
@@ -22,17 +27,28 @@ export const Detail: React.FC = (props) => {
 
     const navigation = useNavigation()
     const route = useRoute<RouteProp<RootStackParamList, 'Detail'>>()
+    const seenItState = useAppSelector(state => state.seenIt)
+    const dispatch = useAppDispatch()
 
     const window = useWindowDimensions()
 
     const [detail, setDetail] = useState<show.IDetail>()
 
     useEffect(() => {
-        api.getShow(route.params.id)
+        api.getShow(route.params.show)
             .then(show => {
                 setDetail(show)
             })
-    }, [])
+    }, [navigation])
+
+    useEffect(() => {
+        if (seenItState.lastSeenItShow.show != route.params.show) {
+            return
+        }
+
+        navigation.goBack()
+
+    }, [seenItState.lastSeenItShow])
 
     const showBlock = () => {
         if (!detail) {
@@ -94,31 +110,57 @@ export const Detail: React.FC = (props) => {
                                  source={{uri: `https://image.tmdb.org/t/p/w500${detail.backdropPath}`}}>
                     <Text style={styles.title}>{detail.title} ({date.getFullYear()})</Text>
                     <Text style={styles.tagline}>{detail.tagline}</Text>
-                    <ScrollView style={styles.content}>
+                    <SafeAreaView>
 
-                        {trailerBlock()}
+                        <ScrollView style={styles.content}>
 
-                        <ScrollView style={styles.castBlock} horizontal={true}>
-                            {detail.cast.map(renderCastItem)}
+                            {trailerBlock()}
+
+                            <ScrollView style={styles.castBlock} horizontal={true}>
+                                {detail.cast.map(renderCastItem)}
+                            </ScrollView>
+
+                            <Text style={styles.overview}>{detail.overview}</Text>
+
+                            <ScrollView style={{maxHeight: 100, marginBottom: 14}} horizontal={true}>
+                                {directorBlock()}
+                            </ScrollView>
+
+                            <View style={{marginBottom: 14}}>
+                                <Text style={styles.lengthTitle}>
+                                    {detail.type == show.Detail.Type.Movie ? 'Runtime' : 'Seasons'}
+                                </Text>
+                                {detail.type == show.Detail.Type.Movie ?
+                                    <Text style={styles.length}>{detail.movie.runtime} minutes</Text>
+                                    :
+                                    <Text style={styles.length}>{detail.tv.seasons}</Text>
+                                }
+                            </View>
+
+                            <View style={{marginBottom: 14}}>
+                                <Text style={styles.lengthTitle}>
+                                    Language
+                                </Text>
+                                <Text>
+                                    {detail.type == show.Detail.Type.Movie ?
+                                        <Text style={styles.length}>{detail.movie.originalLanguage}</Text>
+                                        :
+                                        <Text style={styles.length}>{detail.spokenLanguage}</Text>
+                                    }
+                                </Text>
+                            </View>
                         </ScrollView>
 
-                        <Text style={styles.overview}>{detail.overview}</Text>
-
-                        <ScrollView style={{maxHeight: 100, marginBottom: 14}} horizontal={true}>
-                            {directorBlock()}
-                        </ScrollView>
-
-                        <View style={{marginBottom: 20}}>
-                            <Text style={styles.lengthTitle}>
-                                {detail.type == show.Detail.Type.Movie ? 'Runtime' : 'Seasons'}
-                            </Text>
-                            {detail.type == show.Detail.Type.Movie ?
-                                <Text style={styles.length}>{detail.movie.runtime} minutes</Text>
-                                :
-                                <Text style={styles.length}>{detail.tv.seasons}</Text>
-                            }
-                        </View>
-                    </ScrollView>
+                        <Button style={styles.seenit}
+                                onPress={() => {
+                                    navigation.navigate('SeenIt', {
+                                        show: detail.id
+                                    })
+                                }}>
+                            <EyeIcon size={28} style={BingeMatch.theme.detail.seenItIcon}/>
+                            <Text style={{...styles.seenitText, ...BingeMatch.theme.detail.seenIt}}>Seen It</Text>
+                        </Button>
+                    </SafeAreaView>
                 </ImageBackground>
             </>
         )
@@ -245,4 +287,11 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         color: 'white',
     },
+
+    seenit: {
+        // flexDirection: 'row',
+        alignItems: 'center',
+    },
+    seenitText: {
+    }
 })

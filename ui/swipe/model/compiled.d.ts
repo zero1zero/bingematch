@@ -1,66 +1,3 @@
-/** Namespace queue. */
-export namespace queue {
-
-    /** Properties of a QueuedItems. */
-    interface IQueuedItems {
-
-        /** QueuedItems items */
-        items?: (queue.IQueuedItem[]|null);
-    }
-
-    /** Represents a QueuedItems. */
-    class QueuedItems implements IQueuedItems {
-
-        /**
-         * Constructs a new QueuedItems.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: queue.IQueuedItems);
-
-        /** QueuedItems items. */
-        public items: queue.IQueuedItem[];
-    }
-
-    /** Properties of a QueuedItem. */
-    interface IQueuedItem {
-
-        /** QueuedItem id */
-        id?: (string|null);
-
-        /** QueuedItem user */
-        user?: (string|null);
-
-        /** QueuedItem show */
-        show?: (show.IThinDetail|null);
-    }
-
-    /** Represents a QueuedItem. */
-    class QueuedItem implements IQueuedItem {
-
-        /**
-         * Constructs a new QueuedItem.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: queue.IQueuedItem);
-
-        /** QueuedItem id. */
-        public id: string;
-
-        /** QueuedItem user. */
-        public user: string;
-
-        /** QueuedItem show. */
-        public show?: (show.IThinDetail|null);
-    }
-
-    /** QueueItemState enum. */
-    enum QueueItemState {
-        Queued = 0,
-        Liked = 1,
-        Disliked = 2
-    }
-}
-
 /** Namespace show. */
 export namespace show {
 
@@ -869,119 +806,127 @@ export namespace user {
         public detail?: (user.IDetail|null);
     }
 
-    /** Properties of a Lists. */
-    interface ILists {
+    /** Properties of a QueuedShow. */
+    interface IQueuedShow {
 
-        /** Lists liked */
-        liked?: (user.ILiked[]|null);
-
-        /** Lists matched */
-        matched?: (user.IMatched[]|null);
-
-        /** Lists watched */
-        watched?: (user.IWatched[]|null);
+        /** QueuedShow show */
+        show?: (string|null);
     }
 
-    /** Represents a Lists. */
-    class Lists implements ILists {
+    /** Represents a QueuedShow. */
+    class QueuedShow implements IQueuedShow {
 
         /**
-         * Constructs a new Lists.
+         * Constructs a new QueuedShow.
          * @param [properties] Properties to set
          */
-        constructor(properties?: user.ILists);
+        constructor(properties?: user.IQueuedShow);
 
-        /** Lists liked. */
-        public liked: user.ILiked[];
-
-        /** Lists matched. */
-        public matched: user.IMatched[];
-
-        /** Lists watched. */
-        public watched: user.IWatched[];
+        /** QueuedShow show. */
+        public show: string;
     }
 
-    /** Properties of a Liked. */
-    interface ILiked {
+    /** Properties of a DislikedShow. */
+    interface IDislikedShow {
 
-        /** Liked show */
+        /** DislikedShow show */
+        show?: (string|null);
+    }
+
+    /** Represents a DislikedShow. */
+    class DislikedShow implements IDislikedShow {
+
+        /**
+         * Constructs a new DislikedShow.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: user.IDislikedShow);
+
+        /** DislikedShow show. */
+        public show: string;
+    }
+
+    /** Properties of a LikedShow. */
+    interface ILikedShow {
+
+        /** LikedShow show */
         show?: (string|null);
 
-        /** Liked order */
-        order?: (string|null);
+        /** LikedShow order */
+        order?: (number|null);
     }
 
-    /** Represents a Liked. */
-    class Liked implements ILiked {
+    /** Represents a LikedShow. */
+    class LikedShow implements ILikedShow {
 
         /**
-         * Constructs a new Liked.
+         * Constructs a new LikedShow.
          * @param [properties] Properties to set
          */
-        constructor(properties?: user.ILiked);
+        constructor(properties?: user.ILikedShow);
 
-        /** Liked show. */
+        /** LikedShow show. */
         public show: string;
 
-        /** Liked order. */
-        public order: string;
+        /** LikedShow order. */
+        public order: number;
     }
 
-    /** Properties of a Matched. */
-    interface IMatched {
+    /** Properties of a MatchedShow. */
+    interface IMatchedShow {
 
-        /** Matched show */
+        /** MatchedShow show */
         show?: (string|null);
 
-        /** Matched user */
+        /** MatchedShow user */
         user?: (string|null);
 
-        /** Matched order */
-        order?: (string|null);
+        /** MatchedShow order */
+        order?: (number|null);
     }
 
-    /** Represents a Matched. */
-    class Matched implements IMatched {
+    /** Represents a MatchedShow. */
+    class MatchedShow implements IMatchedShow {
 
         /**
-         * Constructs a new Matched.
+         * Constructs a new MatchedShow.
          * @param [properties] Properties to set
          */
-        constructor(properties?: user.IMatched);
+        constructor(properties?: user.IMatchedShow);
 
-        /** Matched show. */
+        /** MatchedShow show. */
         public show: string;
 
-        /** Matched user. */
+        /** MatchedShow user. */
         public user: string;
 
-        /** Matched order. */
-        public order: string;
+        /** MatchedShow order. */
+        public order: number;
     }
 
-    /** Properties of a Watched. */
-    interface IWatched {
+    /** Properties of a WatchedShow. */
+    interface IWatchedShow {
 
-        /** Watched show */
+        /** WatchedShow show */
         show?: (string|null);
 
-        /** Watched rating */
+        /** WatchedShow rating */
         rating?: (number|null);
     }
 
-    /** Represents a Watched. */
-    class Watched implements IWatched {
+    /** Represents a WatchedShow. */
+    class WatchedShow implements IWatchedShow {
 
         /**
-         * Constructs a new Watched.
+         * Constructs a new WatchedShow.
          * @param [properties] Properties to set
          */
-        constructor(properties?: user.IWatched);
+        constructor(properties?: user.IWatchedShow);
 
-        /** Watched show. */
+        /** WatchedShow show. */
         public show: string;
 
-        /** Watched rating. */
+        /** WatchedShow rating. */
         public rating: number;
     }
 }

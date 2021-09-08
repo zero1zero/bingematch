@@ -1,4 +1,4 @@
-import {queue, show, user} from "../model/compiled";
+import {show, user} from "../model/compiled";
 import Storage from '../Storage'
 
 import getEnvVars from '../../environment';
@@ -35,7 +35,7 @@ export default class API {
     }
 
     refreshForTest = async (login: user.ILogin): Promise<void> => {
-        this.login(login)
+        await this.login(login)
             .then(token => {
                 console.debug("Cleaning up stale user for testing...")
                 //oops, we still have this user around
@@ -50,9 +50,10 @@ export default class API {
                 throw e
             })
             .then(() => {
-                this.signup(login)
+                return this.signup(login)
                     .then(token => {
-                        console.log("Using test token " + token.token)
+                        const id = this.storage.getUserFromToken(token.token)
+                        console.log(`Created test ${id} test token ${token.token}`)
                     })
             })
     }
@@ -88,31 +89,58 @@ export default class API {
         return this.storage.getUserId()
             .then(id => (
                 this.get('/user/' + id)
-                    .then(r => r.data)
+                    .then(r => r.data as user.IDetail)
                     // .then(json => user.Detail.fromObject(json).toJSON())
             ))
     }
 
-    getQueue = async (): Promise<queue.IQueuedItems> => {
-        return this.get('/queue/')
-            .then(r => r.data)
+    getQueue = async (): Promise<user.IQueuedShow[]> => {
+        return this.get('/lists/queued')
+            .then(r => r.data as user.IQueuedShow[])
             // .then(json => queue.QueuedItems.fromObject(json).toJSON())
     }
 
-    getLikes = async (): Promise<queue.IQueuedItems> => {
-        return this.get('/queue/likes')
-            .then(r => r.data)
+    getLikes = async (): Promise<user.ILikedShow[]> => {
+        return this.get('/lists/liked')
+            .then(r => r.data as user.ILikedShow[])
             // .then(json => queue.QueuedItems.fromObject(json).toJSON())
     }
 
     getShow = async (id: string): Promise<show.IDetail> => (
         this.get(`/show/${id}`)
-            .then(r => r.data)
+            .then(r => r.data as show.IDetail)
             // .then(json => show.Detail.fromObject(json).toJSON())
     )
 
-    setQueueState = async (id: string, state: number): Promise<void> => {
-        return this.put(`/queue/set/${id}/${state}`)
+    getShows = async (id: string[]): Promise<show.IDetail[]> => (
+        this.get(`/show?id=${id.join(',')}`)
+            .then(r => r.data as show.IDetail[])
+        // .then(json => show.Detail.fromObject(json).toJSON())
+    )
+
+    like = async (show: string): Promise<void> => {
+        return this.put(`/lists/like/${show}`)
+            .then(() => {
+                return
+            })
+    }
+
+    watched = async (show: string, rating: number): Promise<void> => {
+        return this.put(`/lists/watched/${show}`, {show, rating})
+            .then(() => {
+                return
+            })
+    }
+
+    dislike = async (show: string): Promise<void> => {
+        return this.put(`/lists/dislike/${show}`)
+            .then(() => {
+                return
+            })
+    }
+
+    back = async (show: string): Promise<void> => {
+        return this.put(`/lists/back/${show}`)
             .then(() => {
                 return
             })
@@ -120,7 +148,7 @@ export default class API {
 
     getGenres = async (): Promise<show.Genre[]> => (
         this.get(`/genres`)
-            .then(r => r.data)
+            .then(r => r.data as show.Genre[])
             // .then(json => json.map(genre => show.Genre.fromObject(genre).toJSON()))
     )
 

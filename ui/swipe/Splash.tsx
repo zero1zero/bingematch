@@ -7,7 +7,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 import {RootStackParamList} from "./etc/RootStackParamList";
 import {createDrawerNavigator} from "@react-navigation/drawer";
 import {Detail} from "./detail/Detail";
-import {SeenIt} from "./queue/SeenIt";
+import {SeenIt} from "./seenit/SeenIt";
 import {BingeMatch} from "./theme";
 import {Profile} from "./user/Profile";
 import {AddGenres} from "./genres/AddGenres";

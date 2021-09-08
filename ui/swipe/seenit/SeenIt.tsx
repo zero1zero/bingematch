@@ -2,16 +2,19 @@ import React, {useState} from "react";
 import {Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {BingeMatch} from "../theme";
 import {Button} from "../components/Button";
-import {HatedIt, LovedIt, Meh} from "../components/Icons";
+import {EyeIcon, HatedIt, LovedIt, Meh} from "../components/Icons";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {RootStackParamList} from "../etc/RootStackParamList";
 import {StackNavigationProp} from "@react-navigation/stack";
-import {interaction, InteractionName} from "./reducer";
 import {useAppDispatch} from "../redux/hooks";
 import Slider from "@react-native-community/slider";
+import Dependencies from "../Dependencies";
+import {listsUpdated} from "../likes/reducer";
+import {seenIt} from "./reducer";
 
 export const SeenIt : React.FC = (props) => {
 
+    const api = Dependencies.instance.api
     const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'SeenIt'>>()
     const route = useRoute<RouteProp<RootStackParamList, 'SeenIt'>>()
     const dispatch = useAppDispatch()
@@ -23,10 +26,17 @@ export const SeenIt : React.FC = (props) => {
     }
 
     const watched = () => {
-        dispatch(interaction( {
-            name: rating >= .5 ? InteractionName.SwipeLike : InteractionName.SwipeDislike,
-            item: route.params.item
+        dispatch(seenIt({
+            show: route.params.show,
+            rating: rating
         }))
+
+        //todo error handling
+        api.watched(route.params.show, rating)
+            .then(() => {
+                dispatch(listsUpdated())
+            })
+
         navigation.goBack()
     }
 
@@ -60,8 +70,8 @@ export const SeenIt : React.FC = (props) => {
                         maximumTrackTintColor={BingeMatch.colors.grey}
                     />
                     <Button style={styles.button} onPress={watched}>
-                        {/*<EyeIcon size={28} style={BingeMatch.theme.actions.seenItIcon}/>*/}
-                        <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.seenIt}}>I Watched This</Text>
+                        <EyeIcon size={28} style={BingeMatch.theme.actions.seenItIcon}/>
+                        <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.seenIt}}>Seen It</Text>
                     </Button>
                 </SafeAreaView>
             </View>

@@ -2,11 +2,11 @@ import {Item, SyncStatus} from "./QueueEvents";
 
 export const getItem = (items: Item[], id: string): Item => {
     return items
-        .filter(item => item.data.id == id)[0]
+        .filter(item => item.show.id == id)[0]
 }
 
 export const updateInPlace = (items: Item[], item: Item): Item[] => {
-    items[headIndex(items, item.data.id)] = item
+    items[headIndex(items, item.show.id)] = item
 
     return items
 }
@@ -25,11 +25,11 @@ export const headIndex = (items: Item[], head: string | undefined): number => {
         return 0
     }
     return items
-        .findIndex(item => item.data.id == head)
+        .findIndex(item => item.show.id == head)
 }
 
 export const previousHead = (items: Item[], head: string = undefined): string => {
-    return previous(items, head).data.id
+    return previous(items, head)?.show?.id
 }
 
 export const getHead = (items: Item[], head: string): Item => {
@@ -44,7 +44,7 @@ export const next = (items: Item[], head: string = undefined): Item => {
 }
 
 export const nextHead = (items: Item[], head: string = undefined): string => {
-    return next(items, head).data.id
+    return next(items, head)?.show?.id
 }
 
 export const afterHeadInclusive = (items: Item[], head: string): Item[] => {

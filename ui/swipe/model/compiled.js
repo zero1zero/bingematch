@@ -7,123 +7,6 @@ const $util = $protobuf.util;
 // Exported root namespace
 const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-export const queue = $root.queue = (() => {
-
-    /**
-     * Namespace queue.
-     * @exports queue
-     * @namespace
-     */
-    const queue = {};
-
-    queue.QueuedItems = (function() {
-
-        /**
-         * Properties of a QueuedItems.
-         * @memberof queue
-         * @interface IQueuedItems
-         * @property {Array.<queue.IQueuedItem>|null} [items] QueuedItems items
-         */
-
-        /**
-         * Constructs a new QueuedItems.
-         * @memberof queue
-         * @classdesc Represents a QueuedItems.
-         * @implements IQueuedItems
-         * @constructor
-         * @param {queue.IQueuedItems=} [properties] Properties to set
-         */
-        function QueuedItems(properties) {
-            this.items = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * QueuedItems items.
-         * @member {Array.<queue.IQueuedItem>} items
-         * @memberof queue.QueuedItems
-         * @instance
-         */
-        QueuedItems.prototype.items = $util.emptyArray;
-
-        return QueuedItems;
-    })();
-
-    queue.QueuedItem = (function() {
-
-        /**
-         * Properties of a QueuedItem.
-         * @memberof queue
-         * @interface IQueuedItem
-         * @property {string|null} [id] QueuedItem id
-         * @property {string|null} [user] QueuedItem user
-         * @property {show.IThinDetail|null} [show] QueuedItem show
-         */
-
-        /**
-         * Constructs a new QueuedItem.
-         * @memberof queue
-         * @classdesc Represents a QueuedItem.
-         * @implements IQueuedItem
-         * @constructor
-         * @param {queue.IQueuedItem=} [properties] Properties to set
-         */
-        function QueuedItem(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * QueuedItem id.
-         * @member {string} id
-         * @memberof queue.QueuedItem
-         * @instance
-         */
-        QueuedItem.prototype.id = "";
-
-        /**
-         * QueuedItem user.
-         * @member {string} user
-         * @memberof queue.QueuedItem
-         * @instance
-         */
-        QueuedItem.prototype.user = "";
-
-        /**
-         * QueuedItem show.
-         * @member {show.IThinDetail|null|undefined} show
-         * @memberof queue.QueuedItem
-         * @instance
-         */
-        QueuedItem.prototype.show = null;
-
-        return QueuedItem;
-    })();
-
-    /**
-     * QueueItemState enum.
-     * @name queue.QueueItemState
-     * @enum {number}
-     * @property {number} Queued=0 Queued value
-     * @property {number} Liked=1 Liked value
-     * @property {number} Disliked=2 Disliked value
-     */
-    queue.QueueItemState = (function() {
-        const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "Queued"] = 0;
-        values[valuesById[1] = "Liked"] = 1;
-        values[valuesById[2] = "Disliked"] = 2;
-        return values;
-    })();
-
-    return queue;
-})();
-
 export const show = $root.show = (() => {
 
     /**
@@ -1449,29 +1332,24 @@ export const user = $root.user = (() => {
         return DetailAndToken;
     })();
 
-    user.Lists = (function() {
+    user.QueuedShow = (function() {
 
         /**
-         * Properties of a Lists.
+         * Properties of a QueuedShow.
          * @memberof user
-         * @interface ILists
-         * @property {Array.<user.ILiked>|null} [liked] Lists liked
-         * @property {Array.<user.IMatched>|null} [matched] Lists matched
-         * @property {Array.<user.IWatched>|null} [watched] Lists watched
+         * @interface IQueuedShow
+         * @property {string|null} [show] QueuedShow show
          */
 
         /**
-         * Constructs a new Lists.
+         * Constructs a new QueuedShow.
          * @memberof user
-         * @classdesc Represents a Lists.
-         * @implements ILists
+         * @classdesc Represents a QueuedShow.
+         * @implements IQueuedShow
          * @constructor
-         * @param {user.ILists=} [properties] Properties to set
+         * @param {user.IQueuedShow=} [properties] Properties to set
          */
-        function Lists(properties) {
-            this.liked = [];
-            this.matched = [];
-            this.watched = [];
+        function QueuedShow(properties) {
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -1479,51 +1357,34 @@ export const user = $root.user = (() => {
         }
 
         /**
-         * Lists liked.
-         * @member {Array.<user.ILiked>} liked
-         * @memberof user.Lists
+         * QueuedShow show.
+         * @member {string} show
+         * @memberof user.QueuedShow
          * @instance
          */
-        Lists.prototype.liked = $util.emptyArray;
+        QueuedShow.prototype.show = "";
 
-        /**
-         * Lists matched.
-         * @member {Array.<user.IMatched>} matched
-         * @memberof user.Lists
-         * @instance
-         */
-        Lists.prototype.matched = $util.emptyArray;
-
-        /**
-         * Lists watched.
-         * @member {Array.<user.IWatched>} watched
-         * @memberof user.Lists
-         * @instance
-         */
-        Lists.prototype.watched = $util.emptyArray;
-
-        return Lists;
+        return QueuedShow;
     })();
 
-    user.Liked = (function() {
+    user.DislikedShow = (function() {
 
         /**
-         * Properties of a Liked.
+         * Properties of a DislikedShow.
          * @memberof user
-         * @interface ILiked
-         * @property {string|null} [show] Liked show
-         * @property {string|null} [order] Liked order
+         * @interface IDislikedShow
+         * @property {string|null} [show] DislikedShow show
          */
 
         /**
-         * Constructs a new Liked.
+         * Constructs a new DislikedShow.
          * @memberof user
-         * @classdesc Represents a Liked.
-         * @implements ILiked
+         * @classdesc Represents a DislikedShow.
+         * @implements IDislikedShow
          * @constructor
-         * @param {user.ILiked=} [properties] Properties to set
+         * @param {user.IDislikedShow=} [properties] Properties to set
          */
-        function Liked(properties) {
+        function DislikedShow(properties) {
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -1531,44 +1392,35 @@ export const user = $root.user = (() => {
         }
 
         /**
-         * Liked show.
+         * DislikedShow show.
          * @member {string} show
-         * @memberof user.Liked
+         * @memberof user.DislikedShow
          * @instance
          */
-        Liked.prototype.show = "";
+        DislikedShow.prototype.show = "";
 
-        /**
-         * Liked order.
-         * @member {string} order
-         * @memberof user.Liked
-         * @instance
-         */
-        Liked.prototype.order = "";
-
-        return Liked;
+        return DislikedShow;
     })();
 
-    user.Matched = (function() {
+    user.LikedShow = (function() {
 
         /**
-         * Properties of a Matched.
+         * Properties of a LikedShow.
          * @memberof user
-         * @interface IMatched
-         * @property {string|null} [show] Matched show
-         * @property {string|null} [user] Matched user
-         * @property {string|null} [order] Matched order
+         * @interface ILikedShow
+         * @property {string|null} [show] LikedShow show
+         * @property {number|null} [order] LikedShow order
          */
 
         /**
-         * Constructs a new Matched.
+         * Constructs a new LikedShow.
          * @memberof user
-         * @classdesc Represents a Matched.
-         * @implements IMatched
+         * @classdesc Represents a LikedShow.
+         * @implements ILikedShow
          * @constructor
-         * @param {user.IMatched=} [properties] Properties to set
+         * @param {user.ILikedShow=} [properties] Properties to set
          */
-        function Matched(properties) {
+        function LikedShow(properties) {
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -1576,51 +1428,96 @@ export const user = $root.user = (() => {
         }
 
         /**
-         * Matched show.
+         * LikedShow show.
          * @member {string} show
-         * @memberof user.Matched
+         * @memberof user.LikedShow
          * @instance
          */
-        Matched.prototype.show = "";
+        LikedShow.prototype.show = "";
 
         /**
-         * Matched user.
+         * LikedShow order.
+         * @member {number} order
+         * @memberof user.LikedShow
+         * @instance
+         */
+        LikedShow.prototype.order = 0;
+
+        return LikedShow;
+    })();
+
+    user.MatchedShow = (function() {
+
+        /**
+         * Properties of a MatchedShow.
+         * @memberof user
+         * @interface IMatchedShow
+         * @property {string|null} [show] MatchedShow show
+         * @property {string|null} [user] MatchedShow user
+         * @property {number|null} [order] MatchedShow order
+         */
+
+        /**
+         * Constructs a new MatchedShow.
+         * @memberof user
+         * @classdesc Represents a MatchedShow.
+         * @implements IMatchedShow
+         * @constructor
+         * @param {user.IMatchedShow=} [properties] Properties to set
+         */
+        function MatchedShow(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * MatchedShow show.
+         * @member {string} show
+         * @memberof user.MatchedShow
+         * @instance
+         */
+        MatchedShow.prototype.show = "";
+
+        /**
+         * MatchedShow user.
          * @member {string} user
-         * @memberof user.Matched
+         * @memberof user.MatchedShow
          * @instance
          */
-        Matched.prototype.user = "";
+        MatchedShow.prototype.user = "";
 
         /**
-         * Matched order.
-         * @member {string} order
-         * @memberof user.Matched
+         * MatchedShow order.
+         * @member {number} order
+         * @memberof user.MatchedShow
          * @instance
          */
-        Matched.prototype.order = "";
+        MatchedShow.prototype.order = 0;
 
-        return Matched;
+        return MatchedShow;
     })();
 
-    user.Watched = (function() {
+    user.WatchedShow = (function() {
 
         /**
-         * Properties of a Watched.
+         * Properties of a WatchedShow.
          * @memberof user
-         * @interface IWatched
-         * @property {string|null} [show] Watched show
-         * @property {number|null} [rating] Watched rating
+         * @interface IWatchedShow
+         * @property {string|null} [show] WatchedShow show
+         * @property {number|null} [rating] WatchedShow rating
          */
 
         /**
-         * Constructs a new Watched.
+         * Constructs a new WatchedShow.
          * @memberof user
-         * @classdesc Represents a Watched.
-         * @implements IWatched
+         * @classdesc Represents a WatchedShow.
+         * @implements IWatchedShow
          * @constructor
-         * @param {user.IWatched=} [properties] Properties to set
+         * @param {user.IWatchedShow=} [properties] Properties to set
          */
-        function Watched(properties) {
+        function WatchedShow(properties) {
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -1628,22 +1525,22 @@ export const user = $root.user = (() => {
         }
 
         /**
-         * Watched show.
+         * WatchedShow show.
          * @member {string} show
-         * @memberof user.Watched
+         * @memberof user.WatchedShow
          * @instance
          */
-        Watched.prototype.show = "";
+        WatchedShow.prototype.show = "";
 
         /**
-         * Watched rating.
+         * WatchedShow rating.
          * @member {number} rating
-         * @memberof user.Watched
+         * @memberof user.WatchedShow
          * @instance
          */
-        Watched.prototype.rating = 0;
+        WatchedShow.prototype.rating = 0;
 
-        return Watched;
+        return WatchedShow;
     })();
 
     return user;

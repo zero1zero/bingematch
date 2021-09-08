@@ -35,7 +35,7 @@ test('given a login, auth works fine', async () => {
         <App/>
     );
 
-    await waitFor(() => getByText('BingeMatch'));
+    await waitFor(() => getByText('Night In'));
 
     fireEvent.press(getByText('Already have account? Sign In'))
 

@@ -4,6 +4,7 @@ import {BingeMatch} from "../theme";
 import {Swipable} from "./Swipable";
 import {Item} from "./QueueEvents";
 
+
 interface Props {
     items: Item[]
 }
@@ -33,32 +34,33 @@ export const Deck: React.FC<Props> = (props) => {
         return size
     }
 
-    const toCard = (item: Item) => (
-        <Swipable
+    const toCard = (item : Item) => {
+        const date = new Date(item.show.date)
+        return <Swipable
             style={{...styles.card, width: cardWidth}}
             item={item}
-            key={`card-${item.data.id}`}>
+            key={`card-${item.show.id}`}>
             {/*<HeartIcon {...styles.reportIcon} /> <Text>Liked by Ruoxi, Ajay and Jesi</Text>*/}
             <View>
                 <View style={{...styles.image}}>
                     <ImageBackground
                         style={{height: '100%'}}
                         blurRadius={10}
-                        source={{uri: `https://image.tmdb.org/t/p/w${posterWidth()}/${item.data.show.posterPath}`}}>
+                        source={{uri: `https://image.tmdb.org/t/p/w${posterWidth()}/${item.show.posterPath}`}}>
                         <Image
                             style={{height: '100%'}}
                             resizeMode={"contain"}
-                            source={{uri: `https://image.tmdb.org/t/p/w${posterWidth()}/${item.data.show.posterPath}`}}>
+                            source={{uri: `https://image.tmdb.org/t/p/w${posterWidth()}/${item.show.posterPath}`}}>
                         </Image>
                     </ImageBackground>
                 </View>
             </View>
             <View style={styles.details}>
-                <Text numberOfLines={2} style={styles.detailsTitle}>{item.data.show.title}</Text>
-                <Text style={styles.detailsText} numberOfLines={4}>{item.data.show.overview}</Text>
+                <Text numberOfLines={2} style={styles.detailsTitle}>{item.show.title} ({date.getFullYear()}) - {item.show.movie ? 'Movie' : 'TV'}</Text>
+                <Text style={styles.detailsText} numberOfLines={4}>{item.show.overview}</Text>
 
                 <ScrollView style={styles.detailsGenres} horizontal={true}>
-                    {(item.data.show.genres || []) //todo i think we can remove once we filter by more than 1 genre
+                    {(item.show.genres || []) //todo i think we can remove once we filter by more than 1 genre
                         .filter(genre => genre.name != null)
                         .map(genre => (
                             <Text style={styles.detailsGenresName}
@@ -90,7 +92,7 @@ export const Deck: React.FC<Props> = (props) => {
                 </View>
             </View>
         </Swipable>
-    )
+    }
 
     return (
         <View style={styles.deck}>

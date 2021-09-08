@@ -4,18 +4,20 @@ import catalog.MetadataSource
 import db.Database
 import db.Updater
 import etc.PasswordUtil
+import lists.Lists
 import org.apache.ibatis.datasource.pooled.PooledDataSource
-import queue.Queues
-import user.UserStore
+import queue.Queue
+import user.Users
 
 interface Dependencies {
 
-    fun userStore() : UserStore
-    fun queues() : Queues
+    fun userStore() : Users
+    fun queues() : Queue
     fun catalog() : Catalog
     fun database() : Database
     fun updater() : Updater
     fun genres() : Genres
+    fun lists() : Lists
 }
 
 open class ProdDeps : Dependencies {
@@ -25,16 +27,17 @@ open class ProdDeps : Dependencies {
     private val datasource = ProdDataSource()
     private val database = Database(datasource)
     private val catalog = Catalog(metadata)
-    private val queues = Queues(catalog)
+    private val lists = Lists()
+    private val queues = Queue(lists, catalog)
     private val updater = Updater(datasource)
     private val genres = Genres(metadata)
-    private val storage = UserStore(passwordUtil, genres)
+    private val storage = Users(passwordUtil, genres)
 
-    override fun userStore(): UserStore {
+    override fun userStore(): Users {
         return storage
     }
 
-    override fun queues(): Queues {
+    override fun queues(): Queue {
         return queues
     }
 
@@ -52,6 +55,10 @@ open class ProdDeps : Dependencies {
 
     override fun genres(): Genres {
         return genres
+    }
+
+    override fun lists(): Lists {
+        return lists
     }
 }
 

@@ -3,7 +3,6 @@ import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import {Pressable, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {BingeMatch} from "../theme";
 import {Button} from "../components/Button";
-import {MinusIcon, PlusIcon} from "../components/Icons";
 import Dependencies from "../Dependencies";
 import {show} from "../model/compiled";
 import Toast from "react-native-root-toast";
@@ -51,9 +50,9 @@ export const AddGenres: React.FC<BaseNavigationProps<'AddGenres'>> = (props) => 
     }
 
     const add = (genre: show.Genre) => (
-        <Pressable onPress={() => toggle(genre)}>
+        <Pressable onPress={() => toggle(genre)} key={`genre-${genre.id}`}>
             <View style={{...styles.detailsGenresName, backgroundColor: 'transparent'}}>
-                <PlusIcon style={{marginRight: 5}}/>
+                {/*<PlusIcon style={{marginRight: 5}}/>*/}
                 <Text style={styles.detailsGenresText}
                     key={`agenre-${genre.id}`}>
                     {genre.name}
@@ -63,9 +62,9 @@ export const AddGenres: React.FC<BaseNavigationProps<'AddGenres'>> = (props) => 
     )
 
     const remove = (genre: show.Genre) => (
-        <Pressable onPress={() => toggle(genre)}>
+        <Pressable onPress={() => toggle(genre)} key={`genre-${genre.id}`}>
             <View style={{...styles.detailsGenresName, backgroundColor: "#EAE2B7"}}>
-                <MinusIcon style={{marginRight: 5}}/>
+                {/*<MinusIcon style={{marginRight: 5}}/>*/}
                 <Text style={styles.detailsGenresText}
                     key={`rgenre-${genre.id}`}>
                     {genre.name}

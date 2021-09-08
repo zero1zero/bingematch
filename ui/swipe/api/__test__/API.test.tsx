@@ -25,7 +25,7 @@ test('popular call returns 20 results', async () => {
     expect.assertions(1)
     await api.getQueue()
         .then(popular => {
-            expect(popular.items.length).toBe(40)
+            expect(popular.length).toBe(40)
         })
 })
 

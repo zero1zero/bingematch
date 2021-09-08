@@ -27,7 +27,7 @@ const items: Item[] = [
         sentiment: Sentiment.Unknown,
         onscreen: true,
         synced: idx < 2 ? SyncStatus.Synced : idx == 2 ? SyncStatus.Syncing : SyncStatus.UnSynced,
-        data: {
+        show: {
             id: str
         }
     }
@@ -35,7 +35,7 @@ const items: Item[] = [
 
 test('all items after the index inclusive of head', async () => {
     expect.assertions(1)
-    expect(afterHeadInclusive(items, 'a').map(item => item.data.id)).toEqual(['a', 'good', 'test'])
+    expect(afterHeadInclusive(items, 'a').map(item => item.show.id)).toEqual(['a', 'good', 'test'])
 })
 
 test('get the next head id', async () => {
@@ -65,7 +65,7 @@ test('correctly count items after head', async () => {
 test('get everything we\'ve swiped', async () => {
     expect.assertions(1)
 
-    expect(beforeHeadExclusive(items, 'name').map(item => item.data.id)).toEqual(['hello', 'my'])
+    expect(beforeHeadExclusive(items, 'name').map(item => item.show.id)).toEqual(['hello', 'my'])
 })
 
 test('before and after head lookups match', async () => {
@@ -81,7 +81,7 @@ test('correctly get head item', async () => {
         sentiment: Sentiment.Unknown,
         synced: SyncStatus.UnSynced,
         onscreen: true,
-        data: {
+        show: {
             id: 'ars'
         }
     })
@@ -90,13 +90,13 @@ test('correctly get head item', async () => {
 test('remove all the synced items not including the back buffer', async () => {
     expect.assertions(1)
 
-    expect(removeFinishedAfterBacks(items, 'ars', 2).map(item => item.data.id))
+    expect(removeFinishedAfterBacks(items, 'ars', 2).map(item => item.show.id))
         .toEqual(['name', 'is', 'zack', 'this', 'ars', 'a', 'good', 'test'])
 })
 
 test('dont remove items in back buffer', async () => {
     expect.assertions(1)
 
-    expect(removeFinishedAfterBacks(items, 'is', 2).map(item => item.data.id))
+    expect(removeFinishedAfterBacks(items, 'is', 2).map(item => item.show.id))
         .toEqual(['my', 'name', 'is', 'zack', 'this', 'ars', 'a', 'good', 'test'])
 })

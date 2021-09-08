@@ -9,7 +9,7 @@ import {
     useWindowDimensions,
     ViewStyle
 } from "react-native";
-import {backSwipe, InteractionName, swipe, triggerSwipe} from "./reducer";
+import {interaction, InteractionName, setOffscreen, setOnscreen} from "./reducer";
 import {useNavigation} from "@react-navigation/native";
 import {Item, Sentiment} from "./QueueEvents";
 import {useAppDispatch} from "../redux/hooks";
@@ -93,7 +93,7 @@ export const Swipable: React.FC<Props> = (props) => {
     }
 
     const goswipe = (action: InteractionName) => {
-        dispatch(triggerSwipe({
+        dispatch(interaction({
                 name: action,
                 item: props.item
             }))
@@ -102,7 +102,7 @@ export const Swipable: React.FC<Props> = (props) => {
     const navigation = useNavigation();
     const onImagePress = (item: Item) => {
         navigation.navigate('Detail', {
-            id: item.data.show.id
+            show: item.show.id
         })
     }
 
@@ -182,7 +182,12 @@ export const Swipable: React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start()
-                    setTimeout(() => goswipe(InteractionName.SwipeLike), 200, props)
+                    setTimeout(() => {
+                        dispatch(interaction({
+                            name: InteractionName.SwipeLike,
+                            item: props.item
+                        }))
+                    }, 200, props)
                     // left
                 } else if (value < -1) {
                     Animated.spring(card, {
@@ -192,7 +197,12 @@ export const Swipable: React.FC<Props> = (props) => {
                         },
                         useNativeDriver: true,
                     }).start();
-                    setTimeout(() => goswipe(InteractionName.SwipeDislike), 200, props)
+                    setTimeout(() => {
+                        dispatch(interaction({
+                            name: InteractionName.SwipeDislike,
+                            item: props.item
+                        }))
+                    }, 200, props)
                 //     // up
                 // } else if (upValue < -1) {
                 //     Animated.spring(card, {
@@ -267,7 +277,7 @@ export const Swipable: React.FC<Props> = (props) => {
                     break;
             }
             setTimeout(() => {
-                dispatch(swipe(props.item.data.id))
+                dispatch(setOffscreen(props.item.show.id))
             }, 300) //matches whats in throwit
 
             return
@@ -280,7 +290,7 @@ export const Swipable: React.FC<Props> = (props) => {
 
             // after timeout, regress head
             setTimeout(() => {
-                dispatch(backSwipe(props.item.data.id))
+                dispatch(setOnscreen(props.item.show.id))
             }, 300)
 
             return
@@ -292,7 +302,7 @@ export const Swipable: React.FC<Props> = (props) => {
             rotate.setValue(anims.rotate)
         }
 
-    }, [props.item])
+    }, [props.item.sentiment, props.item.onscreen])
 
     return (
         <Animated.View

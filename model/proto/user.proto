@@ -37,24 +37,26 @@ message DetailAndToken {
     Detail detail = 2;
 }
 
-message Lists {
-    repeated Liked liked = 1;
-    repeated Matched matched = 2;
-    repeated Watched watched = 3;
-}
-
-message Liked {
+message QueuedShow {
     string show = 1;
-    string order = 2;
 }
 
-message Matched {
+message DislikedShow {
+    string show = 1;
+}
+
+message LikedShow {
+    string show = 1;
+    int32 order = 2;
+}
+
+message MatchedShow {
     string show = 1;
     string user = 2;
-    string order = 3;
+    int32 order = 3;
 }
 
-message Watched {
+message WatchedShow {
     string show = 1;
     double rating = 2;
 }

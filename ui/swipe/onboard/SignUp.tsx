@@ -1,5 +1,5 @@
 import React, {useEffect, useLayoutEffect, useReducer, useState} from "react";
-import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 import Social from "./components/Social";
 import {BaseNavigationProps} from "../etc/BaseNavigationProps";
 import Dependencies from "../Dependencies";
@@ -76,58 +76,60 @@ export const SignUp: React.FC<BaseNavigationProps<'Login'>> = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.headerContainer}>
-                <Text style={BingeMatch.h1}>
-                    BingeMatch
-                </Text>
-                <Text style={BingeMatch.h2}>
-                    Create a new account
-                </Text>
-            </View>
-            <View style={styles.formContainer}>
-                <Text style={BingeMatch.form.message}>
-                    {serverMessage}
-                </Text>
-                <KeyboardAvoidingView>
-                    <FirstInput
-                        style={{marginBottom: 10}}
-                        message={state.first.validation.message}
-                        value={state.first.value}
-                        dispatch={olddispatch}/>
-                    <LastInput
-                        style={{marginBottom: 30}}
-                        message={state.last.validation.message}
-                        value={state.last.value}
-                        dispatch={olddispatch}/>
+            <ScrollView>
+                <View style={styles.headerContainer}>
+                    <Text style={BingeMatch.h1}>
+                        BingeMatch
+                    </Text>
+                    <Text style={BingeMatch.h2}>
+                        Create a new account
+                    </Text>
+                </View>
+                <View style={styles.formContainer}>
+                    <Text style={BingeMatch.form.message}>
+                        {serverMessage}
+                    </Text>
+                    <KeyboardAvoidingView>
+                        <FirstInput
+                            style={{marginBottom: 10}}
+                            message={state.first.validation.message}
+                            value={state.first.value}
+                            dispatch={olddispatch}/>
+                        <LastInput
+                            style={{marginBottom: 30}}
+                            message={state.last.validation.message}
+                            value={state.last.value}
+                            dispatch={olddispatch}/>
 
-                    <EmailInput
-                        style={{marginBottom: 10}}
-                        message={state.email.validation.message}
-                        value={state.email.value}
-                        dispatch={olddispatch}/>
+                        <EmailInput
+                            style={{marginBottom: 10}}
+                            message={state.email.validation.message}
+                            value={state.email.value}
+                            dispatch={olddispatch}/>
 
-                    <PasswordInput
-                        style={{marginBottom: 6}}
-                        message={state.password.validation.message}
-                        value={state.password.value}
-                        dispatch={olddispatch}/>
-                    <VerifyInput
-                        value={state.verify.value}
-                        dispatch={olddispatch}/>
-                </KeyboardAvoidingView>
+                        <PasswordInput
+                            style={{marginBottom: 6}}
+                            message={state.password.validation.message}
+                            value={state.password.value}
+                            dispatch={olddispatch}/>
+                        <VerifyInput
+                            value={state.verify.value}
+                            dispatch={olddispatch}/>
+                    </KeyboardAvoidingView>
+                    <Button
+                        style={styles.signUpButton}
+                        onPress={onSignUpButtonPress}>
+                        <Text style={BingeMatch.theme.button.text}>Sign Up</Text>
+                    </Button>
+
+                    <Social text={"Or Sign Up Using Social Media"}/>
+                </View>
                 <Button
-                    style={styles.signUpButton}
-                    onPress={onSignUpButtonPress}>
-                    <Text style={BingeMatch.theme.button.text}>Sign Up</Text>
+                    style={styles.loginButton}
+                    onPress={onLoginButtonPress}>
+                    <Text style={styles.loginButtonText}>Already have account? Sign In</Text>
                 </Button>
-
-                <Social text={"Or Sign Up Using Social Media"}/>
-            </View>
-            <Button
-                style={styles.loginButton}
-                onPress={onLoginButtonPress}>
-                <Text style={styles.loginButtonText}>Already have account? Sign In</Text>
-            </Button>
+            </ScrollView>
         </SafeAreaView>
     )
 }

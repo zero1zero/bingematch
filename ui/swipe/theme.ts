@@ -15,7 +15,7 @@ export namespace BingeMatch {
         blue: "#003049",
         grey: "#555558",
         black: "#0F110C",
-        t: 0x0F110C
+        white: 'white'
     }
 
     interface Theme {
@@ -37,6 +37,12 @@ export namespace BingeMatch {
             nopeIcon: FontAwesomeIconStyle
             back: TextStyle
             backIcon: FontAwesomeIconStyle
+            seenItIcon: FontAwesomeIconStyle
+            seenIt: TextStyle
+        }
+
+        detail: {
+
             seenItIcon: FontAwesomeIconStyle
             seenIt: TextStyle
         }
@@ -160,6 +166,17 @@ export namespace BingeMatch {
 
                 color: colors.grey
             }
+        },
+        detail: {
+            seenIt: {
+                fontSize: 18,
+                fontWeight: '700',
+
+                color: colors.white
+            },
+            seenItIcon: {
+                color: colors.white
+            },
         },
 
         error: colors.error,

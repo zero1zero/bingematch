@@ -1,11 +1,15 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {authSlice} from "../auth/auth";
 import {queueSlice} from "../queue/reducer";
+import {listsSlice} from "../likes/reducer";
+import {seenItSlice} from "../seenit/reducer";
 
 export const store = configureStore({
     reducer: {
         queue: queueSlice.reducer,
-        auth: authSlice.reducer
+        auth: authSlice.reducer,
+        lists: listsSlice.reducer,
+        seenIt: seenItSlice.reducer
     }
 })
 

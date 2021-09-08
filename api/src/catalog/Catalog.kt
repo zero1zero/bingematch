@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.protobuf.util.JsonFormat
+import db.JsonParser
+import db.JsonPrinter
 import db.mappers.CatalogMapper
 import org.apache.ibatis.session.SqlSession
 import org.hashids.Hashids
@@ -188,9 +190,7 @@ class Catalog(private val metadataSource: MetadataSource) {
 
             val internalized = internalizeInitial(id, node)
 
-            val json = JsonFormat.printer()
-                .omittingInsignificantWhitespace()
-                .print(internalized)
+            val json = JsonPrinter.print(internalized)
 
             //will either insert new or update
             mapper.addShow(id, json)
@@ -200,9 +200,7 @@ class Catalog(private val metadataSource: MetadataSource) {
 
         val existingShow = Show.Detail.newBuilder()
 
-        JsonFormat.parser()
-            .ignoringUnknownFields()
-            .merge(maybeShow.tmdb, existingShow)
+        JsonParser.merge(maybeShow.tmdb, existingShow)
 
         return existingShow.build()
     }

@@ -58,7 +58,7 @@ const QueueActions: React.FC<Props> = (props) => {
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonDislikePress)}>
                     <XIcon size={30} style={BingeMatch.theme.actions.nopeIcon}/>
-                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.nope}}>Nope</Text>
+                    <Text style={{...BingeMatch.theme.actions.nope}}>Nope</Text>
                 </Button>
             </Animated.View>
             <Animated.View
@@ -69,7 +69,7 @@ const QueueActions: React.FC<Props> = (props) => {
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonBackPress)}>
                     <BackIcon size={28} style={BingeMatch.theme.actions.backIcon}/>
-                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.back}}>Back</Text>
+                    <Text style={{...BingeMatch.theme.actions.back}}>Back</Text>
                 </Button>
             </Animated.View>
             <Animated.View
@@ -80,12 +80,11 @@ const QueueActions: React.FC<Props> = (props) => {
                 <Button style={styles.button}
                         onPress={() => {
                             navigation.navigate('SeenIt', {
-                                item: props.head
+                                show: props.head.show.id
                             })
-                            // press(InteractionName.ButtonSeenItPress)
                         }}>
                     <EyeIcon size={28} style={BingeMatch.theme.actions.seenItIcon}/>
-                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.seenIt}}>Seen It</Text>
+                    <Text style={{...BingeMatch.theme.actions.seenIt}}>Seen It</Text>
                 </Button>
             </Animated.View>
             <Animated.View
@@ -96,7 +95,7 @@ const QueueActions: React.FC<Props> = (props) => {
                 <Button style={styles.button}
                         onPress={() => press(InteractionName.ButtonLikePress)}>
                     <PlusIcon size={30} style={BingeMatch.theme.actions.watchIcon}/>
-                    <Text style={{...styles.buttonText, ...BingeMatch.theme.actions.watch}}>Watch</Text>
+                    <Text style={{...BingeMatch.theme.actions.watch}}>Watch</Text>
                 </Button>
             </Animated.View>
         </View>
@@ -119,7 +118,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    buttonText: {}
 });
 
 export default QueueActions

@@ -21,7 +21,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import queue.Queue
 import routing.etc.SharedSqlSession
-import routing.queue
+import routing.lists
 import routing.show
 import routing.user
 import show.Show
@@ -147,7 +147,7 @@ fun Application.module(deps : Dependencies = ProdDeps()) {
 
         //register routing
         user(deps.userStore())
-        queue(deps.queues())
+        lists(deps.lists(), deps.queues())
         show(deps.catalog(), deps.genres())
     }
 }
