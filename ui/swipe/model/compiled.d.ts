@@ -1,3 +1,4 @@
+import * as $protobuf from "protobufjs";
 /** Namespace show. */
 export namespace show {
 

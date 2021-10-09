@@ -105,7 +105,7 @@ class Lists {
 
         watcheds.addRawValue(RawValue(JsonPrinter.print(watched)))
 
-        mapper.updateWatched(user, likes)
+        mapper.updateWatched(user, watcheds)
     }
 
     fun like(user: String, show: String, session: SqlSession) {

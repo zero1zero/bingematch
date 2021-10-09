@@ -70,11 +70,6 @@ export const Likes: React.FC = (props) => {
 
     const updateOrder = (from : number, to : number) => {
         //todo no backend support yet
-
-        // api.setQueueState(item.id, queue.QueueItemState.Queued)
-        //     .then(() => {
-        //         //todo no error handling for this
-        //     })
     }
 
     const onPress = (show: string) => {
